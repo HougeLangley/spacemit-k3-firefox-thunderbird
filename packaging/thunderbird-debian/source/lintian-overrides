@@ -1,0 +1,79 @@
+# ignoring files within the test cases
+source: source-is-missing [devtools/*]
+source: source-is-missing [*/tests/*]
+source: source-is-missing [*/test/*]
+
+# TexZilla isn't packaged yet too
+source: source-is-missing [comm/suite/editor/components/texzilla/content/TeXZilla.js]
+
+# files are under MPL-2 license with some long lines
+source: source-is-missing [comm/mail/components/compose/content/cloudAttachmentLinkManager.js]
+
+# needed by TB, some various long lines
+source: source-is-missing [*/crashtests/*]
+source: source-is-missing [browser/base/content/default-bookmarks.html]
+source: source-is-missing [browser/base/content/swipe-navigation.inc.xhtml]
+source: source-is-missing [browser/components/asrouter/content/asrouter-admin.bundle.js]
+source: source-is-missing [browser/extensions/newtab/data/content/activity-stream.bundle.js]
+source: source-is-missing [comm/chat/protocols/matrix/lib/*]
+source: source-is-missing [comm/mail/components/compose/texzilla/TeXZilla.js]
+source: source-is-missing [gfx/wr/wrench/script/reftest-analyzer.xhtml]
+source: source-is-missing [js/src/devtools/rootAnalysis/computeGCTypes.js]
+source: source-is-missing [js/src/octane/*.js]
+source: source-is-missing [layout/reftests/*]
+source: source-is-missing [mobile/android/geckoview/src/androidTest/assets/www/context_menu_link_text.html]
+source: source-is-missing [modules/libpref/init/all.js]
+source: source-is-missing [security/nss/doc/html/*.html]
+source: source-is-missing [testing/performance/mobile-startup/newssite-nuxt/_nuxt/entry.61b8a168.js]
+source: source-is-missing [testing/performance/mobile-startup/newssite-nuxt/_nuxt/error-404.2a577bdf.js]
+source: source-is-missing [testing/performance/mobile-startup/newssite-nuxt/_nuxt/error-500.c1eac2b8.js]
+source: source-is-missing [testing/performance/mobile-startup/newssite-nuxt/_nuxt/error-component.2cb571d2.js]
+source: source-is-missing [third_party/js/cfworker/json-schema.js]
+source: source-is-missing [third_party/js/d3/d3.js]
+source: source-is-missing [third_party/webkit/PerformanceTests/*]
+source: source-is-missing [toolkit/components/aboutinference/content/aboutInference.js]
+source: source-is-missing [toolkit/components/certviewer/content/vendor/*]
+source: source-is-missing [toolkit/components/ml/vendor/transformers-dev.js]
+source: source-is-missing [toolkit/components/ml/vendor/transformers.js]
+source: source-is-missing [toolkit/components/pdfjs/content/web/wasm/openjpeg_nowasm_fallback.js]
+source: source-is-missing [toolkit/components/resistfingerprinting/content/gl-matrix.js]
+source: source-is-missing [toolkit/components/translations/cld2/cld-worker.js]
+source: source-is-missing [toolkit/content/vendor/react/prop-types.js]
+source: source-is-missing [toolkit/content/vendor/react/react-dev.js]
+source: source-is-missing [toolkit/content/vendor/react/react-dom-dev.js]
+source: source-is-missing [toolkit/content/vendor/react/react-dom-server.js]
+source: source-is-missing [toolkit/content/vendor/react/react-dom.js]
+source: source-is-missing [toolkit/content/vendor/react/react-redux.js]
+source: source-is-missing [toolkit/content/vendor/react/react-transition-group.js]
+source: source-is-missing [toolkit/content/vendor/react/react.js]
+
+# not a problem as we don't build any Python packages
+source: uses-deprecated-python-stdlib cgi (deprecated in Python 3.11, removed in Python 3.13) [testing/web-platform/tests/tools/*]
+source: uses-deprecated-python-stdlib cgi (deprecated in Python 3.11, removed in Python 3.13) [third_party/*]
+source: uses-deprecated-python-stdlib telnetlib (deprecated in Python 3.11, removed in Python 3.13) [testing/*]
+source: uses-deprecated-python-stdlib distutils (deprecated in Python 3.10, removed in Python 3.12) [comm/*]
+source: uses-deprecated-python-stdlib distutils (deprecated in Python 3.10, removed in Python 3.12) [dom/*]
+source: uses-deprecated-python-stdlib distutils (deprecated in Python 3.10, removed in Python 3.12) [testing/*]
+source: uses-deprecated-python-stdlib distutils (deprecated in Python 3.10, removed in Python 3.12) [third_party/python/*]
+source: uses-deprecated-python-stdlib distutils (deprecated in Python 3.10, removed in Python 3.12) [tools/*]
+source: uses-deprecated-python-stdlib pipes (deprecated in Python 3.11, removed in Python 3.13) [third_party/python/dlmanager/check.py:8]
+
+# unfortunaly these Windows libraries are used somehow at built time
+source: source-contains-prebuilt-windows-binary [third_party/rust/libloading/tests/nagisa32.dll]
+source: source-contains-prebuilt-windows-binary [third_party/rust/libloading/tests/nagisa64.dll]
+source: source-contains-prebuilt-windows-binary [comm/third_party/rust/libloading/tests/nagisa32.dll]
+source: source-contains-prebuilt-windows-binary [comm/third_party/rust/libloading/tests/nagisa64.dll]
+
+# We don't build these beta versions.
+source: inconsistent-appstream-metadata-license comm/mail/branding/tb_beta/net.thunderbird.Thunderbird.appdata.xml (cc0-1.0 != mpl-2.0 or gpl-2 or lgpl-2.1) [debian/copyright]
+
+# No need to package these examples, not Thunderbird related.
+source: package-does-not-install-examples [devtools/*]
+source: package-does-not-install-examples [gfx/*]
+source: package-does-not-install-examples [js/*]
+source: package-does-not-install-examples [media/*]
+source: package-does-not-install-examples [mobile/*]
+source: package-does-not-install-examples [remote/*]
+source: package-does-not-install-examples [security*]
+source: package-does-not-install-examples [testing/*]
+source: package-does-not-install-examples [toolkit/*]
