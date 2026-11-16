@@ -1,0 +1,45 @@
+--- a/security/certverifier/NSSCertDBTrustDomain.cpp
++++ b/security/certverifier/NSSCertDBTrustDomain.cpp
+@@ -436,10 +436,18 @@
+ 
+   // NB: CERT_GetDERCertTrust returns SECFailure if no trust records were
+   // found, in which case the assumption is that the certificate inherits its
+-  // trust.
++  // trust. NSS 3.120 lacks CERT_GetDERCertTrust, so use a temporary
++  // certificate and the older CERT_GetCertTrust API.
+   SECItem certItem = UnsafeMapInputToSECItem(cert);
+   CERTCertTrust trust = {0, 0, 0};
+-  if (CERT_GetDERCertTrust(&certItem, &trust) != SECSuccess) {
++  CERTCertificate* tempCert = CERT_NewTempCertificate(
++      CERT_GetDefaultCertDB(), &certItem, nullptr, PR_FALSE, PR_TRUE);
++  if (!tempCert) {
++    return;
++  }
++  SECStatus trustRv = CERT_GetCertTrust(tempCert, &trust);
++  CERT_DestroyCertificate(tempCert);
++  if (trustRv != SECSuccess) {
+     return;
+   }
+ 
+--- a/security/manager/ssl/nsNSSCertificateDB.cpp
++++ b/security/manager/ssl/nsNSSCertificateDB.cpp
+@@ -776,9 +776,17 @@
+   SECItem certItem = {siBuffer, certDER.Elements(),
+                       static_cast<unsigned int>(certDER.Length())};
+   CERTCertTrust nsstrust;
+-  SECStatus srv = CERT_GetDERCertTrust(&certItem, &nsstrust);
++  // NSS 3.120 lacks CERT_GetDERCertTrust. Use a temporary certificate and
++  // the older CERT_GetCertTrust API to get the same trust record.
++  CERTCertificate* tempCert = CERT_NewTempCertificate(
++      CERT_GetDefaultCertDB(), &certItem, nullptr, PR_FALSE, PR_TRUE);
++  if (!tempCert) {
++    return NS_OK;
++  }
++  SECStatus srv = CERT_GetCertTrust(tempCert, &nsstrust);
++  CERT_DestroyCertificate(tempCert);
+   if (srv != SECSuccess) {
+-    // CERT_GetDERCertTrust returns SECFailure if given a temporary cert that
++    // CERT_GetCertTrust returns SECFailure if given a temporary cert that
+     // doesn't have any trust information yet. This isn't an error.
+     return NS_OK;
+   }

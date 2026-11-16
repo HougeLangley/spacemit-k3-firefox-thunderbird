@@ -1,0 +1,4 @@
+﻿AppArmor policy
+---------------
+
+The thunderbird package does not include any AppArmor profile anymore.

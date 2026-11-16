@@ -1,0 +1,5 @@
+Version: 5
+
+Source: https://download-origin.cdn.mozilla.net/pub/thunderbird/releases/([\d\.]+)esr/source/
+Matching-Pattern: thunderbird[\.-]([\d\.]+)esr.source\.tar\.xz
+Dversion-Mangle: s/esr(\.?\d+)?$//

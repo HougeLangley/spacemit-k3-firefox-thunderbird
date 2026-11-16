@@ -1,0 +1,50 @@
+ac_add_options --host=riscv64-linux-gnu
+ac_add_options --prefix=/usr
+ac_add_options --with-l10n-base=/mnt/k3work/firefox-k3/build/firefox-160.0/./l10n
+mk_add_options MOZ_OBJDIR=/mnt/k3work/firefox-k3/build/firefox-160.0/./obj-riscv64-linux-gnu
+ac_add_options --enable-release
+ac_add_options --disable-install-strip
+ac_add_options --disable-updater
+ac_add_options --enable-application=browser
+ac_add_options --with-distribution-id=com.ubuntu
+# K3 build: keep the initial build lean; debug info is not required for runtime.
+ac_add_options --disable-debug-symbols
+# SpacemiT K3: RVV + IME1 (xsmtvdot) + IME2 (xsmtvdotii), tuned for A100/X100.
+ac_add_options --enable-optimize="-O3 -march=rv64gcv_zba_zfh_zvfh_zicbop_xsmtvdot_xsmtvdotii -mtune=spacemit-a100"
+ac_add_options --enable-geckodriver
+# K3 initial packaging: test binaries are not shipped and add hours to the build.
+ac_add_options --disable-tests
+ac_add_options --disable-crashreporter
+ac_add_options --enable-official-branding
+ac_add_options --enable-update-channel=release
+ac_add_options --disable-debug
+#ac_add_options --with-ua-vendor=Ubuntu
+ac_add_options --without-wasm-sandboxed-libraries
+mk_add_options "export MOZ_BUILD_DATE=20261104181552"
+ac_add_options CC=clang-24
+ac_add_options CXX=clang++-24
+ac_add_options RUSTC=rustc-1.97
+ac_add_options CARGO=cargo-1.97
+ac_add_options CBINDGEN=/mnt/k3work/firefox-k3/build/firefox-160.0/./cbindgen/bin/cbindgen
+ac_add_options DUMP_SYMS=/mnt/k3work/firefox-k3/build/firefox-160.0/./dump_syms/bin/dump_syms
+ac_add_options --enable-rust-simd
+# Rust 1.97 uses LLVM 22: it knows XSMTVDot (IME1) but not XSMTVDotII (IME2).
+# IME2 in Rust crates requires a rustc built against LLVM 24.
+mk_add_options "export RUSTFLAGS=-C target-feature=+xsmtvdot"
+ac_add_options --enable-linker=lld-24
+# bindgen: custom clang-24 has no libclang; use the distro libclang-22 parser.
+ac_add_options --with-libclang-path=/usr/lib/llvm-22/lib
+ac_add_options --with-unsigned-addon-scopes=app
+# Re-enable addon sideloading to allow langpacks installed system-wide (LP: #1866059)
+ac_add_options --allow-addon-sideload
+# Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys .
+# Note: these are for Ubuntu use ONLY. For your own distribution,
+# please get your own set of keys.
+# Included with permission from Paweł Hajdan.
+# Feel free to contact Chris Coulson (chris.coulson@canonical.com) for more info.
+# Since firefox 66.0, the single API key was split into two (potentially)
+# separate keys, one for the Google Location Services, and one for the
+# Safe Browsing API. See https://bugzilla.mozilla.org/show_bug.cgi?id=1531176
+# for details. It is fine to use the same key file for both.
+ac_add_options --with-google-location-service-api-keyfile=/mnt/k3work/firefox-k3/build/firefox-160.0/debian/ga
+ac_add_options --with-google-safebrowsing-api-keyfile=/mnt/k3work/firefox-k3/build/firefox-160.0/debian/ga

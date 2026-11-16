@@ -1,0 +1,5 @@
+# remove the old Icedove configfile
+# command   conffile                            start-version   package
+rm_conffile /etc/icedove/pref/icedove.js        1:45.7.1-2~     icedove
+# remove the obsolete AppArmor profile
+rm_conffile /etc/apparmor.d/usr.bin.thunderbird 1:149.0.2-2~           thunderbird
