@@ -41,10 +41,11 @@ GitHub 项目：https://github.com/HougeLangley/spacemit-k3-firefox-thunderbird
 | PPA URL | https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa |
 | build record (old) | https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33970093 |
 | retry 1 (`~mt1k3.2`) | https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33975072 — `Failed to build` |
-| retry 2 (`~mt1k3.3`, full orig) | https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33975178 — `Currently building` |
+| retry 2 (`~mt1k3.3`, full orig) | https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33975178 — `Failed to build`; rustc-1.97 host a23 vs riscv64gc |
+| retry 3 (`~mt1k3.4`, rustc-1.91) | https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33976658 — `Currently building` |
 | 源码版本 | `160.0+build1-0ubuntu0.26.04.1~mt1k3.1` |
 | source 状态 | `Published`（源码已发布） |
-| riscv64 build | 旧 `33970093` 已 >39h；1.2 `33975072` 4 分钟失败无 log；1.3 `33975178` 正在构建 |
+| riscv64 build | 旧 `33970093` 已 >47h；1.2/1.3 失败（1.3 为 rustc host 不匹配）；1.4 `33976658` 正在构建 |
 | 签名 key | `2F96685F99925C8797DD521B308DCCA0A8D0D841`（Launchpad 已确认） |
 
 上传包（已签名、`dput` 成功、含 790 MB orig tar）：
@@ -55,7 +56,7 @@ PPA Phase 1 使用档案内 `clang-22 + rustc-1.91`（host `riscv64gc`，最后�
 Phase 2 若要把 IME2 放进 PPA，需要先在同一个 PPA 上传最小 `clang-24` 工具链源码包；
 Launchpad 预估 1–3 天构建，详见 `research/toolchain.md`。
 
-**目前还不能从 PPA 安装**：旧 build `33970093` 卡住 >39h；diff-only 重试 `33975072` 失败；带完整 orig 的 `33975178` 正在构建，尚无二进制。已创建每 2 小时检查的监控任务；若 24h 超时仍无结果，建议在 Launchpad 页面取消后重触发。等它变成 `Successfully built` 后：
+**目前还不能从 PPA 安装**：旧 build `33970093` 卡住 >47h；1.3 `33975178` 因 rustc-1.97 host a23 失败；已修 Build-Depends 为 rustc-1.91，1.4 `33976658` 正在构建，尚无二进制。已创建每 2 小时检查的监控任务；若 24h 超时仍无结果，建议在 Launchpad 页面取消后重触发。等它变成 `Successfully built` 后：
 ```bash
 sudo add-apt-repository ppa:mymathersname-gmail/ppa
 sudo apt update
