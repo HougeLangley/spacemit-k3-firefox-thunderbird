@@ -48,19 +48,17 @@ Interpretation:
 - `-march=...xsmtvdot_xsmtvdotii` only gives the compiler the ability to emit IME; the browser sources have no IME kernels, so no IME acceleration is actually used.
 - Real IME acceleration requires hand-written/integrated kernels; IME2 is A100-cluster-only on K3.
 
-## PPA monitor
+## PPA monitor — retry attempt
 
-- Source: `Published` (`160.0+build1-0ubuntu0.26.04.1~mt1k3.1`).
-- Build: `33970093`, `arch_tag=riscv64`.
-- State: **`Currently building`**.
-- Dispatched: `2026-11-14T21:45:57Z`; at this status point **39.13 hours** elapsed.
-- `datebuilt=None`, `build_log_url=None`.
-- Published binaries: **0**.
-- A recurring 2-hour monitor is active; no cancel/retry has been performed.
-- PPA install is not yet possible.
+- Old source: `160.0+build1-0ubuntu0.26.04.1~mt1k3.1`, build `33970093`; still `Currently building` after >39h, no log/datebuilt/binaries.
+- Retry 1: `~mt1k3.2` (diff-only), build `33975072`; **Failed to build** after 4 minutes, no build log URL.
+- Retry 2: `~mt1k3.3` (full orig source included), build **`33975178`**; **Currently building**, dispatched `2026-11-16T13:31:24Z`.
+- The old stuck build was not cancelled. No published Firefox binaries yet.
+- Recurring 2-hour monitor updated to check both `33975178` and `33970093`.
 
-Build URL:
-<https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33970093>
+Build URLs:
+- <https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33975178>
+- <https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33970093>
 
 ## Security notes
 
