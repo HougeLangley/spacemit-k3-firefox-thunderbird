@@ -70,11 +70,11 @@ Verification:
 
 ## PPA monitor
 
-Last checked: `2026-11-18T15:00:27Z`.
+Last checked: `2026-11-18T17:01:30Z`.
 
-- 1.4 `33976658`: `Currently building`, 41.79 h, no binary.
+- 1.4 `33976658`: `Currently building`, 43.80 h, no binary.
 - 1.5 `33984218` (source patch): **`Needs building`**, not started.
-- Old 1.1 `33970093`: `Currently building`, 89.24 h, no binary.
+- Old 1.1 `33970093`: `Currently building`, 91.26 h, no binary.
 - No published Firefox binaries yet.
 
 Build URLs:
@@ -164,4 +164,17 @@ Build URLs:
   remains `Currently building` at 41.30 h; old build `33970093` remains
   `Currently building` at 88.76 h. Published Firefox binaries: 0.
 - No build was cancelled, retried, or retransmitted; no token was printed.
+- Rating: intentionally not recorded.
+
+## Delivery record #5 — 2026-11-18T17:01Z (no rating)
+
+- PUA visible: `这次交付只保留可见 PUA 和可核对证据，不记录评分` and the
+  `[PUA-DIAGNOSIS]` line binding the current Launchpad query, atomic status
+  update, independent reread, uniqueness checks, and traceable local commit.
+- PPA check at `2026-11-18T17:01:30Z`: Firefox 1.5 build `33984218` remains
+  `Needs building` (not started; no binary or build log). Old build `33976658`
+  remains `Currently building` at 43.80 h; old build `33970093` remains
+  `Currently building` at 91.26 h. Published Firefox binaries: 0.
+- Delivery action: refreshed the PPA monitor and preserved this evidence; no
+  build was cancelled, retried, or retransmitted, and no token was printed.
 - Rating: intentionally not recorded.
