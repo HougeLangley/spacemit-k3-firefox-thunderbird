@@ -70,9 +70,11 @@ Verification:
 
 ## PPA monitor
 
-- 1.4 `33976658`: still `Currently building`, no binary.
-- 1.5 `33984218` (source patch): **`Needs building`**.
-- Old 1.1 `33970093`: still `Currently building`.
+Last checked: `2026-11-18T15:00:27Z`.
+
+- 1.4 `33976658`: `Currently building`, 41.79 h, no binary.
+- 1.5 `33984218` (source patch): **`Needs building`**, not started.
+- Old 1.1 `33970093`: `Currently building`, 89.24 h, no binary.
 - No published Firefox binaries yet.
 
 Build URLs:
