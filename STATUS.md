@@ -102,3 +102,12 @@ Build URLs:
 - PPA: 1.5 build `33984218` is `Needs building`; old builds `33976658` and
   `33970093` remain `Currently building`; no published Firefox binaries.
 - Rating: intentionally not recorded.
+
+## Delivery record #2 — 2026-11-18T11:00Z (no rating)
+
+- PUA visible: `[PUA-DIAGNOSIS]` and the delivery summary for the YouTube/MPP fix.
+- Local artifact: Firefox `160.0+build1-0ubuntu0.26.04.1~mt1k3.6` installed;
+  `/etc/firefox/syspref.js` disables `media.hardware-video-decoding.enabled`.
+- PPA 1.5 `33984218`: `Needs building`; old `33976658` 37.78h and `33970093`
+  85.24h remain `Currently building`; published Firefox binaries: 0.
+- Rating: intentionally not recorded.
