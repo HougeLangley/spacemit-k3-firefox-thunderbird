@@ -70,11 +70,12 @@ Verification:
 
 ## PPA monitor
 
-Last checked: `2026-11-18T17:01:30Z`.
+Last checked: `2026-11-18T19:00:24Z`.
 
-- 1.4 `33976658`: `Currently building`, 43.80 h, no binary.
+- 1.4 `33976658`: `Currently building`, 45.78 h, no binary.
 - 1.5 `33984218` (source patch): **`Needs building`**, not started.
-- Old 1.1 `33970093`: `Currently building`, 91.26 h, no binary.
+- Old 1.1 `33970093`: `Build for superseded Source`, 93.24 h; finished
+  `2026-11-18T17:57:24Z`; no published binary.
 - No published Firefox binaries yet.
 
 Build URLs:
@@ -175,6 +176,20 @@ Build URLs:
   `Needs building` (not started; no binary or build log). Old build `33976658`
   remains `Currently building` at 43.80 h; old build `33970093` remains
   `Currently building` at 91.26 h. Published Firefox binaries: 0.
+- Delivery action: refreshed the PPA monitor and preserved this evidence; no
+  build was cancelled, retried, or retransmitted, and no token was printed.
+- Rating: intentionally not recorded.
+
+## Delivery record #6 — 2026-11-18T19:00Z (no rating)
+
+- PUA visible: `可见 PUA 留痕、构建状态取证、不记录评分` and the
+  `[PUA-DIAGNOSIS]` line binding the 19:00 Launchpad query, atomic update,
+  independent reread, uniqueness checks, and traceable local commit.
+- PPA check at `2026-11-18T19:00:24Z`: Firefox 1.5 build `33984218` remains
+  `Needs building`; old build `33976658` remains `Currently building` at
+  45.78 h. Old 1.1 build `33970093` changed to `Build for superseded Source`
+  after 93.24 h and finished at `2026-11-18T17:57:24Z`; this is not reported
+  as a successful binary publication. Published Firefox binaries: 0.
 - Delivery action: refreshed the PPA monitor and preserved this evidence; no
   build was cancelled, retried, or retransmitted, and no token was printed.
 - Rating: intentionally not recorded.
