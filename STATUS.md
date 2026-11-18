@@ -48,13 +48,31 @@ Interpretation:
 - `-march=...xsmtvdot_xsmtvdotii` only gives the compiler the ability to emit IME; the browser sources have no IME kernels, so no IME acceleration is actually used.
 - Real IME acceleration requires hand-written/integrated kernels; IME2 is A100-cluster-only on K3.
 
-## PPA monitor — YouTube/MPP fix retry
+## YouTube MPP error fix — 2026-11-18
 
-- Old source `~mt1k3.1`, build `33970093`: still `Currently building`, no log/binaries.
-- 1.2 (`33975072`): failed; no log.
-- 1.3 (`33975178`): failed after 7.48h — `rustc-1.97` host `riscv64a23` vs required `riscv64gc`; fixed by adding `rustc-1.91`/`cargo-1.91` to Build-Depends.
-- 1.4 (`33976658`): still `Currently building`; no binary.
-- 1.5 (`33984218`): added `k3-v4l2-codec-filter.patch` so RISC-V does not route VP8/VP9/AV1 to the H.264/HEVC-only K3 V4L2/MPP decoder; state **Needs building**.
+Root cause: `libv4l2_linlonv5v7_codec.so` on K3 only implements H.264/HEVC,
+but Firefox maps VP8/VP9/AV1 to `vp8_v4l2m2m`/`vp9_v4l2m2m`/`av1_v4l2m2m`.
+YouTube's VP9/AV1 frames therefore hit the MPP decoder and produce
+`[MPP-ERROR] ... handleOutputBuffer ... error frame`.
+
+Fix:
+- `patches/k3-v4l2-codec-filter.patch`: in `FFmpegVideoDecoder.cpp`,
+  disable VP8/VP9/AV1 V4L2 M2M selection on RISC-V; H.264/HEVC keep hardware
+  decode, VP9/AV1 fall back to software.
+- Local `~mt1k3.6` deb also disables `media.hardware-video-decoding.enabled`
+  in `/etc/firefox/syspref.js` as a safe fallback, so the currently installed
+  binary cannot enter the MPP path.
+
+Verification:
+- Rebuilt `Unified_cpp_ffmpeg_ffmpeg*.o`: `vp8/vp9/av1_v4l2m2m` strings are
+  gone, `h264/hevc_v4l2m2m` remain.
+- Local 1.6 installed; `firefox --version` = 160.0; syspref present.
+
+## PPA monitor
+
+- 1.4 `33976658`: still `Currently building`, no binary.
+- 1.5 `33984218` (source patch): **`Needs building`**.
+- Old 1.1 `33970093`: still `Currently building`.
 - No published Firefox binaries yet.
 
 Build URLs:

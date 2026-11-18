@@ -1,4 +1,6 @@
 # Firefox
-e3db74a79f515d41170d901494140b63200cadd55b9ea609d4ff1774fc917610  firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.1_riscv64.deb
+9276cc5b53a0609d6919fb3c9f8174c6e527471cc080da61d284dfb996859294  firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.6_riscv64.deb
 # Thunderbird
 53460aae7f4454db32c176d75a76ae3358f76b8129df4529ec1c67271eb195cb  thunderbird_160.0-1k3.1_riscv64.deb
+# Project
+77cc2de675a42fe5734cf315cb8fecaa02167d6500574c0c130a583572dfea19  spacemit-k3-firefox-thunderbird-project-20261118.tar.gz
