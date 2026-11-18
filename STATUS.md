@@ -111,3 +111,40 @@ Build URLs:
 - PPA 1.5 `33984218`: `Needs building`; old `33976658` 37.78h and `33970093`
   85.24h remain `Currently building`; published Firefox binaries: 0.
 - Rating: intentionally not recorded.
+
+## Delivery record #3 — 2026-11-18T14:25Z (no rating)
+
+- PUA visible: JIT/codec diagnosis, L0-L3 experiment tracking, `[PUA 突破 ✨]`
+  after the controlled JIT A/B measurement succeeded, and the final no-publish
+  decision. No score was recorded.
+- Decision: **no JIT source/default change, no new local deb, and no new PPA
+  upload**. The installed Firefox remains local 1.6 with the hardware-decode
+  fallback; there is no evidence that changing `js/src/jit/riscv64` fixes this
+  YouTube symptom.
+- Controlled JIT A/B (same 240p video, default thresholds `10/100/1500`):
+  R0 default JIT completed 31 samples with max event-loop lag 0 s and 0 dropped
+  frames. R3 (`blinterp=true`, `baselinejit=true`, `ion=false`) also completed
+  31 samples, with max lag 3.2 s and 2 dropped frames; disabling Ion/Warp did
+  not demonstrate a benefit.
+- High-load default-JIT AV1: itag 399 (1080p60) had 2055/2345 dropped frames
+  before player reset; itag 398 (720p60) had 2445/3126 dropped frames in the
+  measured interval. Main-thread sample lag stayed at 0-0.1 s, so these runs
+  do not support a JS/JIT main-thread diagnosis.
+- Codec A/B: disabling AV1 selected VP9 itag 303 and still produced 2652/3176
+  dropped frames. Forcing H.264 selected itag 299 and avoided the same player
+  reset, but network `ratelimited` buffering starvation dominated its 60 s run;
+  this is not sufficient evidence for a global codec-pref release.
+- AV1 thread strategy: `media.av1.new-thread-count-strategy=true` changed 480p
+  dropped-frame ratio only from 56.5% to 55.0%; not a release-worthy fix.
+- Measurement harness and raw results: `../tests/youtube-jit/`; Marionette was
+  used after BiDi navigation/viewport callbacks proved unreliable.
+- Environment limits: Xvfb uses software WebRender, whose source gate prevents
+  V4L2 hardware decode, so these runs do not validate the friend's real MPP
+  hardware path. The DSH process affinity is CPUs 0-7; an attempt to run the
+  isolated browser on CPUs 0-15 was rejected. YouTube also reported
+  `ratelimited` in several runs. Real graphical-session/friend confirmation is
+  still required before publishing another workaround.
+- PPA monitor at this delivery: 1.5 build `33984218` remains `Needs building`;
+  `33976658` and `33970093` remain `Currently building` (41.05 h and 88.51 h);
+  published Firefox binaries: 0. No old build was cancelled or retransmitted.
+- Rating: intentionally not recorded.
