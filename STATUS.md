@@ -48,20 +48,18 @@ Interpretation:
 - `-march=...xsmtvdot_xsmtvdotii` only gives the compiler the ability to emit IME; the browser sources have no IME kernels, so no IME acceleration is actually used.
 - Real IME acceleration requires hand-written/integrated kernels; IME2 is A100-cluster-only on K3.
 
-## PPA monitor — retry attempts
+## PPA monitor — YouTube/MPP fix retry
 
-- Old source `~mt1k3.1`, build `33970093`: **Currently building** >47h, no log/datebuilt/binaries.
-- Retry 1 `~mt1k3.2` (diff-only), build `33975072`: **Failed to build**, no log.
-- Retry 2 `~mt1k3.3` (full orig), build `33975178`: **Failed to build** after 7.48h.
-  - Root cause: Build-Depends selected `/usr/bin/rustc-1.97`, whose host is `riscv64a23`; configure requires `riscv64gc`.
-  - Fix: add `rustc-1.91`/`cargo-1.91` as the first Build-Depends alternatives; `RUSTC_VERSIONS` already prefers 1.91.
-- Retry 3 `~mt1k3.4`, build **`33976658`**: **Currently building**, dispatched `2026-11-16T21:13:18Z`.
-- Old stuck build not cancelled. No published Firefox binaries yet.
-- Recurring 2-hour monitor now checks `33976658`, `33975178`, and `33970093`.
+- Old source `~mt1k3.1`, build `33970093`: still `Currently building`, no log/binaries.
+- 1.2 (`33975072`): failed; no log.
+- 1.3 (`33975178`): failed after 7.48h — `rustc-1.97` host `riscv64a23` vs required `riscv64gc`; fixed by adding `rustc-1.91`/`cargo-1.91` to Build-Depends.
+- 1.4 (`33976658`): still `Currently building`; no binary.
+- 1.5 (`33984218`): added `k3-v4l2-codec-filter.patch` so RISC-V does not route VP8/VP9/AV1 to the H.264/HEVC-only K3 V4L2/MPP decoder; state **Needs building**.
+- No published Firefox binaries yet.
 
 Build URLs:
+- <https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33984218>
 - <https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33976658>
-- <https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33975178>
 - <https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33970093>
 
 ## Security notes

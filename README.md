@@ -43,6 +43,7 @@ GitHub 项目：https://github.com/HougeLangley/spacemit-k3-firefox-thunderbird
 | retry 1 (`~mt1k3.2`) | https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33975072 — `Failed to build` |
 | retry 2 (`~mt1k3.3`, full orig) | https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33975178 — `Failed to build`; rustc-1.97 host a23 vs riscv64gc |
 | retry 3 (`~mt1k3.4`, rustc-1.91) | https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33976658 — `Currently building` |
+| retry 4 (`~mt1k3.5`, YouTube/MPP fix) | https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33984218 — `Needs building` |
 | 源码版本 | `160.0+build1-0ubuntu0.26.04.1~mt1k3.1` |
 | source 状态 | `Published`（源码已发布） |
 | riscv64 build | 旧 `33970093` 已 >47h；1.2/1.3 失败（1.3 为 rustc host 不匹配）；1.4 `33976658` 正在构建 |

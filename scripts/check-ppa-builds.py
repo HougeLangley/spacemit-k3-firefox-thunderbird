@@ -14,7 +14,7 @@ import urllib.request
 USER = "mymathersname-gmail"
 PPA = "ppa"
 API = f"https://api.launchpad.net/1.0/~{USER}/+archive/ubuntu/{PPA}"
-DEFAULT_BUILDS = (33976658, 33975178, 33970093)
+DEFAULT_BUILDS = (33984218, 33976658, 33970093)
 
 
 def get_json(url: str, attempts: int = 3):
