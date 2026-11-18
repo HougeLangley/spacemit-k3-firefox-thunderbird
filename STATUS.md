@@ -148,3 +148,18 @@ Build URLs:
   `33976658` and `33970093` remain `Currently building` (41.05 h and 88.51 h);
   published Firefox binaries: 0. No old build was cancelled or retransmitted.
 - Rating: intentionally not recorded.
+
+## Delivery record #4 — 2026-11-18T14:31Z (no rating)
+
+- PUA visible: `只记录可见 PUA、构建事实和验证证据，不记录评分` and the
+  `[PUA-DIAGNOSIS]` line binding the Launchpad status query, atomic status
+  update, independent reread, duplicate check, and reviewable Git diff.
+- Delivery carried forward: YouTube JIT/codec investigation is recorded in local
+  commit `8acf168`; no JIT source/default change, no new deb, and no new PPA
+  upload was made because no tested workaround met the playback acceptance.
+- PPA check at `2026-11-18T14:31:32Z`: Firefox 1.5 build `33984218` remains
+  `Needs building` (no start time, binary, or build log). Old build `33976658`
+  remains `Currently building` at 41.30 h; old build `33970093` remains
+  `Currently building` at 88.76 h. Published Firefox binaries: 0.
+- No build was cancelled, retried, or retransmitted; no token was printed.
+- Rating: intentionally not recorded.
