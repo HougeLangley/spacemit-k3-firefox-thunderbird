@@ -70,11 +70,11 @@ Verification:
 
 ## PPA monitor
 
-Last checked: `2026-11-18T23:00:21Z`.
+Last checked: `2026-11-19T12:21:32Z`.
 
-- 1.4 `33976658`: `Currently building`, 49.78 h, no binary.
+- 1.4 `33976658`: `Currently building`, 63.14 h, no binary.
 - 1.5 `33984218` (source patch): **`Needs building`**, not started.
-- Old 1.1 `33970093`: `Build for superseded Source`, monitor elapsed 97.24 h;
+- Old 1.1 `33970093`: `Build for superseded Source`, monitor elapsed 110.59 h;
   finished `2026-11-18T17:57:24Z`; no published binary.
 - No published Firefox binaries yet.
 
@@ -241,4 +241,19 @@ Build URLs:
 - No new package or PPA upload was created. The user-authorized PAT was passed
   only to the publication subprocess and was not printed or stored in the
   project. Device authorization was cancelled after the user chose the PAT.
+- Rating: intentionally not recorded.
+
+## Delivery record #10 — 2026-11-19T12:21Z (no rating)
+
+- PUA visible: `可见 PUA 留痕，不记录评分` and the `[PUA-DIAGNOSIS]` line
+  requiring the delayed scheduled batch to use current API facts, followed by
+  atomic update, independent reread, uniqueness checks, and a traceable commit.
+- PPA check at `2026-11-19T12:21:32Z`: Firefox 1.5 build `33984218` remains
+  `Needs building`; old build `33976658` remains `Currently building` at
+  63.14 h. Old 1.1 build `33970093` remains `Build for superseded Source`,
+  with monitor elapsed 110.59 h and finished timestamp `2026-11-18T17:57:24Z`.
+  Published Firefox binaries: 0.
+- GitHub pre-release delivery remains separately verified in record #9; no new
+  GitHub asset, package, or PPA upload was created in this monitoring batch.
+- No build was cancelled, retried, or retransmitted; no token was printed.
 - Rating: intentionally not recorded.
