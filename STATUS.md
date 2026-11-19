@@ -228,14 +228,17 @@ Build URLs:
   requiring the existing GitHub release, asset digest, authentication, and
   prerelease acceptance to be checked before any publication claim.
 - GitHub finding: release `v160.0-k3-20261116` (release id `447035174`) already
-  contains Firefox 1.6, Thunderbird `1:160.0-1k3.1`, SHA256SUMS, and the project
-  archive, but `prerelease=false`. The remote Firefox asset size 86,866,304
-  bytes and SHA256 `9276cc5b53a0609d6919fb3c9f8174c6e527471cc080da61d284dfb996859294`
-  exactly match the installed local 1.6 deb.
-- Release preparation: `RELEASE_NOTES.md` now defines the prerelease scope and
-  known YouTube/PPA/IME limitations. The smallest intended publication action
-  is to mark the existing release as prerelease and update its notes, avoiding
-  duplicate assets. **No GitHub mutation has occurred**: this host has no
-  authenticated `gh` session and no GitHub token in the environment.
-- No new package or PPA upload was created. No credential was printed or stored.
+  contained Firefox 1.6, Thunderbird `1:160.0-1k3.1`, SHA256SUMS, and the project
+  archive; it initially had `prerelease=false`. The remote Firefox asset size
+  86,866,304 bytes and SHA256
+  `9276cc5b53a0609d6919fb3c9f8174c6e527471cc080da61d284dfb996859294`
+  exactly matched the installed local 1.6 deb.
+- Release publication: the existing release was marked **pre-release** and its
+  title/body were updated from `RELEASE_NOTES.md`; public API verification at
+  `2026-11-19T12:17:54Z` returned `prerelease=true`, the new pre-release title,
+  the complete known YouTube/PPA/IME limitations, and all four original assets.
+  No duplicate asset was uploaded.
+- No new package or PPA upload was created. The user-authorized PAT was passed
+  only to the publication subprocess and was not printed or stored in the
+  project. Device authorization was cancelled after the user chose the PAT.
 - Rating: intentionally not recorded.
