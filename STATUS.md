@@ -271,3 +271,13 @@ Build URLs:
 - No build was cancelled, retried, or retransmitted; no new GitHub asset,
   package, or PPA upload was created; no token was printed.
 - Rating: intentionally not recorded.
+
+## Delivery record #12 — 2026-11-19T12:34Z (no rating)
+
+- PUA visible: the user-facing pre-release address and `[PUA-DIAGNOSIS]` line
+  binding this delivery to one atomic append, independent reread, uniqueness
+  checks, and a traceable local commit. No score was requested or recorded.
+- Delivered address: <https://github.com/HougeLangley/spacemit-k3-firefox-thunderbird/releases/tag/v160.0-k3-20261116>.
+- Public API verification from record #9 remains `prerelease=true`; this batch
+  only delivered the address and did not mutate the release or upload assets.
+- Rating: intentionally not recorded.
