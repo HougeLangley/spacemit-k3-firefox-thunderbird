@@ -221,3 +221,21 @@ Build URLs:
 - Delivery action: refreshed the PPA monitor and preserved this evidence; no
   build was cancelled, retried, or retransmitted, and no token was printed.
 - Rating: intentionally not recorded.
+
+## Delivery record #9 — 2026-11-19T00:08Z (no rating)
+
+- PUA visible: the Alibaba-style release boundary and `[PUA-DIAGNOSIS]` line
+  requiring the existing GitHub release, asset digest, authentication, and
+  prerelease acceptance to be checked before any publication claim.
+- GitHub finding: release `v160.0-k3-20261116` (release id `447035174`) already
+  contains Firefox 1.6, Thunderbird `1:160.0-1k3.1`, SHA256SUMS, and the project
+  archive, but `prerelease=false`. The remote Firefox asset size 86,866,304
+  bytes and SHA256 `9276cc5b53a0609d6919fb3c9f8174c6e527471cc080da61d284dfb996859294`
+  exactly match the installed local 1.6 deb.
+- Release preparation: `RELEASE_NOTES.md` now defines the prerelease scope and
+  known YouTube/PPA/IME limitations. The smallest intended publication action
+  is to mark the existing release as prerelease and update its notes, avoiding
+  duplicate assets. **No GitHub mutation has occurred**: this host has no
+  authenticated `gh` session and no GitHub token in the environment.
+- No new package or PPA upload was created. No credential was printed or stored.
+- Rating: intentionally not recorded.
