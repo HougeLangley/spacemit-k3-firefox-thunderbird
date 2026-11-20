@@ -104,21 +104,25 @@ All three source uploads were signed with the newly registered key
 fingerprint for `~mymathersname-gmail`. Every `.dsc` and `.changes` signature
 was verified locally before `dput`. FTP success is not treated as publication.
 
-Latest independently fetched state at `2026-11-20T17:41:46Z`:
+Latest independently fetched state at `2026-11-20T23:14:21Z`:
 
 | Source | Upload/build evidence | Current state |
 |---|---|---|
-| MPP k3.8 | sourcepub `18971839`; build `33997821` | source Pending; riscv64 Needs building |
-| FFmpeg k3.2 | sourcepub `18971840`; build `33997822` | source Pending; riscv64 Needs building |
-| Firefox k3.9 | dput completed | new source/build record not yet visible at this read |
+| MPP k3.8 | sourcepub `18971839`; build `33997821` | source Published; riscv64 Needs building |
+| FFmpeg k3.2 | sourcepub `18971840`; build `33997822` | source Published; riscv64 Needs building |
+| Firefox k3.9 | sourcepub `18971844`; build `33997839` | source Published; riscv64 Needs building |
 
 Build links:
-<https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33997821>
+<https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33997821>,
+<https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33997822>,
 and
-<https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33997822>.
-No new PPA binary is claimed to be Published. The Launchpad monitor continues
-to query exact new versions and primary binary publications; old Firefox build
-records are not evidence for this release.
+<https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33997839>.
+No new PPA binary is claimed to be Published. At the same remote read, obsolete
+Firefox k3.4 build `33976658` was still `Currently building` on
+`bos03-riscv64-023` after its 2026-11-16 dispatch, and obsolete k3.5 build
+`33984218` was still queued. The new builds have not been dispatched. The
+Launchpad monitor continues to query exact new versions and primary binary
+publications; old Firefox build records are not evidence for this release.
 
 ## Security and scope
 
