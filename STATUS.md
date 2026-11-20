@@ -8,7 +8,8 @@ The hardware-decoding candidate is MPP `0.1.15+k3.8`, FFmpeg
 SpacemiT K3. Firefox k3.8 was rejected after its virtual-Wayland FFVPX failure;
 its artifacts and evidence are quarantined and are not release inputs.
 
-Planned new tag: `v160.0-k3.9-20261120`.
+Release tag: `v160.0-k3.9-20261120` at commit
+`6e8548fe57e632b1277c8bc91fec9bcbf4db3145`.
 
 | Product | Version | Primary SHA256 |
 |---|---|---|
@@ -82,20 +83,42 @@ Accordingly, a zero-error full source-lintian result is **not** claimed.
 
 ## Remote publication
 
-No new remote GitHub tag, pre-release, signed PPA upload, or Launchpad build is
-asserted by this document. Those states require independent remote reads.
+### GitHub — independently verified
 
-Current local blockers at the last authentication check:
+- `main` and `v160.0-k3.9-20261120` resolve to commit
+  `6e8548fe57e632b1277c8bc91fec9bcbf4db3145`.
+- New pre-release:
+  <https://github.com/HougeLangley/spacemit-k3-firefox-thunderbird/releases/tag/v160.0-k3.9-20261120>
+- The release contains eleven binary assets plus `SHA256SUMS`. All twelve files
+  were downloaded again from GitHub; all eleven checksums passed, and the
+  downloaded Firefox deb's internal version was read back as k3.9.
+- GitHub normalized `~` to `.` in the Firefox download filename. The attached
+  remote `SHA256SUMS` uses the actual download names; the package version and
+  SHA-256 are unchanged. The build-host/source-tag manifest retains the
+  original Debian filename.
 
-- `gh auth status`: not logged in;
-- GitHub SSH: publickey permission denied;
-- one local GPG secret key exists, but successful signing unlock has not yet
-  been observed.
+### Launchpad — uploaded, builds/publication still in progress
 
-The PPA target is `ppa:mymathersname-gmail/ppa`. Final source packages to sign
-and upload, in dependency order, are MPP k3.8, FFmpeg k3.2, then Firefox k3.9.
-Old build records and rejected local packages must not be presented as this
-new release.
+All three source uploads were signed with the newly registered key
+`C4C81FA09FBEFA879F6E21A3444C383074940157`; Launchpad's API lists that
+fingerprint for `~mymathersname-gmail`. Every `.dsc` and `.changes` signature
+was verified locally before `dput`. FTP success is not treated as publication.
+
+Latest independently fetched state at `2026-11-20T17:41:46Z`:
+
+| Source | Upload/build evidence | Current state |
+|---|---|---|
+| MPP k3.8 | sourcepub `18971839`; build `33997821` | source Pending; riscv64 Needs building |
+| FFmpeg k3.2 | sourcepub `18971840`; build `33997822` | source Pending; riscv64 Needs building |
+| Firefox k3.9 | dput completed | new source/build record not yet visible at this read |
+
+Build links:
+<https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33997821>
+and
+<https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33997822>.
+No new PPA binary is claimed to be Published. The Launchpad monitor continues
+to query exact new versions and primary binary publications; old Firefox build
+records are not evidence for this release.
 
 ## Security and scope
 

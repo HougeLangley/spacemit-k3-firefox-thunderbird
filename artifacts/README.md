@@ -5,6 +5,10 @@
 FFmpeg k3.2 runtime/CLI packages, and the unchanged Thunderbird k3.1
 compatibility package. Debug symbols, development packages, locale packages,
 source archives, rejected candidates, and diagnostic objects are excluded.
+This source-tag/build-host manifest retains the original Debian filenames.
+GitHub normalized `~` to `.` in the Firefox download filename; the separate
+`SHA256SUMS` attached to the GitHub release uses the actual remote filenames,
+with identical package bytes and hashes.
 
 `validation/` contains thirteen JSON manifests copied from the accepted local
 runs or the source-lintian origin audit, plus the raw binary/source lintian

@@ -96,7 +96,9 @@ presentation dropped frames 不被改写成 decoder frame loss；native framehas
 ## 安装与权限
 
 发布资产的 SHA-256 位于 `artifacts/SHA256SUMS`，安装前先执行
-`sha256sum -c SHA256SUMS`。本地包可用 `apt install ./<package>.deb` 安装；
+`sha256sum -c SHA256SUMS`。GitHub 会把 Firefox 下载文件名中的 `~` 规范化为
+`.`；release 附带的远端 `SHA256SUMS` 已使用实际下载名，deb 内部版本与哈希不变。
+本地包可用 `apt install ./<package>.deb` 安装；
 FFmpeg 运行库应使用同一 k3.2 构建集合。PPA 目标是
 `ppa:mymathersname-gmail/ppa`，是否能安装必须以 Launchpad 新版本的实际
 `Published` 状态为准，不能由本地上传命令推断。

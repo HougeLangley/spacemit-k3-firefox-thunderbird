@@ -62,6 +62,13 @@ warnings for one upstream gzip test file; no overrides were added and a clean
 source-lintian result is not claimed. See `STATUS.md` and
 `artifacts/validation/firefox-source-lintian-origin.json` for the raw scope.
 
+## GitHub download filename
+
+GitHub normalized `~` to `.` in the Firefox **download filename**. The attached
+`SHA256SUMS` uses the actual remote filenames; the Firefox SHA-256 and the
+package's internal Debian version are unchanged. Verify the installed version
+with `dpkg-query` rather than inferring it from the download filename.
+
 ## Installation notes
 
 Install matching MPP, FFmpeg runtime, and Firefox packages together. Do not mix
