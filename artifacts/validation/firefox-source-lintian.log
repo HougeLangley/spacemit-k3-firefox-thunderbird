@@ -1,0 +1,149 @@
+Warning in processable /mnt/k3work/firefox-k3/release/firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.9.dsc: Can't open '/tmp/lintian-pool-irtYmj9Sqm/firefox/firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.9_source/orig/firefox-160.0+build1/devtools/client/styleeditor/test/simple.css.gz' for reading: 'No such file or directory' at /usr/share/lintian/bin/../lib/Lintian/Index/Item.pm line 336
+	Lintian::Index::Item::open(GLOB(0x2b5396ac18), "<", "/tmp/lintian-pool-irtYmj9Sqm/firefox/firefox_160.0+build1-0ub"...) called at /usr/share/lintian/bin/../lib/Lintian/Index/Item.pm line 336
+	Lintian::Index::Item::magic(Lintian::Index::Item=HASH(0x2bd15350a0), 9) called at /usr/share/lintian/bin/../lib/Lintian/Index/FileTypes.pm line 145
+	Lintian::Index::FileTypes::adjust_type(Lintian::Index=HASH(0x2b54a396d0), "firefox-160.0+build1/devtools/client/styleeditor/test/simple."..., "cannot open `firefox-160.0+build1/devtools/client/styleeditor"...) called at /usr/share/lintian/bin/../lib/Lintian/Index/FileTypes.pm line 114
+	Lintian::Index::FileTypes::__ANON__("firefox-160.0+build1/.agents/skills/README.md\x{0}cannot open `fi"..., "", 0, "firefox-160.0+build1/.agents/skills/README.md", "firefox-160.0+build1/.agents/skills/accessibility-frontend-re"..., "firefox-160.0+build1/.agents/skills/accessibility-frontend-re"..., "firefox-160.0+build1/.agents/skills/android-new-module/SKILL.md", "firefox-160.0+build1/.agents/skills/android/SKILL.md", ...) called at /usr/share/lintian/bin/../lib/Lintian/IPC/Run3.pm line 116
+	Lintian::IPC::Run3::xargs(ARRAY(0x2af12f9228), ARRAY(0x2af1313578), CODE(0x2bdf862750)) called at /usr/share/lintian/bin/../lib/Lintian/Index/FileTypes.pm line 119
+	Lintian::Index::FileTypes::add_file_types(Lintian::Index=HASH(0x2b54a396d0)) called at /usr/share/lintian/bin/../lib/Lintian/Index.pm line 563
+	Lintian::Index::load(Lintian::Index=HASH(0x2b54a396d0)) called at /usr/share/lintian/bin/../lib/Lintian/Index.pm line 353
+	Lintian::Index::create_from_piped_tar(Lintian::Index=HASH(0x2b54a396d0), ARRAY(0x2af1ce1680)) called at /usr/share/lintian/bin/../lib/Lintian/Processable/Source/Orig.pm line 116
+	Lintian::Processable::Source::Orig::__ANON__(Lintian::Processable::Source=HASH(0x2af1d25e88)) called at (eval 112) line 22
+	Lintian::Processable::Source::Orig::orig(Lintian::Processable::Source=HASH(0x2af1d25e88)) called at /usr/share/lintian/lib/Lintian/Check/Debian/Copyright/Dep5.pm line 431
+	Lintian::Check::Debian::Copyright::Dep5::check_dep5_copyright(Lintian::Check::Debian::Copyright::Dep5=HASH(0x2b54f19e98), Lintian::Index::Item=HASH(0x2afeb5d2c8)) called at /usr/share/lintian/lib/Lintian/Check/Debian/Copyright/Dep5.pm line 84
+	Lintian::Check::Debian::Copyright::Dep5::source(Lintian::Check::Debian::Copyright::Dep5=HASH(0x2b54f19e98)) called at /usr/share/lintian/bin/../lib/Lintian/Check.pm line 142
+	Lintian::Check::run(Lintian::Check::Debian::Copyright::Dep5=HASH(0x2b54f19e98)) called at /usr/share/lintian/bin/../lib/Lintian/Group.pm line 276
+	eval {...} called at /usr/share/lintian/bin/../lib/Lintian/Group.pm line 279
+	Lintian::Group::process(Lintian::Group=HASH(0x2af0853d50), HASH(0x2af0d2aa60), HASH(0x2af33dee48)) called at /usr/share/lintian/bin/../lib/Lintian/Pool.pm line 171
+	Lintian::Pool::process(Lintian::Pool=HASH(0x2af07aac70), Lintian::Profile=HASH(0x2af1d3cf40), SCALAR(0x2af33fdda8), HASH(0x2af33dee48)) called at /usr/bin/lintian line 757
+warning: cannot run debian/copyright/dep5 check on package source:firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.9
+skipping check of source:firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.9
+Warning in processable /mnt/k3work/firefox-k3/release/firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.9.dsc: Can't open '/tmp/lintian-pool-irtYmj9Sqm/firefox/firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.9_source/orig/firefox-160.0+build1/devtools/client/styleeditor/test/simple.css.gz' for reading: 'No such file or directory' at /usr/share/lintian/bin/../lib/Lintian/Index/Item.pm line 336
+	Lintian::Index::Item::open(GLOB(0x2bdec775c0), "<", "/tmp/lintian-pool-irtYmj9Sqm/firefox/firefox_160.0+build1-0ub"...) called at /usr/share/lintian/bin/../lib/Lintian/Index/Item.pm line 336
+	Lintian::Index::Item::magic(Lintian::Index::Item=HASH(0x2c38238be8), 9) called at /usr/share/lintian/bin/../lib/Lintian/Index/FileTypes.pm line 145
+	Lintian::Index::FileTypes::adjust_type(Lintian::Index=HASH(0x2b5416a230), "firefox-160.0+build1/devtools/client/styleeditor/test/simple."..., "cannot open `firefox-160.0+build1/devtools/client/styleeditor"...) called at /usr/share/lintian/bin/../lib/Lintian/Index/FileTypes.pm line 114
+	Lintian::Index::FileTypes::__ANON__("firefox-160.0+build1/.agents/skills/README.md\x{0}cannot open `fi"..., "", 0, "firefox-160.0+build1/.agents/skills/README.md", "firefox-160.0+build1/.agents/skills/accessibility-frontend-re"..., "firefox-160.0+build1/.agents/skills/accessibility-frontend-re"..., "firefox-160.0+build1/.agents/skills/android-new-module/SKILL.md", "firefox-160.0+build1/.agents/skills/android/SKILL.md", ...) called at /usr/share/lintian/bin/../lib/Lintian/IPC/Run3.pm line 116
+	Lintian::IPC::Run3::xargs(ARRAY(0x2bdf862888), ARRAY(0x2bd4bf0ff0), CODE(0x2c462694e0)) called at /usr/share/lintian/bin/../lib/Lintian/Index/FileTypes.pm line 119
+	Lintian::Index::FileTypes::add_file_types(Lintian::Index=HASH(0x2b5416a230)) called at /usr/share/lintian/bin/../lib/Lintian/Index.pm line 563
+	Lintian::Index::load(Lintian::Index=HASH(0x2b5416a230)) called at /usr/share/lintian/bin/../lib/Lintian/Index.pm line 353
+	Lintian::Index::create_from_piped_tar(Lintian::Index=HASH(0x2b5416a230), ARRAY(0x2b543b0db0)) called at /usr/share/lintian/bin/../lib/Lintian/Processable/Source/Orig.pm line 116
+	Lintian::Processable::Source::Orig::__ANON__(Lintian::Processable::Source=HASH(0x2af1d25e88)) called at (eval 112) line 22
+	Lintian::Processable::Source::Orig::orig(Lintian::Processable::Source=HASH(0x2af1d25e88)) called at /usr/share/lintian/lib/Lintian/Check/Files/Artifact.pm line 88
+	Lintian::Check::Files::Artifact::source(Lintian::Check::Files::Artifact=HASH(0x2b540f0ca0)) called at /usr/share/lintian/bin/../lib/Lintian/Check.pm line 142
+	Lintian::Check::run(Lintian::Check::Files::Artifact=HASH(0x2b540f0ca0)) called at /usr/share/lintian/bin/../lib/Lintian/Group.pm line 276
+	eval {...} called at /usr/share/lintian/bin/../lib/Lintian/Group.pm line 279
+	Lintian::Group::process(Lintian::Group=HASH(0x2af0853d50), HASH(0x2af0d2aa60), HASH(0x2af33dee48)) called at /usr/share/lintian/bin/../lib/Lintian/Pool.pm line 171
+	Lintian::Pool::process(Lintian::Pool=HASH(0x2af07aac70), Lintian::Profile=HASH(0x2af1d3cf40), SCALAR(0x2af33fdda8), HASH(0x2af33dee48)) called at /usr/bin/lintian line 757
+warning: cannot run files/artifact check on package source:firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.9
+skipping check of source:firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.9
+Warning in processable /mnt/k3work/firefox-k3/release/firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.9.dsc: Can't open '/tmp/lintian-pool-irtYmj9Sqm/firefox/firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.9_source/orig/firefox-160.0+build1/devtools/client/styleeditor/test/simple.css.gz' for reading: 'No such file or directory' at /usr/share/lintian/bin/../lib/Lintian/Index/Item.pm line 336
+	Lintian::Index::Item::open(GLOB(0x2bdec77578), "<", "/tmp/lintian-pool-irtYmj9Sqm/firefox/firefox_160.0+build1-0ub"...) called at /usr/share/lintian/bin/../lib/Lintian/Index/Item.pm line 336
+	Lintian::Index::Item::magic(Lintian::Index::Item=HASH(0x2c90957998), 9) called at /usr/share/lintian/bin/../lib/Lintian/Index/FileTypes.pm line 145
+	Lintian::Index::FileTypes::adjust_type(Lintian::Index=HASH(0x2c455c1430), "firefox-160.0+build1/devtools/client/styleeditor/test/simple."..., "cannot open `firefox-160.0+build1/devtools/client/styleeditor"...) called at /usr/share/lintian/bin/../lib/Lintian/Index/FileTypes.pm line 114
+	Lintian::Index::FileTypes::__ANON__("firefox-160.0+build1/.agents/skills/README.md\x{0}cannot open `fi"..., "", 0, "firefox-160.0+build1/.agents/skills/README.md", "firefox-160.0+build1/.agents/skills/accessibility-frontend-re"..., "firefox-160.0+build1/.agents/skills/accessibility-frontend-re"..., "firefox-160.0+build1/.agents/skills/android-new-module/SKILL.md", "firefox-160.0+build1/.agents/skills/android/SKILL.md", ...) called at /usr/share/lintian/bin/../lib/Lintian/IPC/Run3.pm line 116
+	Lintian::IPC::Run3::xargs(ARRAY(0x2c46269618), ARRAY(0x2c3b610048), CODE(0x2c9e98e558)) called at /usr/share/lintian/bin/../lib/Lintian/Index/FileTypes.pm line 119
+	Lintian::Index::FileTypes::add_file_types(Lintian::Index=HASH(0x2c455c1430)) called at /usr/share/lintian/bin/../lib/Lintian/Index.pm line 563
+	Lintian::Index::load(Lintian::Index=HASH(0x2c455c1430)) called at /usr/share/lintian/bin/../lib/Lintian/Index.pm line 353
+	Lintian::Index::create_from_piped_tar(Lintian::Index=HASH(0x2c455c1430), ARRAY(0x2b54f926e8)) called at /usr/share/lintian/bin/../lib/Lintian/Processable/Source/Orig.pm line 116
+	Lintian::Processable::Source::Orig::__ANON__(Lintian::Processable::Source=HASH(0x2af1d25e88)) called at (eval 112) line 22
+	Lintian::Processable::Source::Orig::orig(Lintian::Processable::Source=HASH(0x2af1d25e88)) called at /usr/share/lintian/lib/Lintian/Check/Files/Names.pm line 129
+	Lintian::Check::Files::Names::source(Lintian::Check::Files::Names=HASH(0x2c455bec90)) called at /usr/share/lintian/bin/../lib/Lintian/Check.pm line 142
+	Lintian::Check::run(Lintian::Check::Files::Names=HASH(0x2c455bec90)) called at /usr/share/lintian/bin/../lib/Lintian/Group.pm line 276
+	eval {...} called at /usr/share/lintian/bin/../lib/Lintian/Group.pm line 279
+	Lintian::Group::process(Lintian::Group=HASH(0x2af0853d50), HASH(0x2af0d2aa60), HASH(0x2af33dee48)) called at /usr/share/lintian/bin/../lib/Lintian/Pool.pm line 171
+	Lintian::Pool::process(Lintian::Pool=HASH(0x2af07aac70), Lintian::Profile=HASH(0x2af1d3cf40), SCALAR(0x2af33fdda8), HASH(0x2af33dee48)) called at /usr/bin/lintian line 757
+warning: cannot run files/names check on package source:firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.9
+skipping check of source:firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.9
+Warning in processable /mnt/k3work/firefox-k3/release/firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.9.dsc: Can't open '/tmp/lintian-pool-irtYmj9Sqm/firefox/firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.9_source/orig/firefox-160.0+build1/devtools/client/styleeditor/test/simple.css.gz' for reading: 'No such file or directory' at /usr/share/lintian/bin/../lib/Lintian/Index/Item.pm line 336
+	Lintian::Index::Item::open(GLOB(0x2c457f4e38), "<", "/tmp/lintian-pool-irtYmj9Sqm/firefox/firefox_160.0+build1-0ub"...) called at /usr/share/lintian/bin/../lib/Lintian/Index/Item.pm line 336
+	Lintian::Index::Item::magic(Lintian::Index::Item=HASH(0x2cf599cbb0), 9) called at /usr/share/lintian/bin/../lib/Lintian/Index/FileTypes.pm line 145
+	Lintian::Index::FileTypes::adjust_type(Lintian::Index=HASH(0x2b549227b8), "firefox-160.0+build1/devtools/client/styleeditor/test/simple."..., "cannot open `firefox-160.0+build1/devtools/client/styleeditor"...) called at /usr/share/lintian/bin/../lib/Lintian/Index/FileTypes.pm line 114
+	Lintian::Index::FileTypes::__ANON__("firefox-160.0+build1/.agents/skills/README.md\x{0}cannot open `fi"..., "", 0, "firefox-160.0+build1/.agents/skills/README.md", "firefox-160.0+build1/.agents/skills/accessibility-frontend-re"..., "firefox-160.0+build1/.agents/skills/accessibility-frontend-re"..., "firefox-160.0+build1/.agents/skills/android-new-module/SKILL.md", "firefox-160.0+build1/.agents/skills/android/SKILL.md", ...) called at /usr/share/lintian/bin/../lib/Lintian/IPC/Run3.pm line 116
+	Lintian::IPC::Run3::xargs(ARRAY(0x2c9e98e690), ARRAY(0x2bdf137068), CODE(0x2d039eea18)) called at /usr/share/lintian/bin/../lib/Lintian/Index/FileTypes.pm line 119
+	Lintian::Index::FileTypes::add_file_types(Lintian::Index=HASH(0x2b549227b8)) called at /usr/share/lintian/bin/../lib/Lintian/Index.pm line 563
+	Lintian::Index::load(Lintian::Index=HASH(0x2b549227b8)) called at /usr/share/lintian/bin/../lib/Lintian/Index.pm line 353
+	Lintian::Index::create_from_piped_tar(Lintian::Index=HASH(0x2b549227b8), ARRAY(0x2c455c56a8)) called at /usr/share/lintian/bin/../lib/Lintian/Processable/Source/Orig.pm line 116
+	Lintian::Processable::Source::Orig::__ANON__(Lintian::Processable::Source=HASH(0x2af1d25e88)) called at (eval 112) line 22
+	Lintian::Processable::Source::Orig::orig(Lintian::Processable::Source=HASH(0x2af1d25e88)) called at /usr/share/lintian/lib/Lintian/Check/Origtar.pm line 41
+	Lintian::Check::Origtar::source(Lintian::Check::Origtar=HASH(0x2b54ad6670)) called at /usr/share/lintian/bin/../lib/Lintian/Check.pm line 142
+	Lintian::Check::run(Lintian::Check::Origtar=HASH(0x2b54ad6670)) called at /usr/share/lintian/bin/../lib/Lintian/Group.pm line 276
+	eval {...} called at /usr/share/lintian/bin/../lib/Lintian/Group.pm line 279
+	Lintian::Group::process(Lintian::Group=HASH(0x2af0853d50), HASH(0x2af0d2aa60), HASH(0x2af33dee48)) called at /usr/share/lintian/bin/../lib/Lintian/Pool.pm line 171
+	Lintian::Pool::process(Lintian::Pool=HASH(0x2af07aac70), Lintian::Profile=HASH(0x2af1d3cf40), SCALAR(0x2af33fdda8), HASH(0x2af33dee48)) called at /usr/bin/lintian line 757
+warning: cannot run origtar check on package source:firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.9
+skipping check of source:firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.9
+Warning in processable /mnt/k3work/firefox-k3/release/firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.9.dsc: Can't open '/tmp/lintian-pool-irtYmj9Sqm/firefox/firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.9_source/orig/firefox-160.0+build1/devtools/client/styleeditor/test/simple.css.gz' for reading: 'No such file or directory' at /usr/share/lintian/bin/../lib/Lintian/Index/Item.pm line 336
+	Lintian::Index::Item::open(GLOB(0x2c457f60a8), "<", "/tmp/lintian-pool-irtYmj9Sqm/firefox/firefox_160.0+build1-0ub"...) called at /usr/share/lintian/bin/../lib/Lintian/Index/Item.pm line 336
+	Lintian::Index::Item::magic(Lintian::Index::Item=HASH(0x2d53254260), 9) called at /usr/share/lintian/bin/../lib/Lintian/Index/FileTypes.pm line 145
+	Lintian::Index::FileTypes::adjust_type(Lintian::Index=HASH(0x2d02d440a8), "firefox-160.0+build1/devtools/client/styleeditor/test/simple."..., "cannot open `firefox-160.0+build1/devtools/client/styleeditor"...) called at /usr/share/lintian/bin/../lib/Lintian/Index/FileTypes.pm line 114
+	Lintian::Index::FileTypes::__ANON__("firefox-160.0+build1/.agents/skills/README.md\x{0}cannot open `fi"..., "", 0, "firefox-160.0+build1/.agents/skills/README.md", "firefox-160.0+build1/.agents/skills/accessibility-frontend-re"..., "firefox-160.0+build1/.agents/skills/accessibility-frontend-re"..., "firefox-160.0+build1/.agents/skills/android-new-module/SKILL.md", "firefox-160.0+build1/.agents/skills/android/SKILL.md", ...) called at /usr/share/lintian/bin/../lib/Lintian/IPC/Run3.pm line 116
+	Lintian::IPC::Run3::xargs(ARRAY(0x2d039eeb50), ARRAY(0x2cf8d77450), CODE(0x2d6125b730)) called at /usr/share/lintian/bin/../lib/Lintian/Index/FileTypes.pm line 119
+	Lintian::Index::FileTypes::add_file_types(Lintian::Index=HASH(0x2d02d440a8)) called at /usr/share/lintian/bin/../lib/Lintian/Index.pm line 563
+	Lintian::Index::load(Lintian::Index=HASH(0x2d02d440a8)) called at /usr/share/lintian/bin/../lib/Lintian/Index.pm line 353
+	Lintian::Index::create_from_piped_tar(Lintian::Index=HASH(0x2d02d440a8), ARRAY(0x2b544fd060)) called at /usr/share/lintian/bin/../lib/Lintian/Processable/Source/Orig.pm line 116
+	Lintian::Processable::Source::Orig::__ANON__(Lintian::Processable::Source=HASH(0x2af1d25e88)) called at (eval 112) line 22
+	Lintian::Processable::Source::Orig::orig(Lintian::Processable::Source=HASH(0x2af1d25e88)) called at /usr/share/lintian/lib/Lintian/Check/Unpack.pm line 42
+	Lintian::Check::Unpack::source(Lintian::Check::Unpack=HASH(0x2d02d35d08)) called at /usr/share/lintian/bin/../lib/Lintian/Check.pm line 142
+	Lintian::Check::run(Lintian::Check::Unpack=HASH(0x2d02d35d08)) called at /usr/share/lintian/bin/../lib/Lintian/Group.pm line 276
+	eval {...} called at /usr/share/lintian/bin/../lib/Lintian/Group.pm line 279
+	Lintian::Group::process(Lintian::Group=HASH(0x2af0853d50), HASH(0x2af0d2aa60), HASH(0x2af33dee48)) called at /usr/share/lintian/bin/../lib/Lintian/Pool.pm line 171
+	Lintian::Pool::process(Lintian::Pool=HASH(0x2af07aac70), Lintian::Profile=HASH(0x2af1d3cf40), SCALAR(0x2af33fdda8), HASH(0x2af33dee48)) called at /usr/bin/lintian line 757
+warning: cannot run unpack check on package source:firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.9
+skipping check of source:firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.9
+E: firefox source: binary-with-bad-dynamic-table [third_party/dump_syms/test_data/linux/basic.dbg]
+E: firefox source: binary-with-bad-dynamic-table [third_party/dump_syms/test_data/linux/basic.dwz]
+E: firefox source: license-problem-convert-utf-code [toolkit/crashreporter/google-breakpad/src/common/convert_UTF.cc]
+E: firefox source: license-problem-md5sum-non-free-file usual name is valid-html401-blue.png. The valid w3c icons could not be modified. See also http://www.w3.org/QA/Tools/Icons. [build/pgo/blueprint/valid.png]
+W: firefox source: build-depends-on-obsolete-package Build-Depends: libfontconfig1-dev => libfontconfig-dev
+W: firefox source: build-depends-on-obsolete-package Build-Depends: libfreetype6-dev (>= 2.0.1) => libfreetype-dev
+W: firefox source: debian-revision-not-well-formed 160.0+build1-0ubuntu0.26.04.1~mt1k3.9
+W: firefox source: elf-error In ELF header: Reading 1080 bytes extends past end of file for section headers [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-armv7l-armel]
+W: firefox source: elf-error In ELF header: Reading 1080 bytes extends past end of file for section headers [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-armv7l-armhf]
+W: firefox source: elf-error In ELF header: Reading 1120 bytes extends past end of file for section headers [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-invalid-class]
+W: firefox source: elf-error In ELF header: Reading 1120 bytes extends past end of file for section headers [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-invalid-data]
+W: firefox source: elf-error In ELF header: Reading 1120 bytes extends past end of file for section headers [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-x86_64-i386]
+W: firefox source: elf-error In ELF header: Reading 1120 bytes extends past end of file for section headers [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-x86_64-x32]
+W: firefox source: elf-error In ELF header: Reading 1664 bytes extends past end of file for section headers [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-s390x-s390x]
+W: firefox source: elf-error In ELF header: Reading 1792 bytes extends past end of file for section headers [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-x86_64-amd64]
+W: firefox source: elf-error In ELF header: Section headers are not available! [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-armv7l-armel]
+W: firefox source: elf-error In ELF header: Section headers are not available! [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-armv7l-armhf]
+W: firefox source: elf-error In ELF header: Section headers are not available! [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-invalid-class]
+W: firefox source: elf-error In ELF header: Section headers are not available! [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-invalid-data]
+W: firefox source: elf-error In ELF header: Section headers are not available! [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-s390x-s390x]
+W: firefox source: elf-error In ELF header: Section headers are not available! [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-x86_64-amd64]
+W: firefox source: elf-error In ELF header: Section headers are not available! [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-x86_64-i386]
+W: firefox source: elf-error In ELF header: Section headers are not available! [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-x86_64-x32]
+W: firefox source: elf-error In ELF header: Too many program headers - 0x9 - the file is not that big [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-armv7l-armel]
+W: firefox source: elf-error In ELF header: Too many program headers - 0x9 - the file is not that big [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-armv7l-armhf]
+W: firefox source: elf-error In ELF header: Too many program headers - 0x9 - the file is not that big [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-s390x-s390x]
+W: firefox source: elf-error In ELF header: Too many program headers - 0xb - the file is not that big [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-invalid-class]
+W: firefox source: elf-error In ELF header: Too many program headers - 0xb - the file is not that big [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-invalid-data]
+W: firefox source: elf-error In ELF header: Too many program headers - 0xb - the file is not that big [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-x86_64-amd64]
+W: firefox source: elf-error In ELF header: Too many program headers - 0xb - the file is not that big [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-x86_64-i386]
+W: firefox source: elf-error In ELF header: Too many program headers - 0xb - the file is not that big [testing/web-platform/tests/tools/third_party/packaging/tests/manylinux/hello-world-x86_64-x32]
+W: firefox source: elf-error In program headers: Unable to find program interpreter name [third_party/dump_syms/test_data/linux/basic.dbg]
+W: firefox source: elf-error In program headers: Unable to find program interpreter name [third_party/dump_syms/test_data/linux/basic.dwz]
+W: firefox source: patch-file-present-but-not-mentioned-in-series [debian/patches/armhf-clang-no-integrated-as-for-neon.patch]
+W: firefox source: source-contains-prebuilt-windows-binary [netwerk/test/unit/data/signed_win.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [third_party/dump_syms/test_data/windows/dump_syms_regtest64.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [third_party/libwebrtc/data/voice_engine/stereo_rtp_files/rtpplay.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [third_party/python/pip/pip/_vendor/distlib/t32.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [third_party/python/pip/pip/_vendor/distlib/t64-arm.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [third_party/python/pip/pip/_vendor/distlib/t64.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [third_party/python/pip/pip/_vendor/distlib/w32.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [third_party/python/pip/pip/_vendor/distlib/w64-arm.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [third_party/python/pip/pip/_vendor/distlib/w64.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [third_party/python/setuptools/setuptools/cli-32.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [third_party/python/setuptools/setuptools/cli-64.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [third_party/python/setuptools/setuptools/cli-arm64.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [third_party/python/setuptools/setuptools/cli.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [third_party/python/setuptools/setuptools/gui-32.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [third_party/python/setuptools/setuptools/gui-64.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [third_party/python/setuptools/setuptools/gui-arm64.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [third_party/python/setuptools/setuptools/gui.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [third_party/zucchini/tests/gtest/testdata/chrome64_1.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [third_party/zucchini/tests/gtest/testdata/chrome64_2.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [third_party/zucchini/tests/gtest/testdata/setup1.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [third_party/zucchini/tests/gtest/testdata/setup2.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [toolkit/components/mediasniffer/test/unit/data/ff-inst.exe]
+W: firefox source: source-contains-prebuilt-windows-binary [toolkit/components/reputationservice/test/unit/data/signed_win.exe]
+W: firefox source: unused-build-dependency-on-cdbs [debian/rules]

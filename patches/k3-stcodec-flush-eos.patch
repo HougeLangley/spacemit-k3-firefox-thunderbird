@@ -1,0 +1,114 @@
+Description: Preserve valid stcodec frames across flush on K3
+ Remove the fixed ten-frame discard workaround after MPP k3.8 made capture
+ buffer flushing and stale frame returns safe. Log normal EOS, flush and
+ resolution events at debug level while preserving real error reporting.
+Origin: vendor
+Forwarded: not-needed
+
+Index: extracted/libavcodec/stcodecdec.c
+===================================================================
+--- extracted.orig/libavcodec/stcodecdec.c
++++ extracted/libavcodec/stcodecdec.c
+@@ -40,7 +40,6 @@
+ #include "libavutil/mem.h"
+ #include "vdec.h"
+ 
+-#define DROPFRAME_NUM_AFTER_FLUSH (10)
+ #define MAX_SUPPORT_WIDTH (4096)
+ #define MAX_SUPPORT_HEIGHT (4096)
+ #define MIN_SUPPORT_WIDTH (640)
+@@ -67,7 +66,6 @@ typedef struct {
+   char first_frame;
+   int64_t duration;
+   int64_t use_dts;
+-  char flushed;
+ 
+   AVBufferRef* frames_ref;
+   AVBufferRef* device_ref;
+@@ -423,7 +421,6 @@ static int stcodec_init_decoder(AVCodecC
+   decoder->first_frame = 0;
+   decoder->duration = 0;
+   decoder->use_dts = 0;
+-  decoder->flushed = 0;
+ 
+   av_log(avctx, AV_LOG_DEBUG, "Stcodec decoder initialized successfully.\n");
+ 
+@@ -581,7 +578,7 @@ request_output_frame:
+ 
+     if (ret == MPP_CODER_NO_DATA) {
+       if (decoder->eos_reached) {
+-        av_log(avctx, AV_LOG_ERROR, "After EOS, no data, NOT return.\n");
++        av_log(avctx, AV_LOG_DEBUG, "After EOS, no data, NOT return.\n");
+         continue;
+       }
+ 
+@@ -611,7 +608,7 @@ request_output_frame:
+   }
+ 
+   if (ret == MPP_CODER_EOS || FRAME_GetEos(mppframe) == 1) {
+-    av_log(avctx, AV_LOG_ERROR, "EOS with data!\n");
++    av_log(avctx, AV_LOG_DEBUG, "EOS with data!\n");
+     VDEC_ReturnOutputFrame(decoder->mpp_vdec_ctx, FRAME_GetBaseData(mppframe));
+     ret = AVERROR_EOF;
+     goto fail;
+@@ -625,7 +622,7 @@ request_output_frame:
+   }
+ 
+   if (ret == MPP_RESOLUTION_CHANGED) {
+-    av_log(avctx, AV_LOG_ERROR, "Resolution changed.\n");
++    av_log(avctx, AV_LOG_DEBUG, "Resolution changed.\n");
+     AVHWFramesContext* hwframes;
+ 
+     av_log(avctx, AV_LOG_DEBUG, "Decoder noticed an info change (%dx%d).\n",
+@@ -666,8 +663,7 @@ request_output_frame:
+   if (!ret) {
+     av_log(NULL, AV_LOG_DEBUG, "Stcodec request a frame.\n");
+     decoder->first_frame = 1;
+-    if (!decoder->flushed) {
+-      // setup general frame fields
++    // setup general frame fields
+       frame->format = avctx->pix_fmt;
+       frame->width = avctx->width;
+       frame->height = avctx->height;
+@@ -797,24 +793,6 @@ request_output_frame:
+         ret = AVERROR(ENOMEM);
+         goto fail;
+       }
+-    } else if (decoder->flushed < DROPFRAME_NUM_AFTER_FLUSH) {
+-      VDEC_ReturnOutputFrame(decoder->mpp_vdec_ctx,
+-                             FRAME_GetBaseData(mppframe));
+-      av_log(avctx, AV_LOG_ERROR, "Drop some frames after flush, num=%d.\n",
+-             decoder->flushed);
+-      decoder->flushed++;
+-      ret = AVERROR(EAGAIN);
+-      goto fail;
+-    } else if (decoder->flushed == DROPFRAME_NUM_AFTER_FLUSH) {
+-      VDEC_ReturnOutputFrame(decoder->mpp_vdec_ctx,
+-                             FRAME_GetBaseData(mppframe));
+-      ret = AVERROR(EAGAIN);
+-      av_log(avctx, AV_LOG_ERROR,
+-             "Drop some frames after flush finish, num=%d.\n",
+-             decoder->flushed);
+-      decoder->flushed = 0;
+-      goto fail;
+-    }
+   } else {
+     av_log(avctx, AV_LOG_ERROR, "Should not be here, ret = %d.\n", ret);
+     ret = AVERROR(EAGAIN);
+@@ -839,7 +817,7 @@ static void stcodec_flush(AVCodecContext
+   STCODECDecoder* decoder = (STCODECDecoder*)context->decoder_ref->data;
+   int ret = -1;
+ 
+-  av_log(avctx, AV_LOG_ERROR, "Flush.\n");
++  av_log(avctx, AV_LOG_DEBUG, "Flush.\n");
+ 
+   ret = VDEC_Flush(decoder->mpp_vdec_ctx);
+   if (ret)
+@@ -852,7 +830,6 @@ static void stcodec_flush(AVCodecContext
+   decoder->first_frame = 0;
+   decoder->duration = 0;
+   decoder->use_dts = 0;
+-  decoder->flushed = 1;
+ }
+ 
+ static const AVCodecHWConfigInternal* const stcodec_hw_configs[] = {

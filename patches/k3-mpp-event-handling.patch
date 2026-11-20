@@ -1,0 +1,491 @@
+Description: Fix Linlon decoder lifecycle, EOS and capture buffer ownership
+ Handle color-description and EOS notifications without treating valid events
+ as failures. Validate VDEC lifecycle calls and fail cleanly on permission or
+ module initialization errors. Latch output EOS at capture LAST, serialize
+ request/return/flush ownership, and make stale post-flush returns idempotent.
+ Every OK, NULL_DATA or ERROR_FRAME capture dequeue transfers ownership to the
+ caller and requires a return; repeated zero-length initialization buffers
+ must be requeued. Initialize capture ownership after codec and stream setup.
+ Native H.264 multi-epoch plus VP8, VP9 and HEVC tests require this k3.8 state
+ machine.
+Author: Yeqin Su <hougelangley1987@gmail.com>
+Forwarded: not-needed
+Last-Update: 2026-11-19
+
+--- a/al/vcodec/v4l2/linlonv5v7/linlonv5v7_codec.c
++++ b/al/vcodec/v4l2/linlonv5v7/linlonv5v7_codec.c
+@@ -367,7 +367,7 @@
+ }
+ 
+ struct v4l2_mvx_color_desc getColorDesc(Codec *codec) {
+-  struct v4l2_mvx_color_desc color;
++  struct v4l2_mvx_color_desc color = {0};
+   S32 ret = ioctl(codec->nVideoFd, VIDIOC_G_MVX_COLORDESC, &color);
+   if (ret) {
+     error("Failed to get color description!");
+@@ -443,9 +443,11 @@
+   }
+ 
+   if (event.type == V4L2_EVENT_MVX_COLOR_DESC) {
+-    // struct v4l2_mvx_color_desc color = getColorDesc(codec);
+-    // printColorDesc(color);
+-    error("V4L2_EVENT_MVX_COLOR_DESC event is not support yet, please check!");
++    struct v4l2_mvx_color_desc color = getColorDesc(codec);
++    debug(
++        "V4L2_EVENT_MVX_COLOR_DESC: flags=%u range=%u primaries=%u "
++        "transfer=%u matrix=%u",
++        color.flags, color.range, color.primaries, color.transfer, color.matrix);
+   }
+ 
+   if (event.type == V4L2_EVENT_SOURCE_CHANGE &&
+@@ -455,7 +457,10 @@
+   }
+ 
+   if (event.type == V4L2_EVENT_EOS) {
+-    error("V4L2_EVENT_EOS event is not support yet, please check!");
++    // The capture queue returns V4L2_BUF_FLAG_LAST separately; that is the
++    // buffer-level signal used by handleOutputBuffer() to complete the drain.
++    // This event is only the corresponding notification, not a decode error.
++    debug("get V4L2_EVENT_EOS event, waiting for capture LAST buffer");
+   }
+ 
+   return MPP_OK;
+--- a/al/vcodec/v4l2/linlonv5v7/linlonv5v7_dec.c
++++ b/al/vcodec/v4l2/linlonv5v7/linlonv5v7_dec.c
+@@ -138,6 +138,9 @@
+    * MPP_TRUE.
+    */
+   BOOL bInputEos;
++  BOOL bOutputEos;
++  BOOL bBufferNeedsReturn[MAX_OUTPUT_BUF_NUM];
++  pthread_mutex_t outputMutex;
+ 
+   pthread_t pollthread;
+ 
+@@ -333,6 +336,11 @@
+   }
+ 
+   memset(context, 0, sizeof(ALLinlonv5v7DecContext));
++  if (pthread_mutex_init(&context->outputMutex, NULL) != 0) {
++    error("can not initialize decoder output mutex");
++    free(context);
++    return NULL;
++  }
+ 
+   debug("init create");
+ 
+@@ -384,6 +392,7 @@
+   context->nInputType = V4L2_BUF_TYPE_VIDEO_OUTPUT;
+   context->nOutputType = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE;
+   context->bInputEos = MPP_FALSE;
++  context->bOutputEos = MPP_FALSE;
+   context->bIsDestoryed = MPP_FALSE;
+   context->nInputQueuedNum = 0;
+   context->nEosPts = -1;
+@@ -401,9 +410,6 @@
+       context->nInputFormatFourcc, context->nOutputFormatFourcc,
+       context->pVdecPara->nInputBufferNum,
+       context->pVdecPara->nOutputBufferNum);
+-
+-  for (S32 i = 0; i < MAX_OUTPUT_BUF_NUM; i++)
+-    context->pVdecPara->bIsBufferInDecoder[i] = MPP_TRUE;
+ 
+   context->nInputBufferNum = context->pVdecPara->nInputBufferNum;
+   context->nOutputBufferNum = context->pVdecPara->nOutputBufferNum;
+@@ -439,6 +445,13 @@
+ 
+   // setformat, allocate buffer, stream on
+   stream(context->stCodec);
++
++  // Initialize ownership only after codec/stream construction is complete.
++  // stcodec returns each initial capture buffer once to register it with QBUF.
++  for (S32 i = 0; i < MAX_OUTPUT_BUF_NUM; i++) {
++    context->pVdecPara->bIsBufferInDecoder[i] = MPP_TRUE;
++    context->bBufferNeedsReturn[i] = MPP_TRUE;
++  }
+ 
+   // pthread for handle event or something
+   ret = pthread_create(&context->pollthread, NULL, runpoll, (void *)context);
+@@ -565,13 +578,19 @@
+ }
+ 
+ RETURN al_dec_request_output_frame(ALBaseContext *ctx, MppData *src_data) {
+-  if (!ctx) {
+-    error("input para ALBaseContext is NULL, please check!");
++  if (!ctx || !src_data) {
++    error("input decoder context or MppData is NULL, please check!");
+     return MPP_NULL_POINTER;
+   }
+ 
+   ALLinlonv5v7DecContext *context = (ALLinlonv5v7DecContext *)ctx;
+   S32 ret = 0;
++  pthread_mutex_lock(&context->outputMutex);
++
++  if (context->bOutputEos) {
++    ret = MPP_CODER_EOS;
++    goto out;
++  }
+ 
+   struct pollfd p = {.fd = context->nVideoFd, .events = POLLIN};
+ 
+@@ -580,6 +599,10 @@
+     ret = handleOutputBuffer(getOutputPort(context->stCodec), MPP_FALSE,
+                              src_data);
+     // debug("ok, a frame is handled, get it! ret = %d", ret);
++    if (ret == MPP_CODER_EOS) {
++      context->bOutputEos = MPP_TRUE;
++      goto out;
++    }
+     if (ret == MPP_RESOLUTION_CHANGED) {
+       if (context->nRotation == 90 || context->nRotation == 270) {
+         context->pVdecPara->nWidth =
+@@ -601,63 +624,98 @@
+         context->pVdecPara->nOutputBufferFd[i] =
+             getBufFd(getOutputPort(context->stCodec), i);
+         context->pVdecPara->bIsBufferInDecoder[i] = MPP_TRUE;
++        context->bBufferNeedsReturn[i] = MPP_TRUE;
+       }
+     } else if (ret == MPP_CODER_NO_DATA) {
+-      return MPP_CODER_NO_DATA;
++      goto out;
+     } else if (ret == MPP_ERROR_FRAME) {
+       // check if it is the last frame
+       if (context->nEosPts > 0 &&
+           FRAME_GetPts(FRAME_GetFrame(src_data)) == context->nEosPts) {
+         error("it is a EOS frame eos pts:(%ld)", context->nEosPts);
+-        return MPP_CODER_EOS;
++        context->bOutputEos = MPP_TRUE;
++        ret = MPP_CODER_EOS;
++        goto out;
+       }
+     }
+   } else {
+     // debug("no data, please try again!");
+     usleep(2000);
+-    // error("can not get output buffer");
+-    return MPP_CODER_NO_DATA;
+-  }
+-
+-  if (ret == MPP_OK)
+-    context->pVdecPara
+-        ->bIsBufferInDecoder[FRAME_GetID(FRAME_GetFrame(src_data))] = MPP_FALSE;
+-
++    ret = MPP_CODER_NO_DATA;
++    goto out;
++  }
++
++  // OK, zero-length and error buffers have all been dequeued and are now
++  // owned by the caller.  Mark every one as needing a return: treating a
++  // repeated NULL_DATA dequeue as "already queued" leaves the driver without
++  // capture buffers and deadlocks HEVC/VP9 initialization.  EOS and genuine
++  // NO_DATA do not transfer ownership and are deliberately excluded.
++  if (ret == MPP_OK || ret == MPP_CODER_NULL_DATA ||
++      ret == MPP_ERROR_FRAME) {
++    S32 buf_idx = FRAME_GetID(FRAME_GetFrame(src_data));
++    if (buf_idx < 0 || buf_idx >= (S32)context->pVdecPara->nOutputBufferNum) {
++      error("invalid output buffer index %d", buf_idx);
++      ret = MPP_ERROR_FRAME;
++      goto out;
++    }
++    context->pVdecPara->bIsBufferInDecoder[buf_idx] = MPP_FALSE;
++    context->bBufferNeedsReturn[buf_idx] = MPP_TRUE;
++  }
++
++out:
++  pthread_mutex_unlock(&context->outputMutex);
+   return ret;
+ }
+ 
+ RETURN al_dec_return_output_frame(ALBaseContext *ctx, MppData *src_data) {
+-  if (!ctx) {
+-    error("input para ALBaseContext is NULL, please check!");
++  if (!ctx || !src_data) {
++    error("input decoder context or MppData is NULL, please check!");
+     return MPP_NULL_POINTER;
+   }
+ 
+-  if (!src_data) {
+-    error("input para MppData is NULL, please check!");
+-    return MPP_NULL_POINTER;
+-  }
+-
+   ALLinlonv5v7DecContext *context = (ALLinlonv5v7DecContext *)ctx;
+-  S32 ret = 0;
++  S32 ret = MPP_OK;
++  pthread_mutex_lock(&context->outputMutex);
+ 
+   S32 buf_idx = FRAME_GetID(FRAME_GetFrame(src_data));
+-  // debug("release output idx = %d", buf_idx);
++  if (buf_idx < 0 || buf_idx >= (S32)context->pVdecPara->nOutputBufferNum) {
++    error("invalid returned output buffer index %d", buf_idx);
++    ret = MPP_ERROR_FRAME;
++    goto out;
++  }
++
++  debug("return output buffer %d state: in_decoder=%d needs_return=%d",
++        buf_idx, context->pVdecPara->bIsBufferInDecoder[buf_idx],
++        context->bBufferNeedsReturn[buf_idx]);
++
++  // Flush/reset requeues every capture buffer while holding outputMutex.
++  // A frame from the previous epoch may be returned afterwards; it is already
++  // owned by the decoder and must not be queued a second time.
++  if (context->pVdecPara->bIsBufferInDecoder[buf_idx] &&
++      !context->bBufferNeedsReturn[buf_idx]) {
++    debug("output buffer %d is already queued; ignore stale return", buf_idx);
++    goto out;
++  }
++
+   Buffer *buf = getBuffer(getOutputPort(context->stCodec), buf_idx);
+   if (!buf) {
+     error("buf is NULL, this should not happen, please check!");
+-  } else {
+-    clearBytesUsed(buf);
+-
+-    ret = queueBuffer(getOutputPort(context->stCodec), buf);
+-    if (ret) {
+-      error("queueBuffer failed, this should not happen, please check!");
+-    }
+-    // debug("release output ret = %d", ret);
+-
+-    context->pVdecPara->bIsBufferInDecoder[buf_idx] = MPP_TRUE;
+-  }
+-
+-  return MPP_OK;
++    ret = MPP_NULL_POINTER;
++    goto out;
++  }
++  clearBytesUsed(buf);
++
++  ret = queueBuffer(getOutputPort(context->stCodec), buf);
++  if (ret) {
++    error("queueBuffer failed, this should not happen, please check!");
++    goto out;
++  }
++  context->pVdecPara->bIsBufferInDecoder[buf_idx] = MPP_TRUE;
++  context->bBufferNeedsReturn[buf_idx] = MPP_FALSE;
++
++out:
++  pthread_mutex_unlock(&context->outputMutex);
++  return ret;
+ }
+ 
+ S32 al_dec_reset(ALBaseContext *ctx) {
+@@ -666,13 +724,21 @@
+ 
+   debug("Reset start ========================================");
+ 
++  pthread_mutex_lock(&context->outputMutex);
+   handleFlush(context->stCodec, MPP_FALSE);
+   context->nInputQueuedNum = 0;
+   context->pVdecPara->nInputQueueLeftNum =
+       getBufNum(getInputPort(context->stCodec));
+   context->bInputEos = MPP_FALSE;
++  context->bOutputEos = MPP_FALSE;
++  context->nEosPts = -1;
++  for (U32 i = 0; i < context->pVdecPara->nOutputBufferNum; i++) {
++    context->pVdecPara->bIsBufferInDecoder[i] = MPP_TRUE;
++    context->bBufferNeedsReturn[i] = MPP_FALSE;
++  }
+ 
+   debug("Reset finish ========================================");
++  pthread_mutex_unlock(&context->outputMutex);
+ 
+   return MPP_OK;
+ }
+@@ -683,13 +749,21 @@
+ 
+   debug("Flush start ========================================");
+ 
++  pthread_mutex_lock(&context->outputMutex);
+   handleFlush(context->stCodec, MPP_FALSE);
+   context->nInputQueuedNum = 0;
+   context->pVdecPara->nInputQueueLeftNum =
+       getBufNum(getInputPort(context->stCodec));
+   context->bInputEos = MPP_FALSE;
++  context->bOutputEos = MPP_FALSE;
++  context->nEosPts = -1;
++  for (U32 i = 0; i < context->pVdecPara->nOutputBufferNum; i++) {
++    context->pVdecPara->bIsBufferInDecoder[i] = MPP_TRUE;
++    context->bBufferNeedsReturn[i] = MPP_FALSE;
++  }
+ 
+   debug("Flush finish ========================================");
++  pthread_mutex_unlock(&context->outputMutex);
+ 
+   return MPP_OK;
+ }
+@@ -715,6 +789,7 @@
+     debug("destory codec finish");
+     close(context->nVideoFd);
+   }
++  pthread_mutex_destroy(&context->outputMutex);
+   free(context);
+   context = NULL;
+ }
+--- a/mpi/vdec.c
++++ b/mpi/vdec.c
+@@ -56,45 +56,73 @@
+ 
+ S32 VDEC_Init(MppVdecCtx *ctx) {
+   S32 ret = 0;
++  void *module_so;
++
++  if (!ctx) {
++    error("input para ctx is NULL, please check!");
++    return MPP_NULL_POINTER;
++  }
+ 
+   ctx->pModule = module_init(ctx->eCodecType);
+-
+-  dec_create = (ALBaseContext * (*)())
+-      dlsym(module_get_so_path(ctx->pModule), "al_dec_create");
++  if (!ctx->pModule) {
++    error("decoder module init failed!");
++    return MPP_INIT_FAILED;
++  }
++  module_so = module_get_so_path(ctx->pModule);
++  if (!module_so) {
++    ret = MPP_INIT_FAILED;
++    goto fail_module;
++  }
++
++  dec_create = (ALBaseContext * (*)())dlsym(module_so, "al_dec_create");
+   dec_init = (S32(*)(ALBaseContext * ctx, MppVdecPara * para))
+-      dlsym(module_get_so_path(ctx->pModule), "al_dec_init");
++      dlsym(module_so, "al_dec_init");
+   dec_getparam = (S32(*)(ALBaseContext * ctx, MppVdecPara * *para))
+-      dlsym(module_get_so_path(ctx->pModule), "al_dec_getparam");
++      dlsym(module_so, "al_dec_getparam");
+   dec_request_input_stream = (S32(*)(ALBaseContext * ctx, MppData * sink_data))
+-      dlsym(module_get_so_path(ctx->pModule), "al_dec_request_input_stream");
++      dlsym(module_so, "al_dec_request_input_stream");
+   dec_return_input_stream = (S32(*)(ALBaseContext * ctx, MppData * sink_data))
+-      dlsym(module_get_so_path(ctx->pModule), "al_dec_return_input_stream");
++      dlsym(module_so, "al_dec_return_input_stream");
+   dec_decode = (S32(*)(ALBaseContext * ctx, MppData * sink_data))
+-      dlsym(module_get_so_path(ctx->pModule), "al_dec_decode");
++      dlsym(module_so, "al_dec_decode");
+   dec_process =
+       (S32(*)(ALBaseContext * ctx, MppData * sink_data, MppData * src_data))
+-          dlsym(module_get_so_path(ctx->pModule), "al_dec_process");
++          dlsym(module_so, "al_dec_process");
+   dec_get_output_frame = (S32(*)(ALBaseContext * ctx, MppData * src_data))
+-      dlsym(module_get_so_path(ctx->pModule), "al_dec_get_output_frame");
++      dlsym(module_so, "al_dec_get_output_frame");
+   dec_request_output_frame = (S32(*)(ALBaseContext * ctx, MppData * src_data))
+-      dlsym(module_get_so_path(ctx->pModule), "al_dec_request_output_frame");
++      dlsym(module_so, "al_dec_request_output_frame");
+   dec_request_output_frame_2 =
+-      (S32(*)(ALBaseContext * ctx, MppData * *src_data)) dlsym(
+-          module_get_so_path(ctx->pModule), "al_dec_request_output_frame_2");
++      (S32(*)(ALBaseContext * ctx, MppData * *src_data))
++          dlsym(module_so, "al_dec_request_output_frame_2");
+   dec_return_output_frame = (S32(*)(ALBaseContext * ctx, MppData * src_data))
+-      dlsym(module_get_so_path(ctx->pModule), "al_dec_return_output_frame");
++      dlsym(module_so, "al_dec_return_output_frame");
+   dec_destory = (void (*)(ALBaseContext * ctx))
+-      dlsym(module_get_so_path(ctx->pModule), "al_dec_destory");
+-  dec_flush = (S32(*)(ALBaseContext * ctx))
+-      dlsym(module_get_so_path(ctx->pModule), "al_dec_flush");
+-  dec_reset = (S32(*)(ALBaseContext * ctx))
+-      dlsym(module_get_so_path(ctx->pModule), "al_dec_reset");
++      dlsym(module_so, "al_dec_destory");
++  dec_flush = (S32(*)(ALBaseContext * ctx))dlsym(module_so, "al_dec_flush");
++  dec_reset = (S32(*)(ALBaseContext * ctx))dlsym(module_so, "al_dec_reset");
++
++  if (!dec_create || !dec_init || !dec_destory) {
++    error("decoder module is missing its required lifecycle symbols!");
++    ret = MPP_INIT_FAILED;
++    goto fail_module;
++  }
+ 
+   ctx->pNode.pAlBaseContext = dec_create();
++  if (!ctx->pNode.pAlBaseContext) {
++    error("decoder context creation failed!");
++    ret = MPP_OUT_OF_MEM;
++    goto fail_module;
++  }
+ 
+   ret = dec_init(ctx->pNode.pAlBaseContext, &(ctx->stVdecPara));
+   debug("init VDEC Channel, ret = %d", ret);
+ 
++  return ret;
++
++fail_module:
++  module_destory(ctx->pModule);
++  ctx->pModule = NULL;
+   return ret;
+ }
+ 
+@@ -105,6 +133,7 @@
+ 
+ S32 VDEC_GetParam(MppVdecCtx *ctx, MppVdecPara **stVdecPara) {
+   S32 ret = 0;
++  if (!dec_getparam) return MPP_ERROR_UNKNOWN;
+   ret = dec_getparam(ctx->pNode.pAlBaseContext, stVdecPara);
+   debug("get VDEC parameters, ret = %d", ret);
+ 
+@@ -135,6 +164,7 @@
+ 
+ S32 handle_vdec_data(ALBaseContext *base_context, MppData *sink_data) {
+   S32 ret = 0;
++  if (!dec_decode) return MPP_ERROR_UNKNOWN;
+   ret = dec_decode(base_context, sink_data);
+ 
+   return ret;
+@@ -151,6 +181,7 @@
+ S32 process_vdec_data(ALBaseContext *base_context, MppData *sink_data,
+                       MppData *src_data) {
+   S32 ret = 0;
++  if (!dec_process) return MPP_ERROR_UNKNOWN;
+   ret = dec_process(base_context, sink_data, src_data);
+ 
+   return ret;
+@@ -165,6 +196,7 @@
+ 
+ S32 get_vdec_result_sync(ALBaseContext *base_context, MppData *src_data) {
+   S32 ret = 0;
++  if (!dec_get_output_frame) return MPP_ERROR_UNKNOWN;
+   ret = dec_get_output_frame(base_context, src_data);
+ 
+   return ret;
+@@ -179,6 +211,7 @@
+ 
+ S32 get_vdec_result(ALBaseContext *base_context, MppData *src_data) {
+   S32 ret = 0;
++  if (!dec_request_output_frame) return MPP_ERROR_UNKNOWN;
+   ret = dec_request_output_frame(base_context, src_data);
+ 
+   return ret;
+@@ -186,6 +219,7 @@
+ 
+ S32 get_vdec_result_2(ALBaseContext *base_context, MppData **src_data) {
+   S32 ret = 0;
++  if (!dec_request_output_frame_2) return MPP_ERROR_UNKNOWN;
+   ret = dec_request_output_frame_2(base_context, src_data);
+ 
+   return ret;
+@@ -207,6 +241,7 @@
+ 
+ S32 return_vdec_result(ALBaseContext *base_context, MppData *src_data) {
+   S32 ret = 0;
++  if (!dec_return_output_frame) return MPP_ERROR_UNKNOWN;
+   ret = dec_return_output_frame(base_context, src_data);
+ 
+   return ret;
+@@ -221,6 +256,7 @@
+ S32 VDEC_Flush(MppVdecCtx *ctx) {
+   S32 ret = 0;
+ 
++  if (!dec_flush) return MPP_ERROR_UNKNOWN;
+   debug("begin flush!");
+   ret = dec_flush(ctx->pNode.pAlBaseContext);
+   debug("finish flush ret = %d", ret);
+@@ -254,6 +290,7 @@
+ 
+ S32 VDEC_ResetChannel(MppVdecCtx *ctx) {
+   S32 ret = 0;
++  if (!dec_reset) return MPP_ERROR_UNKNOWN;
+   ret = dec_reset(ctx->pNode.pAlBaseContext);
+ 
+   return ret;

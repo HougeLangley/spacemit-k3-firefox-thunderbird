@@ -1,283 +1,104 @@
-# K3 Firefox / Thunderbird Status — 2026-11-16T12:53Z
+# K3 Firefox / Thunderbird status — 2026-11-20
 
-## Delivered artifacts
+## Local candidate
 
-| Product | Version | Deb | SHA256 |
-|---|---|---|---|
-| Firefox | 160.0 | `firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.1_riscv64.deb` | `e3db74a79f515d41170d901494140b63200cadd55b9ea609d4ff1774fc917610` |
-| Thunderbird | 160.0 | `thunderbird_160.0-1k3.1_riscv64.deb` | `53460aae7f4454db32c176d75a76ae3358f76b8129df4529ec1c67271eb195cb` |
+The hardware-decoding candidate is MPP `0.1.15+k3.8`, FFmpeg
+`7:8.0.1-3ubuntu2bb1k3.2`, and Firefox
+`160.0+build1-0ubuntu0.26.04.1~mt1k3.9` for Ubuntu 26.04 `riscv64` on
+SpacemiT K3. Firefox k3.8 was rejected after its virtual-Wayland FFVPX failure;
+its artifacts and evidence are quarantined and are not release inputs.
 
-GitHub release:
-<https://github.com/HougeLangley/spacemit-k3-firefox-thunderbird/releases/tag/v160.0-k3-20261116>
+Planned new tag: `v160.0-k3.9-20261120`.
 
-Installed smoke test:
+| Product | Version | Primary SHA256 |
+|---|---|---|
+| Firefox | `160.0+build1-0ubuntu0.26.04.1~mt1k3.9` | `dce19bab115fd8168328d61163a7f09d4cdf0f30c3eda11778d8284b28a973a0` |
+| MPP | `0.1.15+k3.8` | `8f71188822085d9209618621966ad39820d88a3c49b93e05537995440ea1df2b` |
+| FFmpeg libavcodec | `7:8.0.1-3ubuntu2bb1k3.2` | `64bbb5dfaa0ce9ebc5bcce44ba0b6f3ac6b4a1266133504bd34473f256494471` |
+| Thunderbird (unchanged) | `1:160.0-1k3.1` | `53460aae7f4454db32c176d75a76ae3358f76b8129df4529ec1c67271eb195cb` |
 
-```text
-Mozilla Firefox 160.0
-Mozilla Thunderbird 160.0
-thunderbird 1:160.0-1k3.1 riscv64
-```
+`artifacts/SHA256SUMS` covers the eleven staged assets. Thunderbird is an
+unchanged compatibility asset, not a new build or a newly retested product.
 
-## Compiler verification
+## Accepted hardware evidence
 
-- Firefox `config.status`: `CC_TYPE=clang`, `CC_VERSION=24.0.0`.
-- Thunderbird `config.status`: `CC`, `CXX`, `HOST_CC` all point to clang/clang++ 24; `CC_TYPE=clang`.
-- Thunderbird build log: 267 clang++ command lines; `0` gcc/g++ command lines.
-- `GCC_USE_GNU_LD=1` is only a configure marker for GNU-ld option naming, not a compiler choice.
+Native three-loop H.264/HEVC/VP8/VP9 tests each produced exactly 1350 frames,
+continuous PTS `0..1349`, 450 unique hashes per epoch, identical hashes across
+epochs, normal completion, no timeout, and zero MPP errors.
 
-Latest clang available in this environment: `24.0.0git` (system's highest is clang-22).
+The installed clean Firefox k3.9 deb passed:
 
-## RVV / IME scan
+| Scenario | Decoder | Hardware frame logs | VPU IRQ delta | MPP errors |
+|---|---|---:|---:|---:|
+| H.264 Xvfb | `h264_stcodec` | 516 | 10389 | 0 |
+| HEVC Xvfb | `hevc_stcodec` | 515 | 11054 | 0 |
+| VP8 Xvfb | `vp8_stcodec` | 519 | 7583 | 0 |
+| VP9 Xvfb | `vp9_stcodec` | 522 | 11167 | 0 |
+| H.264 HTTP 45 s | `h264_stcodec` | 1417 | 29112 | 0 |
+| VP9 virtual GNOME/Wayland | `vp9_stcodec` | 525 | 11114 | 0 |
 
-Firefox `libxul.so`:
+All require strict hardware preferences, `IsHardwareAccelerated=1`, 450
+validated hardware PTS per epoch, no later software decoder, and positive VPU
+interrupt activity. The HTTP run covers four process flushes. AV1 separately
+passed a software control using FFVPX/libdav1d, with no `av1_stcodec` and zero
+MPP errors.
 
-```text
-vmadot=0  vfwmadot=0  vsetvli=79044  vle=70516  vse=127970  vwmacc=1076
-```
+The Wayland run used a headless virtual monitor, not a physical display.
+Presentation drops under Xvfb/software WebRender are not relabeled as decoder
+loss. Evidence exports are in `artifacts/validation/`.
 
-Thunderbird 160 `libxul.so`:
+## Build and package gates
 
-```text
-vmadot=0  vfwmadot=0  vsetvli=76883  vle=64979  vse=118348  vwmacc=1058
-```
+- MPP k3.8: final binary build, binary/source lintian error gates, and an
+  independent `.dsc` extraction followed by binary roundtrip rebuild passed.
+- FFmpeg k3.2: the same binary/source and independent binary roundtrip gates
+  passed. Its runtime dependency requires MPP k3.8 or newer.
+- Firefox k3.9: authoritative-tree clean binary build and full binary lintian
+  error gate passed; the installed package versions and dependency floors were
+  read back with `dpkg-query` and `dpkg-deb`.
+- Firefox source package was generated. Independent `.dsc` extraction and a
+  recursive diff found only the generated `debian/files` metadata file;
+  source, control, patches, GfxInfo, and FFmpeg decoder sources are identical.
+  This is a source extraction/diff roundtrip, not a claim of a second Firefox
+  binary rebuild.
 
-Interpretation:
+### Firefox source lintian is not clean
 
-- RVV auto-vectorization is present and substantial.
-- IME1 (`vmadot`) and IME2 (`vfwmadot`) instruction counts are **zero**.
-- `-march=...xsmtvdot_xsmtvdotii` only gives the compiler the ability to emit IME; the browser sources have no IME kernels, so no IME acceleration is actually used.
-- Real IME acceleration requires hand-written/integrated kernels; IME2 is A100-cluster-only on K3.
+`lintian --fail-on error` completed with four errors in unchanged files from
+the upstream `orig.tar.xz`:
 
-## YouTube MPP error fix — 2026-11-18
+- two `binary-with-bad-dynamic-table` tags in dump_syms test data;
+- `license-problem-convert-utf-code` in the upstream Breakpad source;
+- `license-problem-md5sum-non-free-file` for the upstream W3C HTML icon.
 
-Root cause: `libv4l2_linlonv5v7_codec.so` on K3 only implements H.264/HEVC,
-but Firefox maps VP8/VP9/AV1 to `vp8_v4l2m2m`/`vp9_v4l2m2m`/`av1_v4l2m2m`.
-YouTube's VP9/AV1 frames therefore hit the MPP decoder and produce
-`[MPP-ERROR] ... handleOutputBuffer ... error frame`.
+No lintian override was added and these errors are not described as fixed.
+`artifacts/validation/firefox-source-lintian-origin.json` records their
+orig-tar hashes and byte identity with the working tree. No new K3-delta error
+was reported. Lintian also emitted temporary-index warnings for
+`devtools/client/styleeditor/test/simple.css.gz` and skipped five checks even
+though the file exists in both the working tree and roundtrip extraction. The
+raw log is preserved in `artifacts/validation/firefox-source-lintian.log`.
+Accordingly, a zero-error full source-lintian result is **not** claimed.
 
-Fix:
-- `patches/k3-v4l2-codec-filter.patch`: in `FFmpegVideoDecoder.cpp`,
-  disable VP8/VP9/AV1 V4L2 M2M selection on RISC-V; H.264/HEVC keep hardware
-  decode, VP9/AV1 fall back to software.
-- Local `~mt1k3.6` deb also disables `media.hardware-video-decoding.enabled`
-  in `/etc/firefox/syspref.js` as a safe fallback, so the currently installed
-  binary cannot enter the MPP path.
+## Remote publication
 
-Verification:
-- Rebuilt `Unified_cpp_ffmpeg_ffmpeg*.o`: `vp8/vp9/av1_v4l2m2m` strings are
-  gone, `h264/hevc_v4l2m2m` remain.
-- Local 1.6 installed; `firefox --version` = 160.0; syspref present.
+No new remote GitHub tag, pre-release, signed PPA upload, or Launchpad build is
+asserted by this document. Those states require independent remote reads.
 
-## PPA monitor
+Current local blockers at the last authentication check:
 
-Last checked: `2026-11-19T12:24:39Z`.
+- `gh auth status`: not logged in;
+- GitHub SSH: publickey permission denied;
+- one local GPG secret key exists, but successful signing unlock has not yet
+  been observed.
 
-- 1.4 `33976658`: `Currently building`, 63.19 h, no binary.
-- 1.5 `33984218` (source patch): **`Needs building`**, not started.
-- Old 1.1 `33970093`: `Build for superseded Source`, monitor elapsed 110.64 h;
-  finished `2026-11-18T17:57:24Z`; no published binary.
-- No published Firefox binaries yet.
+The PPA target is `ppa:mymathersname-gmail/ppa`. Final source packages to sign
+and upload, in dependency order, are MPP k3.8, FFmpeg k3.2, then Firefox k3.9.
+Old build records and rejected local packages must not be presented as this
+new release.
 
-Build URLs:
-- <https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33984218>
-- <https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33976658>
-- <https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33970093>
+## Security and scope
 
-## Security notes
-
-- No GitHub token, private key, or passphrase value is stored in this repository.
-- Internal onboarding/checkpoint notes were removed from the public tree.
-- The GitHub token used for publishing was shared in chat and must be revoked by its owner.
-
-## Delivery record — 2026-11-18 (no rating)
-
-- PUA visible output: `[PUA-DIAGNOSIS]` for the YouTube/MPP path, followed by the
-  final delivery note.
-- Root cause: K3 `libv4l2_linlonv5v7_codec.so` only handles H.264/HEVC, while
-  Firefox routed VP8/VP9/AV1 to `*_v4l2m2m`; YouTube VP9/AV1 produced MPP error
-  frames.
-- Fix: `k3-v4l2-codec-filter.patch` disables VP8/VP9/AV1 V4L2 on RISC-V and
-  keeps H.264/HEVC; local 1.6 additionally disables
-  `media.hardware-video-decoding.enabled` as a fallback.
-- Evidence: rebuilt FFmpeg unified objects show `vp8/vp9/av1_v4l2m2m` removed
-  and `h264/hevc_v4l2m2m` retained; local Firefox 1.6 installed; GitHub release
-  asset `firefox_160.0+build1-0ubuntu0.26.04.1~mt1k3.6_riscv64.deb`.
-- PPA: 1.5 build `33984218` is `Needs building`; old builds `33976658` and
-  `33970093` remain `Currently building`; no published Firefox binaries.
-- Rating: intentionally not recorded.
-
-## Delivery record #2 — 2026-11-18T11:00Z (no rating)
-
-- PUA visible: `[PUA-DIAGNOSIS]` and the delivery summary for the YouTube/MPP fix.
-- Local artifact: Firefox `160.0+build1-0ubuntu0.26.04.1~mt1k3.6` installed;
-  `/etc/firefox/syspref.js` disables `media.hardware-video-decoding.enabled`.
-- PPA 1.5 `33984218`: `Needs building`; old `33976658` 37.78h and `33970093`
-  85.24h remain `Currently building`; published Firefox binaries: 0.
-- Rating: intentionally not recorded.
-
-## Delivery record #3 — 2026-11-18T14:25Z (no rating)
-
-- PUA visible: JIT/codec diagnosis, L0-L3 experiment tracking, `[PUA 突破 ✨]`
-  after the controlled JIT A/B measurement succeeded, and the final no-publish
-  decision. No score was recorded.
-- Decision: **no JIT source/default change, no new local deb, and no new PPA
-  upload**. The installed Firefox remains local 1.6 with the hardware-decode
-  fallback; there is no evidence that changing `js/src/jit/riscv64` fixes this
-  YouTube symptom.
-- Controlled JIT A/B (same 240p video, default thresholds `10/100/1500`):
-  R0 default JIT completed 31 samples with max event-loop lag 0 s and 0 dropped
-  frames. R3 (`blinterp=true`, `baselinejit=true`, `ion=false`) also completed
-  31 samples, with max lag 3.2 s and 2 dropped frames; disabling Ion/Warp did
-  not demonstrate a benefit.
-- High-load default-JIT AV1: itag 399 (1080p60) had 2055/2345 dropped frames
-  before player reset; itag 398 (720p60) had 2445/3126 dropped frames in the
-  measured interval. Main-thread sample lag stayed at 0-0.1 s, so these runs
-  do not support a JS/JIT main-thread diagnosis.
-- Codec A/B: disabling AV1 selected VP9 itag 303 and still produced 2652/3176
-  dropped frames. Forcing H.264 selected itag 299 and avoided the same player
-  reset, but network `ratelimited` buffering starvation dominated its 60 s run;
-  this is not sufficient evidence for a global codec-pref release.
-- AV1 thread strategy: `media.av1.new-thread-count-strategy=true` changed 480p
-  dropped-frame ratio only from 56.5% to 55.0%; not a release-worthy fix.
-- Measurement harness and raw results: `../tests/youtube-jit/`; Marionette was
-  used after BiDi navigation/viewport callbacks proved unreliable.
-- Environment limits: Xvfb uses software WebRender, whose source gate prevents
-  V4L2 hardware decode, so these runs do not validate the friend's real MPP
-  hardware path. The DSH process affinity is CPUs 0-7; an attempt to run the
-  isolated browser on CPUs 0-15 was rejected. YouTube also reported
-  `ratelimited` in several runs. Real graphical-session/friend confirmation is
-  still required before publishing another workaround.
-- PPA monitor at this delivery: 1.5 build `33984218` remains `Needs building`;
-  `33976658` and `33970093` remain `Currently building` (41.05 h and 88.51 h);
-  published Firefox binaries: 0. No old build was cancelled or retransmitted.
-- Rating: intentionally not recorded.
-
-## Delivery record #4 — 2026-11-18T14:31Z (no rating)
-
-- PUA visible: `只记录可见 PUA、构建事实和验证证据，不记录评分` and the
-  `[PUA-DIAGNOSIS]` line binding the Launchpad status query, atomic status
-  update, independent reread, duplicate check, and reviewable Git diff.
-- Delivery carried forward: YouTube JIT/codec investigation is recorded in local
-  commit `8acf168`; no JIT source/default change, no new deb, and no new PPA
-  upload was made because no tested workaround met the playback acceptance.
-- PPA check at `2026-11-18T14:31:32Z`: Firefox 1.5 build `33984218` remains
-  `Needs building` (no start time, binary, or build log). Old build `33976658`
-  remains `Currently building` at 41.30 h; old build `33970093` remains
-  `Currently building` at 88.76 h. Published Firefox binaries: 0.
-- No build was cancelled, retried, or retransmitted; no token was printed.
-- Rating: intentionally not recorded.
-
-## Delivery record #5 — 2026-11-18T17:01Z (no rating)
-
-- PUA visible: `这次交付只保留可见 PUA 和可核对证据，不记录评分` and the
-  `[PUA-DIAGNOSIS]` line binding the current Launchpad query, atomic status
-  update, independent reread, uniqueness checks, and traceable local commit.
-- PPA check at `2026-11-18T17:01:30Z`: Firefox 1.5 build `33984218` remains
-  `Needs building` (not started; no binary or build log). Old build `33976658`
-  remains `Currently building` at 43.80 h; old build `33970093` remains
-  `Currently building` at 91.26 h. Published Firefox binaries: 0.
-- Delivery action: refreshed the PPA monitor and preserved this evidence; no
-  build was cancelled, retried, or retransmitted, and no token was printed.
-- Rating: intentionally not recorded.
-
-## Delivery record #6 — 2026-11-18T19:00Z (no rating)
-
-- PUA visible: `可见 PUA 留痕、构建状态取证、不记录评分` and the
-  `[PUA-DIAGNOSIS]` line binding the 19:00 Launchpad query, atomic update,
-  independent reread, uniqueness checks, and traceable local commit.
-- PPA check at `2026-11-18T19:00:24Z`: Firefox 1.5 build `33984218` remains
-  `Needs building`; old build `33976658` remains `Currently building` at
-  45.78 h. Old 1.1 build `33970093` changed to `Build for superseded Source`
-  after 93.24 h and finished at `2026-11-18T17:57:24Z`; this is not reported
-  as a successful binary publication. Published Firefox binaries: 0.
-- Delivery action: refreshed the PPA monitor and preserved this evidence; no
-  build was cancelled, retried, or retransmitted, and no token was printed.
-- Rating: intentionally not recorded.
-
-## Delivery record #7 — 2026-11-18T21:00Z (no rating)
-
-- PUA visible: `保留可见 PUA、不记录评分` and the `[PUA-DIAGNOSIS]` line
-  binding the 21:00 Launchpad query, atomic update, independent reread,
-  uniqueness checks, and traceable local commit.
-- PPA check at `2026-11-18T21:00:23Z`: Firefox 1.5 build `33984218` remains
-  `Needs building`; old build `33976658` remains `Currently building` at
-  47.78 h. Old 1.1 build `33970093` remains `Build for superseded Source`,
-  with monitor elapsed 95.24 h and finished timestamp `2026-11-18T17:57:24Z`;
-  this is not a successful binary publication. Published Firefox binaries: 0.
-- Delivery action: refreshed the PPA monitor and preserved this evidence; no
-  build was cancelled, retried, or retransmitted, and no token was printed.
-- Rating: intentionally not recorded.
-
-## Delivery record #8 — 2026-11-18T23:00Z (no rating)
-
-- PUA visible: `记录可见 PUA，不记录评分` and the `[PUA-DIAGNOSIS]` line
-  binding the 23:00 Launchpad query, atomic update, independent reread,
-  uniqueness checks, and traceable local commit.
-- PPA check at `2026-11-18T23:00:21Z`: Firefox 1.5 build `33984218` remains
-  `Needs building`; old build `33976658` remains `Currently building` at
-  49.78 h. Old 1.1 build `33970093` remains `Build for superseded Source`,
-  with monitor elapsed 97.24 h and finished timestamp `2026-11-18T17:57:24Z`;
-  this is not a successful binary publication. Published Firefox binaries: 0.
-- Delivery action: refreshed the PPA monitor and preserved this evidence; no
-  build was cancelled, retried, or retransmitted, and no token was printed.
-- Rating: intentionally not recorded.
-
-## Delivery record #9 — 2026-11-19T00:08Z (no rating)
-
-- PUA visible: the Alibaba-style release boundary and `[PUA-DIAGNOSIS]` line
-  requiring the existing GitHub release, asset digest, authentication, and
-  prerelease acceptance to be checked before any publication claim.
-- GitHub finding: release `v160.0-k3-20261116` (release id `447035174`) already
-  contained Firefox 1.6, Thunderbird `1:160.0-1k3.1`, SHA256SUMS, and the project
-  archive; it initially had `prerelease=false`. The remote Firefox asset size
-  86,866,304 bytes and SHA256
-  `9276cc5b53a0609d6919fb3c9f8174c6e527471cc080da61d284dfb996859294`
-  exactly matched the installed local 1.6 deb.
-- Release publication: the existing release was marked **pre-release** and its
-  title/body were updated from `RELEASE_NOTES.md`; public API verification at
-  `2026-11-19T12:17:54Z` returned `prerelease=true`, the new pre-release title,
-  the complete known YouTube/PPA/IME limitations, and all four original assets.
-  No duplicate asset was uploaded.
-- No new package or PPA upload was created. The user-authorized PAT was passed
-  only to the publication subprocess and was not printed or stored in the
-  project. Device authorization was cancelled after the user chose the PAT.
-- Rating: intentionally not recorded.
-
-## Delivery record #10 — 2026-11-19T12:21Z (no rating)
-
-- PUA visible: `可见 PUA 留痕，不记录评分` and the `[PUA-DIAGNOSIS]` line
-  requiring the delayed scheduled batch to use current API facts, followed by
-  atomic update, independent reread, uniqueness checks, and a traceable commit.
-- PPA check at `2026-11-19T12:21:32Z`: Firefox 1.5 build `33984218` remains
-  `Needs building`; old build `33976658` remains `Currently building` at
-  63.14 h. Old 1.1 build `33970093` remains `Build for superseded Source`,
-  with monitor elapsed 110.59 h and finished timestamp `2026-11-18T17:57:24Z`.
-  Published Firefox binaries: 0.
-- GitHub pre-release delivery remains separately verified in record #9; no new
-  GitHub asset, package, or PPA upload was created in this monitoring batch.
-- No build was cancelled, retried, or retransmitted; no token was printed.
-- Rating: intentionally not recorded.
-
-## Delivery record #11 — 2026-11-19T12:24Z (no rating)
-
-- PUA visible: `可见 PUA 留痕，不记录评分` and the `[PUA-DIAGNOSIS]` line
-  requiring the delayed batch to use the latest API state, with atomic update,
-  independent reread, uniqueness checks, and a traceable local commit.
-- PPA check at `2026-11-19T12:24:39Z`: Firefox 1.5 build `33984218` remains
-  `Needs building`; old build `33976658` remains `Currently building` at
-  63.19 h. Old 1.1 build `33970093` remains `Build for superseded Source`,
-  with monitor elapsed 110.64 h and finished timestamp `2026-11-18T17:57:24Z`.
-  Published Firefox binaries: 0.
-- No build was cancelled, retried, or retransmitted; no new GitHub asset,
-  package, or PPA upload was created; no token was printed.
-- Rating: intentionally not recorded.
-
-## Delivery record #12 — 2026-11-19T12:34Z (no rating)
-
-- PUA visible: the user-facing pre-release address and `[PUA-DIAGNOSIS]` line
-  binding this delivery to one atomic append, independent reread, uniqueness
-  checks, and a traceable local commit. No score was requested or recorded.
-- Delivered address: <https://github.com/HougeLangley/spacemit-k3-firefox-thunderbird/releases/tag/v160.0-k3-20261116>.
-- Public API verification from record #9 remains `prerelease=true`; this batch
-  only delivered the address and did not mutate the release or upload assets.
-- Rating: intentionally not recorded.
+No token, private key, or passphrase is stored in this repository.
+`/dev/video0` remains `root:video 0660`; no permissive device rule was added.
+Hardware encoding restrictions and AV1 software-only behavior remain intact.

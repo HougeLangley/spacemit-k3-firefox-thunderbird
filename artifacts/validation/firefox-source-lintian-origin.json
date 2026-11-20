@@ -1,0 +1,48 @@
+{
+  "sourceLintianClean": false,
+  "inheritedErrors": {
+    "toolkit/crashreporter/google-breakpad/src/common/convert_UTF.cc": {
+      "tag": "license-problem-convert-utf-code",
+      "sha256": "ee5134db0c582549b65a7444faf43174918544feb961d496fd0756a667d819bd",
+      "size": 21519,
+      "identicalToWorkingTree": true,
+      "origin": "unchanged upstream orig.tar.xz"
+    },
+    "third_party/dump_syms/test_data/linux/basic.dbg": {
+      "tag": "binary-with-bad-dynamic-table",
+      "sha256": "5a91bac375c17d505c8902546ea55eb463fd63f666f2abb405fdd358b8e36039",
+      "size": 7624,
+      "identicalToWorkingTree": true,
+      "origin": "unchanged upstream orig.tar.xz"
+    },
+    "third_party/dump_syms/test_data/linux/basic.dwz": {
+      "tag": "binary-with-bad-dynamic-table",
+      "sha256": "31efc3093c52590c96c5126dbd356823eaeb7b4ac23011841e93e45bc3da70fc",
+      "size": 7008,
+      "identicalToWorkingTree": true,
+      "origin": "unchanged upstream orig.tar.xz"
+    },
+    "build/pgo/blueprint/valid.png": {
+      "tag": "license-problem-md5sum-non-free-file",
+      "sha256": "c74ce366d9d19521a4a95197d227b324730f30815e017b76d926ba7395a8b05d",
+      "size": 1669,
+      "identicalToWorkingTree": true,
+      "origin": "unchanged upstream orig.tar.xz"
+    }
+  },
+  "k3DeltaErrors": 0,
+  "overridesAdded": false,
+  "toolWarnings": {
+    "file": "devtools/client/styleeditor/test/simple.css.gz",
+    "workingTreeExists": true,
+    "roundtripExists": true,
+    "skippedChecks": [
+      "debian/copyright/dep5",
+      "files/artifact",
+      "files/names",
+      "origtar",
+      "unpack"
+    ]
+  },
+  "rawLog": "/mnt/k3work/firefox-k3/logs/firefox-k39-source-lintian.log"
+}

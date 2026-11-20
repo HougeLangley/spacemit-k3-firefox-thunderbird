@@ -1,0 +1,342 @@
+Description: Enable SpacemiT MPP hardware video decoding on K3
+ Probe the independent Linlon VPU without requiring PowerVR acceleration or
+ EGL/DMABUF, probe system FFmpeg hardware codecs in FFVPX audio-only builds,
+ prefer system FFmpeg for RISC-V hardware decoding, and select stcodec
+ CPU-visible I420 frames with normal cropping and vendor external-plane
+ lifetime handling for Firefox YUV images. AV1 remains software-only on K3;
+ other platforms and hardware encoding keep their GPU/DRM requirements.
+Origin: vendor, SpacemiT K3 integration
+Forwarded: not-needed
+Author: Yeqin Su <hougelangley1987@gmail.com>
+Last-Update: 2026-11-20
+
+Index: firefox-160.0/dom/media/platforms/PDMFactory.cpp
+===================================================================
+--- firefox-160.0.orig/dom/media/platforms/PDMFactory.cpp
++++ firefox-160.0/dom/media/platforms/PDMFactory.cpp
+@@ -670,10 +670,21 @@ void PDMFactory::CreateRddPDMs() {
+     const bool preferSystemForVulkan =
+         gfx::gfxVars::CanUseVulkanHardwareVideoDecoding() &&
+         FFmpegRuntimeLinker::PreferSystemFFmpegForVulkan();
++#if defined(__riscv)
++    // K3's SpacemiT MPP decoders live in system FFmpeg. Select that PDM
++    // before the bundled software FFVPX PDM whenever hardware decoding is
++    // enabled. FFVPX remains available for AV1 and unsupported codecs.
++    const bool preferSystemForRiscV =
++        StaticPrefs::media_hardware_video_decoding_enabled_AtStartup();
++#else
++    const bool preferSystemForRiscV = false;
++#endif
++    const bool preferSystemFFmpeg =
++        preferSystemForVulkan || preferSystemForRiscV;
+     PDM_INIT_LOG("Insert system FFmpeg before ffvpx: {}",
+-                 preferSystemForVulkan);
++                 preferSystemFFmpeg);
+     if (!StartupPDM(FFmpegRuntimeLinker::CreateDecoder(),
+-                    preferSystemForVulkan)) {
++                    preferSystemFFmpeg)) {
+       mFailureFlags += GetFailureFlagBasedOnFFmpegStatus(
+           FFmpegRuntimeLinker::LinkStatusCode());
+     }
+Index: firefox-160.0/dom/media/platforms/ffmpeg/FFmpegDecoderModule.h
+===================================================================
+--- firefox-160.0.orig/dom/media/platforms/ffmpeg/FFmpegDecoderModule.h
++++ firefox-160.0/dom/media/platforms/ffmpeg/FFmpegDecoderModule.h
+@@ -35,9 +35,11 @@ class FFmpegDecoderModule : public Platf
+ #endif
+   }
+   static void Init(const FFmpegLibWrapper* aLib) {
++// MOZ_FFVPX_AUDIOONLY describes the bundled codec configuration; it must
++// not suppress hardware-codec probing in the system FFmpeg module.
+ #if (defined(XP_WIN) || defined(MOZ_WIDGET_GTK) || \
+      defined(MOZ_WIDGET_ANDROID)) &&               \
+-    defined(MOZ_USE_HWDECODE) && !defined(MOZ_FFVPX_AUDIOONLY)
++    defined(MOZ_USE_HWDECODE)
+ #  ifdef XP_WIN
+     if (!XRE_IsGPUProcess()) {
+       return;
+@@ -143,7 +145,6 @@ class FFmpegDecoderModule : public Platf
+       }
+     }
+ #endif  // (XP_WIN || MOZ_WIDGET_GTK || MOZ_WIDGET_ANDROID) && MOZ_USE_HWDECODE
+-        // && !MOZ_FFVPX_AUDIOONLY
+   }
+ 
+   static already_AddRefed<PlatformDecoderModule> Create(
+Index: firefox-160.0/dom/media/platforms/ffmpeg/FFmpegVideoDecoder.cpp
+===================================================================
+--- firefox-160.0.orig/dom/media/platforms/ffmpeg/FFmpegVideoDecoder.cpp
++++ firefox-160.0/dom/media/platforms/ffmpeg/FFmpegVideoDecoder.cpp
+@@ -235,14 +235,32 @@ static AVPixelFormat ChooseVAAPIPixelFor
+   return AV_PIX_FMT_NONE;
+ }
+ 
++static bool IsStCodec(const AVCodec* aCodec) {
++  return aCodec && aCodec->name && strstr(aCodec->name, "_stcodec");
++}
++
+ static AVPixelFormat ChooseV4L2PixelFormat(AVCodecContext* aCodecContext,
+                                            const AVPixelFormat* aFormats) {
+   FFMPEGV_LOG("Choosing FFmpeg pixel format for V4L2 video decoding.");
++  const bool isStCodec = IsStCodec(aCodecContext->codec);
+   for (; *aFormats > -1; aFormats++) {
+     switch (*aFormats) {
+       case AV_PIX_FMT_DRM_PRIME:
+-        FFMPEGV_LOG("Requesting pixel format DRM PRIME");
+-        return AV_PIX_FMT_DRM_PRIME;
++        if (!isStCodec) {
++          FFMPEGV_LOG("Requesting pixel format DRM PRIME");
++          return AV_PIX_FMT_DRM_PRIME;
++        }
++        break;
++      case AV_PIX_FMT_YUV420P:
++        // All four SpacemiT stcodec decoders advertise planar I420. Select it
++        // explicitly instead of their earlier DRM PRIME/NV12 entries: MPP has
++        // already decoded in hardware and Firefox can copy these three planes
++        // through its validated YUV image path without a GPU compositor.
++        if (isStCodec) {
++          FFMPEGV_LOG("Requesting SpacemiT MPP pixel format YUV420P");
++          return AV_PIX_FMT_YUV420P;
++        }
++        break;
+       default:
+         break;
+     }
+@@ -831,7 +849,9 @@ MediaResult FFmpegVideoDecoder<LIBAV_VER
+   // know the offsets to each plane, and if FFmpeg applies cropping (and then
+   // we can't find out what the original uncropped width/height was) then we
+   // can't work out the offsets.
+-  mCodecContext->apply_cropping = 0;
++  // Keep normal cropping for stcodec's ordinary CPU I420 frames. Only the
++  // opaque generic V4L2 DRM path needs cropping disabled as described above.
++  mCodecContext->apply_cropping = IsStCodec(codec) ? 1 : 0;
+ 
+   // MOZ_REQUIRES isn't recognized in MakeScopeExit, but InitV4L2Decoder
+   // already locks sMutex at the start, so just escape thread analysis.
+@@ -959,10 +979,22 @@ bool FFmpegVideoDecoder<LIBAV_VER>::Shou
+                                  (mImageAllocator->GetCompositorBackendType() ==
+                                   layers::LayersBackend::LAYERS_WR) &&
+                                  !mImageAllocator->UsingSoftwareWebRender();
+-  if (!isHardwareWebRenderUsed) {
++#if defined(__riscv)
++  // SpacemiT MPP returns CPU-visible frames; this integration selects I420.
++  // Unlike VAAPI or DRM PRIME zero-copy, they need no GPU compositor.
++  const bool isMppCpuDecodeCapable =
++      mCodecID == AV_CODEC_ID_H264 || mCodecID == AV_CODEC_ID_HEVC ||
++      mCodecID == AV_CODEC_ID_VP8 || mCodecID == AV_CODEC_ID_VP9;
++#else
++  const bool isMppCpuDecodeCapable = false;
++#endif
++  if (!isHardwareWebRenderUsed && !isMppCpuDecodeCapable) {
+     FFMPEG_LOG("Hardware WebRender is off, VAAPI is disabled");
+     return true;
+   }
++  if (!isHardwareWebRenderUsed && isMppCpuDecodeCapable) {
++    FFMPEG_LOG("Hardware WebRender is off; using CPU-visible MPP frames");
++  }
+ #  endif
+   return aDisableHardwareDecoding;
+ }
+@@ -2071,7 +2103,22 @@ MediaResult FFmpegVideoDecoder<LIBAV_VER
+   SetChromaPlaneGeometryFromAVFormat(b, static_cast<int>(mFrame->format),
+                                      mFrame->width, mFrame->height);
+ #if LIBAVCODEC_VERSION_MAJOR >= 58
+-  if (!FramePlanesFitBackingBuffers(mFrame, b)) {
++  const bool hasExternalMppPlanes =
++      mFrame->format == AV_PIX_FMT_YUV420P &&
++      mCodecContext && IsStCodec(mCodecContext->codec);
++  if (hasExternalMppPlanes &&
++      (!mFrame->data[0] || !mFrame->data[1] || !mFrame->data[2] ||
++       mFrame->linesize[0] < mFrame->width ||
++       mFrame->linesize[1] < (mFrame->width + 1) / 2 ||
++       mFrame->linesize[2] < (mFrame->width + 1) / 2)) {
++    return MediaResult(NS_ERROR_DOM_MEDIA_DECODE_ERR,
++                       RESULT_DETAIL("Invalid SpacemiT MPP I420 planes"));
++  }
++  // stcodec's AVBufferRef is an eight-byte vendor pool cookie, not the CPU
++  // allocation extent. Its AVFrame owns the external planes until we finish
++  // this synchronous copy. All other decoders retain the strict AVBufferRef
++  // containment check above.
++  if (!hasExternalMppPlanes && !FramePlanesFitBackingBuffers(mFrame, b)) {
+     FFMPEG_LOG(
+         "Decoded frame plane layout does not match its buffers: format {} "
+         "{}x{}, Y {}x{} stride {}, CbCr {}x{} stride {}, buffer sizes {} {} {}",
+@@ -2449,6 +2496,18 @@ MediaResult FFmpegVideoDecoder<LIBAV_VER
+   FFMPEG_LOG("V4L2 Got one frame output with pts={} dts={} duration={}", aPts,
+              mFrame->pkt_dts, aDuration);
+ 
++  if (mFrame->format != AV_PIX_FMT_DRM_PRIME) {
++    if (mFrame->format == AV_PIX_FMT_YUV420P &&
++        IsStCodec(mCodecContext->codec)) {
++      // MPP has already decoded this frame in hardware. Its explicitly
++      // selected I420 output uses ordinary AVFrame planes, so reuse Firefox's
++      // validated YUV image path rather than treating it as a DRM descriptor.
++      return CreateImage(aOffset, aPts, aDuration, aResults);
++    }
++    return MediaResult(NS_ERROR_DOM_MEDIA_DECODE_ERR,
++                       RESULT_DETAIL("Unexpected non-DRM V4L2 frame format"));
++  }
++
+   AVDRMFrameDescriptor* desc = (AVDRMFrameDescriptor*)mFrame->data[0];
+   if (!desc) {
+     return MediaResult(NS_ERROR_DOM_MEDIA_DECODE_ERR,
+@@ -3379,15 +3438,48 @@ void FFmpegVideoDecoder<LIBAV_VER>::Rele
+   if (aDeviceType == AV_HWDEVICE_TYPE_NONE) {
+     switch (aCodec) {
+       case AV_CODEC_ID_H264:
++#if defined(__riscv)
++        // SpacemiT's generic V4L2 wrapper is incompatible with the Linlon
++        // stateful queue semantics. Prefer the vendor MPP decoder, which
++        // handles packet boundaries, buffer lifetime and timestamps.
++        if (AVCodec* codec =
++                aLib->avcodec_find_decoder_by_name("h264_stcodec")) {
++          return codec;
++        }
++#endif
+         return aLib->avcodec_find_decoder_by_name("h264_v4l2m2m");
+       case AV_CODEC_ID_VP8:
++#if defined(__riscv)
++        if (AVCodec* codec =
++                aLib->avcodec_find_decoder_by_name("vp8_stcodec")) {
++          return codec;
++        }
++#endif
+         return aLib->avcodec_find_decoder_by_name("vp8_v4l2m2m");
+       case AV_CODEC_ID_VP9:
++#if defined(__riscv)
++        if (AVCodec* codec =
++                aLib->avcodec_find_decoder_by_name("vp9_stcodec")) {
++          return codec;
++        }
++#endif
+         return aLib->avcodec_find_decoder_by_name("vp9_v4l2m2m");
+       case AV_CODEC_ID_HEVC:
++#if defined(__riscv)
++        if (AVCodec* codec =
++                aLib->avcodec_find_decoder_by_name("hevc_stcodec")) {
++          return codec;
++        }
++#endif
+         return aLib->avcodec_find_decoder_by_name("hevc_v4l2m2m");
+       case AV_CODEC_ID_AV1:
++#if defined(__riscv)
++        // K3 Linlon V5/V7 has no AV1 decoder. Other codecs retain hardware
++        // decoding through MPP; only AV1 uses the normal software path.
++        return nullptr;
++#else
+         return aLib->avcodec_find_decoder_by_name("av1_v4l2m2m");
++#endif
+       default:
+         return nullptr;
+     }
+Index: firefox-160.0/widget/gtk/GfxInfo.cpp
+===================================================================
+--- firefox-160.0.orig/widget/gtk/GfxInfo.cpp
++++ firefox-160.0/widget/gtk/GfxInfo.cpp
+@@ -1502,6 +1502,54 @@ nsresult GfxInfo::GetFeatureStatusImpl(
+ 
+   GetData();
+ 
++#if defined(__riscv)
++  // The Linlon VPU is independent of GLX and the PowerVR GPU. Handle global
++  // and per-codec decode queries before the generic glxtest early return;
++  // otherwise Wayland systems without GLX never reach the V4L2 probe below.
++  // Encode features deliberately keep the existing GLX/blocklist behavior.
++  uint32_t v4l2DecodeCodec = 0;
++  switch (aFeature) {
++    case nsIGfxInfo::FEATURE_H264_HW_DECODE:
++      v4l2DecodeCodec = CODEC_HW_DEC_H264;
++      break;
++    case nsIGfxInfo::FEATURE_VP8_HW_DECODE:
++      v4l2DecodeCodec = CODEC_HW_DEC_VP8;
++      break;
++    case nsIGfxInfo::FEATURE_VP9_HW_DECODE:
++      v4l2DecodeCodec = CODEC_HW_DEC_VP9;
++      break;
++    case nsIGfxInfo::FEATURE_HEVC_HW_DECODE:
++      v4l2DecodeCodec = CODEC_HW_DEC_HEVC;
++      break;
++    case nsIGfxInfo::FEATURE_AV1_HW_DECODE:
++      v4l2DecodeCodec = CODEC_HW_DEC_AV1;
++      break;
++    default:
++      break;
++  }
++  if (StaticPrefs::media_hardware_video_decoding_enabled_AtStartup() &&
++      (aFeature == nsIGfxInfo::FEATURE_HARDWARE_VIDEO_DECODING ||
++       v4l2DecodeCodec)) {
++    GetDataV4L2();
++    if (mGlxTestError) {
++      if (aFeature == nsIGfxInfo::FEATURE_HARDWARE_VIDEO_DECODING) {
++        if (mIsV4L2Supported.value()) {
++          *aStatus = nsIGfxInfo::FEATURE_STATUS_OK;
++        } else {
++          *aStatus = nsIGfxInfo::FEATURE_BLOCKED_PLATFORM_TEST;
++          aFailureId = "FEATURE_FAILURE_VIDEO_DECODING_TEST_FAILED";
++        }
++      } else if (mV4L2SupportedCodecs & v4l2DecodeCodec) {
++        *aStatus = nsIGfxInfo::FEATURE_STATUS_OK;
++      } else {
++        *aStatus = nsIGfxInfo::FEATURE_BLOCKED_PLATFORM_TEST;
++        aFailureId = "FEATURE_FAILURE_VIDEO_DECODING_MISSING";
++      }
++      return NS_OK;
++    }
++  }
++#endif
++
+   if (mGlxTestError) {
+     // If glxtest failed, block most features by default.
+     if (OnlyAllowFeatureOnKnownConfig(aFeature)) {
+@@ -1630,11 +1678,23 @@ nsresult GfxInfo::GetFeatureStatusImpl(
+         mIsAccelerated &&
+         (*aStatus == nsIGfxInfo::FEATURE_STATUS_OK ||
+          StaticPrefs::media_hardware_video_decoding_force_enabled_AtStartup());
++    bool probeV4L2 = probeHWDecode;
++#if defined(__riscv)
++    // The Linlon VPU is independent of GLX and the PowerVR GPU. Probe its real
++    // capabilities on the first query even if Wayland glxtest failed; caching
++    // false here would permanently hide the VPU before force-enabled is read.
++    // The global media.hardware-video-decoding.enabled check above still gates
++    // this probe, and the per-codec bitmap gates actual decoder selection.
++    probeV4L2 = true;
++#endif
+     if (probeHWDecode) {
+       GetDataVAAPI();
+-      GetDataV4L2();
+     } else {
+       mIsVAAPISupported = Some(false);
++    }
++    if (probeV4L2) {
++      GetDataV4L2();
++    } else {
+       mIsV4L2Supported = Some(false);
+     }
+     if (!mIsVAAPISupported.value() && !mIsV4L2Supported.value()) {
+Index: firefox-160.0/gfx/thebes/gfxPlatformGtk.cpp
+===================================================================
+--- firefox-160.0.orig/gfx/thebes/gfxPlatformGtk.cpp
++++ firefox-160.0/gfx/thebes/gfxPlatformGtk.cpp
+@@ -234,15 +234,22 @@ void gfxPlatformGtk::InitPlatformHardwar
+   FeatureState& featureDec =
+       gfxConfig::GetFeature(Feature::HARDWARE_VIDEO_DECODING);
+   if (!gfxVars::UseEGL()) {
++#if !defined(__riscv)
+     featureDec.ForceDisable(FeatureStatus::Unavailable, "Requires EGL",
+                             "FEATURE_FAILURE_REQUIRES_EGL"_ns);
++#endif
++    // RISC-V stcodec emits CPU-visible I420 and needs neither EGL nor a GPU.
++    // GfxInfo still gates every codec on the probed V4L2 capability bitmap.
++    // Hardware encoding keeps the original platform requirement.
+     gfxConfig::ForceDisable(Feature::HARDWARE_VIDEO_ENCODING,
+                             FeatureStatus::Unavailable, "Requires EGL",
+                             "FEATURE_FAILURE_REQUIRES_EGL"_ns);
+   }
+   if (!gfxVars::UseDMABuf()) {
++#if !defined(__riscv)
+     featureDec.ForceDisable(FeatureStatus::Unavailable, "Requires DMABUF",
+                             "FEATURE_FAILURE_REQUIRES_DMABUF"_ns);
++#endif
+     gfxConfig::ForceDisable(Feature::HARDWARE_VIDEO_ENCODING,
+                             FeatureStatus::Unavailable, "Requires DMABUF",
+                             "FEATURE_FAILURE_REQUIRES_DMABUF"_ns);

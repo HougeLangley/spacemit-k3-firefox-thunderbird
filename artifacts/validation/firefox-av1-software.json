@@ -1,0 +1,9 @@
+{
+  "codec": "av1",
+  "decoderSelection": "FFVPX/libdav1d",
+  "hardwareAccelerated": false,
+  "decodedFrameDelta": 150,
+  "mppErrors": 0,
+  "strictSoftwareFallbackPreference": true,
+  "controlAccepted": true
+}

@@ -1,0 +1,12 @@
+{
+  "compositor": "gnome-shell",
+  "backend": "headless-wayland",
+  "virtualMonitor": "1280x720",
+  "drmFds": [
+    "/dev/dri/renderD128"
+  ],
+  "xvfb": false,
+  "xwayland": false,
+  "physicalDisplayValidation": false,
+  "buildKind": "installed-clean-k3.9-deb"
+}
