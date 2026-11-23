@@ -136,7 +136,7 @@ as the PPA-only k3.9 packaging revision.
   SHA-256 are unchanged. The build-host/source-tag manifest retains the
   original Debian filename.
 
-### Launchpad — MPP built; FFmpeg/Firefox publication not complete
+### Launchpad — MPP published; FFmpeg/Firefox publication not complete
 
 Source uploads were signed with the newly registered key
 `C4C81FA09FBEFA879F6E21A3444C383074940157`; Launchpad's API lists that
@@ -144,13 +144,13 @@ fingerprint for `~mymathersname-gmail`. Every new MPP `.dsc`, `.buildinfo`, and
 `.changes` signature was verified locally before `dput`. FTP success is not
 treated as publication.
 
-Latest independently fetched state at `2026-11-23T12:24Z`:
+Latest independently fetched state at `2026-11-23T13:28Z`:
 
 | Source | Source/build evidence | Current state |
 |---|---|---|
-| MPP k3.8 | sourcepub `18971839`; build `33997821` | source and riscv64 binary Published |
-| MPP k3.9 | sourcepub `18975916`; build `34004509` | source Published; riscv64 Successfully built; binary publication pending |
-| FFmpeg k3.2 | sourcepub `18971840`; build `33997822` | source Published; riscv64 Failed to build at install-deps; not yet retried |
+| MPP k3.8 | sourcepub `18971839`; build `33997821` | superseded by k3.9; previous build/publication evidence retained |
+| MPP k3.9 | sourcepub `18975916`; build `34004509`; binarypub `254124874` | source and riscv64 binary Published; Successfully built |
+| FFmpeg k3.2 | sourcepub `18971840`; build `33997822` | source Published; riscv64 Currently building after retry; no matching binary publication |
 | Firefox k3.9 | sourcepub `18971844`; build `33997839` | source Published; riscv64 Currently building; no matching binary publication |
 
 Build links:
@@ -160,11 +160,12 @@ Build links:
 and
 <https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33997839>.
 
-A direct read of the live riscv64 `Packages.gz` at `2026-11-23T12:13Z` still
-listed MPP k3.8, not k3.9. Therefore MPP k3.9 binary publication is not claimed.
-No FFmpeg or Firefox PPA binary is claimed to be Published. Firefox build
-`33997839` remains an active build record; obsolete Firefox build records are
-not evidence for this release.
+MPP k3.9 binary publication `254124874` became Published at
+`2026-11-23T13:11:02Z`. A direct read of the live riscv64 `Packages.gz` at
+`2026-11-23T13:28Z` listed only MPP k3.9, with firmware in `Recommends` and no
+hard firmware dependency in `Depends`. No FFmpeg or Firefox PPA binary is
+claimed to be Published. Firefox build `33997839` remains an active build
+record; obsolete Firefox build records are not evidence for this release.
 
 ## Security and scope
 
