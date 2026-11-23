@@ -1,15 +1,17 @@
-# K3 Firefox / Thunderbird status — 2026-11-20
+# K3 Firefox / Thunderbird status — 2026-11-23
 
-## Local candidate
+## Validated local candidate
 
-The hardware-decoding candidate is MPP `0.1.15+k3.8`, FFmpeg
+The GitHub hardware-decoding candidate is MPP `0.1.15+k3.8`, FFmpeg
 `7:8.0.1-3ubuntu2bb1k3.2`, and Firefox
 `160.0+build1-0ubuntu0.26.04.1~mt1k3.9` for Ubuntu 26.04 `riscv64` on
 SpacemiT K3. Firefox k3.8 was rejected after its virtual-Wayland FFVPX failure;
 its artifacts and evidence are quarantined and are not release inputs.
 
 Release tag: `v160.0-k3.9-20261120` at commit
-`6e8548fe57e632b1277c8bc91fec9bcbf4db3145`.
+`6e8548fe57e632b1277c8bc91fec9bcbf4db3145`. The `main` branch contains
+subsequent documentation and PPA-remediation evidence; the release tag has not
+been moved merely to update documentation.
 
 | Product | Version | Primary SHA256 |
 |---|---|---|
@@ -81,13 +83,50 @@ though the file exists in both the working tree and roundtrip extraction. The
 raw log is preserved in `artifacts/validation/firefox-source-lintian.log`.
 Accordingly, a zero-error full source-lintian result is **not** claimed.
 
+## PPA dependency remediation — MPP k3.9
+
+Launchpad's FFmpeg k3.2 build `33997822` failed during `install-deps`, before
+compilation. The official log reports that MPP's hard dependency
+`k1x-vpu-firmware | k3x-vpu-firmware` was not installable in the build chroot.
+The real `k3x-vpu-firmware` package used on K3 comes from the official
+`ppa:spacemit/k3` archive; no dummy firmware package was created.
+
+MPP `0.1.15+k3.9` moves that runtime alternative from `Depends` to `Recommends`.
+Normal apt installation still selects the real firmware by default, while a
+build chroot using `--no-install-recommends` can resolve MPP development files
+without runtime firmware in its archive. Decoder source and Firefox's strict
+hardware preferences are unchanged.
+
+Independent source extraction found exactly two k3.8-to-k3.9 differences:
+`debian/control` and `debian/changelog`. Binary and source lintian exited zero.
+An empty-dpkg-status apt simulation selected no firmware with recommends
+disabled and selected `k3x-vpu-firmware` with normal recommends enabled. A
+rebuilt ELF is not claimed to be byte-identical to the k3.8 build.
+
+The installed MPP k3.9 package retained firmware `4.5.0.20241231-1bb1` and
+passed a new four-codec regression:
+
+| Codec | Frames | PTS | Unique hashes per epoch | Epoch hashes | VPU IRQ delta | MPP errors |
+|---|---:|---|---|---|---:|---:|
+| H.264 | 1350 | `0..1349` | 450 / 450 / 450 | identical | 17936 | 0 |
+| HEVC | 1350 | `0..1349` | 450 / 450 / 450 | identical | 17774 | 0 |
+| VP8 | 1350 | `0..1349` | 450 / 450 / 450 | identical | 17740 | 0 |
+| VP9 | 1350 | `0..1349` | 450 / 450 / 450 | identical | 17822 | 0 |
+
+The reproducible packaging patch is
+`patches/k3-mpp-ppa-firmware-recommends.patch`. Evidence is recorded in
+`artifacts/validation/mpp-k39-packaging-validation.json`,
+`mpp-k39-native-validation.json`, and `mpp-k39-signature-verification.json`.
+The GitHub k3.8 binary remains the validated release asset; it is not relabeled
+as the PPA-only k3.9 packaging revision.
+
 ## Remote publication
 
 ### GitHub — independently verified
 
-- `main` and `v160.0-k3.9-20261120` resolve to commit
+- `v160.0-k3.9-20261120` resolves to commit
   `6e8548fe57e632b1277c8bc91fec9bcbf4db3145`.
-- New pre-release:
+- Pre-release:
   <https://github.com/HougeLangley/spacemit-k3-firefox-thunderbird/releases/tag/v160.0-k3.9-20261120>
 - The release contains eleven binary assets plus `SHA256SUMS`. All twelve files
   were downloaded again from GitHub; all eleven checksums passed, and the
@@ -97,32 +136,35 @@ Accordingly, a zero-error full source-lintian result is **not** claimed.
   SHA-256 are unchanged. The build-host/source-tag manifest retains the
   original Debian filename.
 
-### Launchpad — uploaded, builds/publication still in progress
+### Launchpad — MPP built; FFmpeg/Firefox publication not complete
 
-All three source uploads were signed with the newly registered key
+Source uploads were signed with the newly registered key
 `C4C81FA09FBEFA879F6E21A3444C383074940157`; Launchpad's API lists that
-fingerprint for `~mymathersname-gmail`. Every `.dsc` and `.changes` signature
-was verified locally before `dput`. FTP success is not treated as publication.
+fingerprint for `~mymathersname-gmail`. Every new MPP `.dsc`, `.buildinfo`, and
+`.changes` signature was verified locally before `dput`. FTP success is not
+treated as publication.
 
-Latest independently fetched state at `2026-11-20T23:14:21Z`:
+Latest independently fetched state at `2026-11-23T12:24Z`:
 
-| Source | Upload/build evidence | Current state |
+| Source | Source/build evidence | Current state |
 |---|---|---|
-| MPP k3.8 | sourcepub `18971839`; build `33997821` | source Published; riscv64 Needs building |
-| FFmpeg k3.2 | sourcepub `18971840`; build `33997822` | source Published; riscv64 Needs building |
-| Firefox k3.9 | sourcepub `18971844`; build `33997839` | source Published; riscv64 Needs building |
+| MPP k3.8 | sourcepub `18971839`; build `33997821` | source and riscv64 binary Published |
+| MPP k3.9 | sourcepub `18975916`; build `34004509` | source Published; riscv64 Successfully built; binary publication pending |
+| FFmpeg k3.2 | sourcepub `18971840`; build `33997822` | source Published; riscv64 Failed to build at install-deps; not yet retried |
+| Firefox k3.9 | sourcepub `18971844`; build `33997839` | source Published; riscv64 Currently building; no matching binary publication |
 
 Build links:
 <https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33997821>,
+<https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/34004509>,
 <https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33997822>,
 and
 <https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33997839>.
-No new PPA binary is claimed to be Published. At the same remote read, obsolete
-Firefox k3.4 build `33976658` was still `Currently building` on
-`bos03-riscv64-023` after its 2026-11-16 dispatch, and obsolete k3.5 build
-`33984218` was still queued. The new builds have not been dispatched. The
-Launchpad monitor continues to query exact new versions and primary binary
-publications; old Firefox build records are not evidence for this release.
+
+A direct read of the live riscv64 `Packages.gz` at `2026-11-23T12:13Z` still
+listed MPP k3.8, not k3.9. Therefore MPP k3.9 binary publication is not claimed.
+No FFmpeg or Firefox PPA binary is claimed to be Published. Firefox build
+`33997839` remains an active build record; obsolete Firefox build records are
+not evidence for this release.
 
 ## Security and scope
 

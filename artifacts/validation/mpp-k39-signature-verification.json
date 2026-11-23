@@ -1,0 +1,17 @@
+{
+  "mpp_0.1.15+k3.9.dsc": {
+    "exitCode": 0,
+    "expectedFingerprint": "C4C81FA09FBEFA879F6E21A3444C383074940157",
+    "verified": true
+  },
+  "mpp_0.1.15+k3.9_source.buildinfo": {
+    "exitCode": 0,
+    "expectedFingerprint": "C4C81FA09FBEFA879F6E21A3444C383074940157",
+    "verified": true
+  },
+  "mpp_0.1.15+k3.9_source.changes": {
+    "exitCode": 0,
+    "expectedFingerprint": "C4C81FA09FBEFA879F6E21A3444C383074940157",
+    "verified": true
+  }
+}

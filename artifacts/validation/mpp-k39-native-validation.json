@@ -1,0 +1,204 @@
+{
+  "startedAt": "2026-11-23T10:22:24.951361+00:00",
+  "mppVersion": "0.1.15+k3.9",
+  "results": {
+    "h264": {
+      "command": [
+        "sudo",
+        "-n",
+        "-u",
+        "ubuntu",
+        "-g",
+        "video",
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "warning",
+        "-c:v",
+        "h264_stcodec",
+        "-stream_loop",
+        "2",
+        "-i",
+        "/mnt/k3work/firefox-k3/tests/mpp-hw/long-samples/h264-15s.mp4",
+        "-map",
+        "0:v:0",
+        "-an",
+        "-f",
+        "framehash",
+        "-hash",
+        "sha256",
+        "/mnt/k3work/firefox-k3/tests/mpp-hw/long-samples/h264-loop3-k39-mpp-ppa-framehash.txt"
+      ],
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 6.443636633994174,
+      "irqBefore": {
+        " 55:          0          0          0          0          0          0          0          0          0          0          0          0          0          0          0          0 APLIC-MSI-e0804000.interrupt-controller  74 Level   -fasteoi   c0500000.linlon-v5": 0
+      },
+      "irqAfter": {
+        " 55:          0          0      17936          0          0          0          0          0          0          0          0          0          0          0          0          0 APLIC-MSI-e0804000.interrupt-controller  74 Level   -fasteoi   c0500000.linlon-v5": 17936
+      },
+      "irqDelta": 17936,
+      "frames": 1350,
+      "uniqueHashesPerEpoch": [
+        450,
+        450,
+        450
+      ],
+      "epochsIdentical": true,
+      "firstPts": 0,
+      "lastPts": 1349,
+      "mppErrors": 0,
+      "passed": true
+    },
+    "hevc": {
+      "command": [
+        "sudo",
+        "-n",
+        "-u",
+        "ubuntu",
+        "-g",
+        "video",
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "warning",
+        "-c:v",
+        "hevc_stcodec",
+        "-stream_loop",
+        "2",
+        "-i",
+        "/mnt/k3work/firefox-k3/tests/mpp-hw/long-samples/hevc-15s.mp4",
+        "-map",
+        "0:v:0",
+        "-an",
+        "-f",
+        "framehash",
+        "-hash",
+        "sha256",
+        "/mnt/k3work/firefox-k3/tests/mpp-hw/long-samples/hevc-loop3-k39-mpp-ppa-framehash.txt"
+      ],
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 6.0427712770033395,
+      "irqBefore": {
+        " 55:          0          0      17936          0          0          0          0          0          0          0          0          0          0          0          0          0 APLIC-MSI-e0804000.interrupt-controller  74 Level   -fasteoi   c0500000.linlon-v5": 17936
+      },
+      "irqAfter": {
+        " 55:          0          0      35710          0          0          0          0          0          0          0          0          0          0          0          0          0 APLIC-MSI-e0804000.interrupt-controller  74 Level   -fasteoi   c0500000.linlon-v5": 35710
+      },
+      "irqDelta": 17774,
+      "frames": 1350,
+      "uniqueHashesPerEpoch": [
+        450,
+        450,
+        450
+      ],
+      "epochsIdentical": true,
+      "firstPts": 0,
+      "lastPts": 1349,
+      "mppErrors": 0,
+      "passed": true
+    },
+    "vp8": {
+      "command": [
+        "sudo",
+        "-n",
+        "-u",
+        "ubuntu",
+        "-g",
+        "video",
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "warning",
+        "-c:v",
+        "vp8_stcodec",
+        "-stream_loop",
+        "2",
+        "-i",
+        "/mnt/k3work/firefox-k3/tests/mpp-hw/long-samples/vp8-15s.webm",
+        "-map",
+        "0:v:0",
+        "-an",
+        "-f",
+        "framehash",
+        "-hash",
+        "sha256",
+        "/mnt/k3work/firefox-k3/tests/mpp-hw/long-samples/vp8-loop3-k39-mpp-ppa-framehash.txt"
+      ],
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 5.113381097995443,
+      "irqBefore": {
+        " 55:          0          0      35710          0          0          0          0          0          0          0          0          0          0          0          0          0 APLIC-MSI-e0804000.interrupt-controller  74 Level   -fasteoi   c0500000.linlon-v5": 35710
+      },
+      "irqAfter": {
+        " 55:          0          0      53450          0          0          0          0          0          0          0          0          0          0          0          0          0 APLIC-MSI-e0804000.interrupt-controller  74 Level   -fasteoi   c0500000.linlon-v5": 53450
+      },
+      "irqDelta": 17740,
+      "frames": 1350,
+      "uniqueHashesPerEpoch": [
+        450,
+        450,
+        450
+      ],
+      "epochsIdentical": true,
+      "firstPts": 0,
+      "lastPts": 1349,
+      "mppErrors": 0,
+      "passed": true
+    },
+    "vp9": {
+      "command": [
+        "sudo",
+        "-n",
+        "-u",
+        "ubuntu",
+        "-g",
+        "video",
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "warning",
+        "-c:v",
+        "vp9_stcodec",
+        "-stream_loop",
+        "2",
+        "-i",
+        "/mnt/k3work/firefox-k3/tests/mpp-hw/long-samples/vp9-15s.webm",
+        "-map",
+        "0:v:0",
+        "-an",
+        "-f",
+        "framehash",
+        "-hash",
+        "sha256",
+        "/mnt/k3work/firefox-k3/tests/mpp-hw/long-samples/vp9-loop3-k39-mpp-ppa-framehash.txt"
+      ],
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 5.075544969004113,
+      "irqBefore": {
+        " 55:          0          0      53450          0          0          0          0          0          0          0          0          0          0          0          0          0 APLIC-MSI-e0804000.interrupt-controller  74 Level   -fasteoi   c0500000.linlon-v5": 53450
+      },
+      "irqAfter": {
+        " 55:          0          0      71272          0          0          0          0          0          0          0          0          0          0          0          0          0 APLIC-MSI-e0804000.interrupt-controller  74 Level   -fasteoi   c0500000.linlon-v5": 71272
+      },
+      "irqDelta": 17822,
+      "frames": 1350,
+      "uniqueHashesPerEpoch": [
+        450,
+        450,
+        450
+      ],
+      "epochsIdentical": true,
+      "firstPts": 0,
+      "lastPts": 1349,
+      "mppErrors": 0,
+      "passed": true
+    }
+  },
+  "finishedAt": "2026-11-23T10:22:47.708155+00:00",
+  "passed": true
+}

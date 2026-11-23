@@ -1,0 +1,25 @@
+{
+  "version": "0.1.15+k3.9",
+  "sourceDifferencesFromK38": [
+    "debian/changelog",
+    "debian/control"
+  ],
+  "binaryLintianExit": 0,
+  "sourceLintianExit": 0,
+  "emptyStatusAptSimulation": {
+    "installRecommendsFalse": {
+      "exitCode": 0,
+      "firmwareSelected": []
+    },
+    "installRecommendsTrue": {
+      "exitCode": 0,
+      "firmwareSelected": [
+        "k3x-vpu-firmware"
+      ]
+    }
+  },
+  "installedFirmwareVersion": "4.5.0.20241231-1bb1",
+  "hardwareRegression": "all-codecs-loop3-k39-mpp-ppa-validation.json",
+  "byteIdenticalRebuildClaimed": false,
+  "patch": "patches/k3-mpp-ppa-firmware-recommends.patch"
+}
