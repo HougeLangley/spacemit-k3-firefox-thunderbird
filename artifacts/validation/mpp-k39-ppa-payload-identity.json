@@ -1,0 +1,251 @@
+{
+  "checkedAt": "2026-11-24T13:32:36.014249+00:00",
+  "ppaDeb": "mpp_0.1.15+k3.9_riscv64.deb",
+  "ppaDebSha256": "8562cd4a5f95a6e7b51cba3d53050d8a73c5fee260570acc89546132a7bb59c8",
+  "scope": "every payload entry of the PPA mpp package under /usr/lib except the multiarch directory (FFmpeg payload)",
+  "entries": 20,
+  "identical": 20,
+  "differences": [],
+  "rows": [
+    {
+      "path": "/usr/lib/libfake_dec_plugin.so",
+      "ppa": [
+        "file",
+        "dfa02b5ce679a9fa57778fe7584f3a2ac24b4b8de5e3039af62869fce2c63684"
+      ],
+      "installed": [
+        "file",
+        "dfa02b5ce679a9fa57778fe7584f3a2ac24b4b8de5e3039af62869fce2c63684"
+      ],
+      "identical": true
+    },
+    {
+      "path": "/usr/lib/libjpu_plugin.so",
+      "ppa": [
+        "file",
+        "55766ad107297314959dfa292823ec30e5b5e17bc9969c0670aeca3fae3d4958"
+      ],
+      "installed": [
+        "file",
+        "55766ad107297314959dfa292823ec30e5b5e17bc9969c0670aeca3fae3d4958"
+      ],
+      "identical": true
+    },
+    {
+      "path": "/usr/lib/libsfomxil_plugin.so",
+      "ppa": [
+        "file",
+        "4eec7adc3ee76401be43d1982de616a1ce820957fc5eeafe89b1fc0e2842f234"
+      ],
+      "installed": [
+        "file",
+        "4eec7adc3ee76401be43d1982de616a1ce820957fc5eeafe89b1fc0e2842f234"
+      ],
+      "identical": true
+    },
+    {
+      "path": "/usr/lib/libspacemit_mpp.so",
+      "ppa": [
+        "link",
+        "libspacemit_mpp.so.0"
+      ],
+      "installed": [
+        "link",
+        "libspacemit_mpp.so.0"
+      ],
+      "identical": true
+    },
+    {
+      "path": "/usr/lib/libspacemit_mpp.so.0",
+      "ppa": [
+        "link",
+        "libspacemit_mpp.so.0.0.15"
+      ],
+      "installed": [
+        "link",
+        "libspacemit_mpp.so.0.0.15"
+      ],
+      "identical": true
+    },
+    {
+      "path": "/usr/lib/libspacemit_mpp.so.0.0.15",
+      "ppa": [
+        "file",
+        "96a9c37f0bb7e7500f951343ba57225d94c75bcbf86cc3ca9db388e60e490f47"
+      ],
+      "installed": [
+        "file",
+        "96a9c37f0bb7e7500f951343ba57225d94c75bcbf86cc3ca9db388e60e490f47"
+      ],
+      "identical": true
+    },
+    {
+      "path": "/usr/lib/libv2d_plugin.so",
+      "ppa": [
+        "file",
+        "360cafb1fb9621521d1551f01f2d4a15e0a351d4dcdb3d949529e042b649d32f"
+      ],
+      "installed": [
+        "file",
+        "360cafb1fb9621521d1551f01f2d4a15e0a351d4dcdb3d949529e042b649d32f"
+      ],
+      "identical": true
+    },
+    {
+      "path": "/usr/lib/libv4l2_linlonv5v7_codec.so",
+      "ppa": [
+        "file",
+        "542a2b5e9bb32953439696bd5b98cf6459eac2cb79d52b3ffcd7e1cb161b5b5c"
+      ],
+      "installed": [
+        "file",
+        "542a2b5e9bb32953439696bd5b98cf6459eac2cb79d52b3ffcd7e1cb161b5b5c"
+      ],
+      "identical": true
+    },
+    {
+      "path": "/usr/lib/libv4l2_standard_codec.so",
+      "ppa": [
+        "file",
+        "b0b918fbadb9d9277259106dd17ad396ffde44a56dbb1202fbd4cb3449d25a5c"
+      ],
+      "installed": [
+        "file",
+        "b0b918fbadb9d9277259106dd17ad396ffde44a56dbb1202fbd4cb3449d25a5c"
+      ],
+      "identical": true
+    },
+    {
+      "path": "/usr/lib/libvc8000.so",
+      "ppa": [
+        "file",
+        "da0b55a157fd5abab60388e52bfe9a4c191ce632ebfb4d55dbffab3fb876bbca"
+      ],
+      "installed": [
+        "file",
+        "da0b55a157fd5abab60388e52bfe9a4c191ce632ebfb4d55dbffab3fb876bbca"
+      ],
+      "identical": true
+    },
+    {
+      "path": "/usr/lib/libvi_file_plugin.so",
+      "ppa": [
+        "file",
+        "20a39fc3fc610902c3e8e14549903f5359f059b3c26757b6dbd9baca7c659190"
+      ],
+      "installed": [
+        "file",
+        "20a39fc3fc610902c3e8e14549903f5359f059b3c26757b6dbd9baca7c659190"
+      ],
+      "identical": true
+    },
+    {
+      "path": "/usr/lib/libvi_k1_cam_plugin.so",
+      "ppa": [
+        "file",
+        "0a53485146a5d3e9e859217e8f87d52754534820e3c137200d625103cfface53"
+      ],
+      "installed": [
+        "file",
+        "0a53485146a5d3e9e859217e8f87d52754534820e3c137200d625103cfface53"
+      ],
+      "identical": true
+    },
+    {
+      "path": "/usr/lib/libvi_v4l2_plugin.so",
+      "ppa": [
+        "file",
+        "aa75f7824ff127884d1dda6b8ec8dae3152a93ad40d72d559108367ec9f6dc2e"
+      ],
+      "installed": [
+        "file",
+        "aa75f7824ff127884d1dda6b8ec8dae3152a93ad40d72d559108367ec9f6dc2e"
+      ],
+      "identical": true
+    },
+    {
+      "path": "/usr/lib/libvo_file_plugin.so",
+      "ppa": [
+        "file",
+        "9f15e881ea40799e24b08fc8b25c1aa3939707987242b1e05c1efe9811a761f3"
+      ],
+      "installed": [
+        "file",
+        "9f15e881ea40799e24b08fc8b25c1aa3939707987242b1e05c1efe9811a761f3"
+      ],
+      "identical": true
+    },
+    {
+      "path": "/usr/lib/libvo_sdl2_plugin.so",
+      "ppa": [
+        "file",
+        "e4a62ce0ca578da179a50b9052c44e9335ab4b33c10f0cb1aad29c8a66e790e1"
+      ],
+      "installed": [
+        "file",
+        "e4a62ce0ca578da179a50b9052c44e9335ab4b33c10f0cb1aad29c8a66e790e1"
+      ],
+      "identical": true
+    },
+    {
+      "path": "/usr/lib/pkgconfig",
+      "ppa": [
+        "dir",
+        null
+      ],
+      "installed": [
+        "dir",
+        null
+      ],
+      "identical": true
+    },
+    {
+      "path": "/usr/lib/pkgconfig/spacemit_mpp.pc",
+      "ppa": [
+        "file",
+        "4ea3a8a0bbf1b86db3e3986105166032b898fcb3ed6dda6833e0079792ea092f"
+      ],
+      "installed": [
+        "file",
+        "4ea3a8a0bbf1b86db3e3986105166032b898fcb3ed6dda6833e0079792ea092f"
+      ],
+      "identical": true
+    },
+    {
+      "path": "/usr/lib/udev",
+      "ppa": [
+        "dir",
+        null
+      ],
+      "installed": [
+        "dir",
+        null
+      ],
+      "identical": true
+    },
+    {
+      "path": "/usr/lib/udev/rules.d",
+      "ppa": [
+        "dir",
+        null
+      ],
+      "installed": [
+        "dir",
+        null
+      ],
+      "identical": true
+    },
+    {
+      "path": "/usr/lib/udev/rules.d/99-video.rules",
+      "ppa": [
+        "file",
+        "78bd98aa6fb79df52d7676350221f1d1dd79b23a5493619acf8d3f4e147a8bd4"
+      ],
+      "installed": [
+        "file",
+        "78bd98aa6fb79df52d7676350221f1d1dd79b23a5493619acf8d3f4e147a8bd4"
+      ],
+      "identical": true
+    }
+  ]
+}

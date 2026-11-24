@@ -1,0 +1,447 @@
+{
+  "checkedAt": "2026-11-24T13:18:53.476606+00:00",
+  "archive_dependencies": {
+    "total_size": 1,
+    "entries": []
+  },
+  "sources": {
+    "ffmpeg": [
+      {
+        "id": "18971840",
+        "status": "Published",
+        "published": "2026-11-20T18:17:47.893513+00:00",
+        "removed": null,
+        "superseded": null
+      }
+    ],
+    "firefox": [
+      {
+        "id": "18971844",
+        "status": "Published",
+        "published": "2026-11-20T18:17:47.893513+00:00",
+        "removed": null,
+        "superseded": null
+      }
+    ],
+    "mpp": [
+      {
+        "id": "18975916",
+        "status": "Published",
+        "published": "2026-11-23T11:50:14.445641+00:00",
+        "removed": null,
+        "superseded": null
+      }
+    ]
+  },
+  "live_index_ffmpeg_k32": [
+    {
+      "package": "ffmpeg",
+      "filename": "pool/main/f/ffmpeg/ffmpeg_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "62e54aa3178a70982a232a807b1277d2bc91312ae494d7b706a97722f5b2a3ac",
+      "size": "2042582"
+    },
+    {
+      "package": "ffmpeg-doc",
+      "filename": "pool/main/f/ffmpeg/ffmpeg-doc_8.0.1-3ubuntu2bb1k3.2_all.deb",
+      "sha256": "52163ece046b58b0719233774441731304826d81210fe3e628ffc512b659c248",
+      "size": "2250672"
+    },
+    {
+      "package": "libavcodec-dev",
+      "filename": "pool/main/f/ffmpeg/libavcodec-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "0725b1d9822831f58c7c8450570d807be7c17a146d1ca6dc7f95cd15cf15eec7",
+      "size": "22578964"
+    },
+    {
+      "package": "libavcodec-extra",
+      "filename": "pool/main/f/ffmpeg/libavcodec-extra_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "649f2037795a0b7ff228e518de888bec4c3297351e502f27acac4b60314c118c",
+      "size": "22550"
+    },
+    {
+      "package": "libavcodec-extra62",
+      "filename": "pool/main/f/ffmpeg/libavcodec-extra62_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "4491a8e8ec830009df6c67200e1ffd752609f371af31c1d10cf3774ce58eb158",
+      "size": "9356472"
+    },
+    {
+      "package": "libavcodec62",
+      "filename": "pool/main/f/ffmpeg/libavcodec62_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "cd4cbb48c5201677a4cb895398c8d5da3580fbe6e001016b74e3a132b0c4f22e",
+      "size": "9351920"
+    },
+    {
+      "package": "libavdevice-dev",
+      "filename": "pool/main/f/ffmpeg/libavdevice-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "872d57d08e4d7c7438f11485d6ae3b7cb18065305b1bb328192f1c42b4ee1078",
+      "size": "180014"
+    },
+    {
+      "package": "libavdevice62",
+      "filename": "pool/main/f/ffmpeg/libavdevice62_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "9da41281e268b282dd887e80db89af05846e9b9c74b178bcc17246b4cdebecaa",
+      "size": "76424"
+    },
+    {
+      "package": "libavfilter-dev",
+      "filename": "pool/main/f/ffmpeg/libavfilter-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "c9ad07153f3457966f587ebfc33b8574c9fe610c151da4d7bc67487f441e4713",
+      "size": "6271610"
+    },
+    {
+      "package": "libavfilter-extra",
+      "filename": "pool/main/f/ffmpeg/libavfilter-extra_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "3931ab908fb1f54f14298441e5439cbcd8e0e44f2a5ba3eece522ac8629a67c3",
+      "size": "22544"
+    },
+    {
+      "package": "libavfilter-extra11",
+      "filename": "pool/main/f/ffmpeg/libavfilter-extra11_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "de88f3f56f3ecf13c4132eaca8ef739f6e52a8adf82818b8da6e6ff6e47c9cc0",
+      "size": "4559860"
+    },
+    {
+      "package": "libavfilter11",
+      "filename": "pool/main/f/ffmpeg/libavfilter11_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "3f59cebe2e8ab26f8b9b158b542e2c06b15f41f499ae6cc3d0668099fab2ac24",
+      "size": "4559044"
+    },
+    {
+      "package": "libavformat-dev",
+      "filename": "pool/main/f/ffmpeg/libavformat-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "db86a5d0fea43793b37369d1cf5b604febe7c616d9d7cf8fb1d17b999e22e985",
+      "size": "4736118"
+    },
+    {
+      "package": "libavformat-extra",
+      "filename": "pool/main/f/ffmpeg/libavformat-extra_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "bd42e5d6f2a24198034761f8e18edc8ec3a117acff5589af33b22e748f35fd95",
+      "size": "22556"
+    },
+    {
+      "package": "libavformat-extra62",
+      "filename": "pool/main/f/ffmpeg/libavformat-extra62_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "838314c1af37b2696a6de4fbb59d0bed23af453f6c9eda655fe027b7125c1def",
+      "size": "1370074"
+    },
+    {
+      "package": "libavformat62",
+      "filename": "pool/main/f/ffmpeg/libavformat62_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "dfa27ac61aff40327916e164edbdcfd38193f5bd6414b614c4ac830991f13f59",
+      "size": "1367548"
+    },
+    {
+      "package": "libavutil-dev",
+      "filename": "pool/main/f/ffmpeg/libavutil-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "907e25158a3af341dde17dcfe4b50f1a00589a9e5b07d7a563eb3afd342effe7",
+      "size": "1334470"
+    },
+    {
+      "package": "libavutil60",
+      "filename": "pool/main/f/ffmpeg/libavutil60_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "39bf4cff660599c8cc47156145463855ce54be9178ab189ce83cac8ac7389c9d",
+      "size": "425422"
+    },
+    {
+      "package": "libswresample-dev",
+      "filename": "pool/main/f/ffmpeg/libswresample-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "2ff8e0c8bd22cdd2f2b3f3546aa49c476228bf47c3a3ebf32b7d7f3c747299d8",
+      "size": "144674"
+    },
+    {
+      "package": "libswresample6",
+      "filename": "pool/main/f/ffmpeg/libswresample6_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "ef17bd6feca7ecafe388b22f0779bf7231621b0b9f03a37d415cf443e20a2eb9",
+      "size": "64408"
+    },
+    {
+      "package": "libswscale-dev",
+      "filename": "pool/main/f/ffmpeg/libswscale-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "16d7eba607e4b0fb6aae3972a53d429350cbdee103644d6377eb3634d436ebe9",
+      "size": "917182"
+    },
+    {
+      "package": "libswscale9",
+      "filename": "pool/main/f/ffmpeg/libswscale9_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "sha256": "afbc6b3f8f50607f6dc8014b57ea4af8138af3847db324b624e3948a55ca91e7",
+      "size": "272798"
+    }
+  ],
+  "live_index_mpp": [
+    {
+      "version": "0.1.15+k3.9",
+      "depends": "libc6 (>= 2.38), libsdl2-2.0-0 (>= 2.0.16)",
+      "recommends": "k1x-vpu-firmware | k3x-vpu-firmware",
+      "sha256": "8562cd4a5f95a6e7b51cba3d53050d8a73c5fee260570acc89546132a7bb59c8",
+      "filename": "pool/main/m/mpp/mpp_0.1.15+k3.9_riscv64.deb"
+    }
+  ],
+  "live_index_firefox_versions": [],
+  "live_index_other_sources": [
+    "",
+    "ffmpeg"
+  ],
+  "ffmpeg_k32_binary_publications": [
+    {
+      "binary": "ffmpeg",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137468"
+    },
+    {
+      "binary": "ffmpeg-doc",
+      "arch": "s390x",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137476"
+    },
+    {
+      "binary": "ffmpeg-doc",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137475"
+    },
+    {
+      "binary": "ffmpeg-doc",
+      "arch": "ppc64el",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137474"
+    },
+    {
+      "binary": "ffmpeg-doc",
+      "arch": "i386",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137473"
+    },
+    {
+      "binary": "ffmpeg-doc",
+      "arch": "armhf",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137472"
+    },
+    {
+      "binary": "ffmpeg-doc",
+      "arch": "arm64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137471"
+    },
+    {
+      "binary": "ffmpeg-doc",
+      "arch": "amd64v3",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137470"
+    },
+    {
+      "binary": "ffmpeg-doc",
+      "arch": "amd64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137469"
+    },
+    {
+      "binary": "libavcodec-dev",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137477"
+    },
+    {
+      "binary": "libavcodec-extra",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137478"
+    },
+    {
+      "binary": "libavcodec-extra62",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137479"
+    },
+    {
+      "binary": "libavcodec62",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137480"
+    },
+    {
+      "binary": "libavdevice-dev",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137481"
+    },
+    {
+      "binary": "libavdevice62",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137482"
+    },
+    {
+      "binary": "libavfilter-dev",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137483"
+    },
+    {
+      "binary": "libavfilter-extra",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137484"
+    },
+    {
+      "binary": "libavfilter-extra11",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137485"
+    },
+    {
+      "binary": "libavfilter11",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137486"
+    },
+    {
+      "binary": "libavformat-dev",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137487"
+    },
+    {
+      "binary": "libavformat-extra",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137488"
+    },
+    {
+      "binary": "libavformat-extra62",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137489"
+    },
+    {
+      "binary": "libavformat62",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137490"
+    },
+    {
+      "binary": "libavutil-dev",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137491"
+    },
+    {
+      "binary": "libavutil60",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137492"
+    },
+    {
+      "binary": "libswresample-dev",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137493"
+    },
+    {
+      "binary": "libswresample6",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137494"
+    },
+    {
+      "binary": "libswscale-dev",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137495"
+    },
+    {
+      "binary": "libswscale9",
+      "arch": "riscv64",
+      "status": "Published",
+      "published": "2026-11-23T17:19:54.309373+00:00",
+      "build": "33997822",
+      "pub_id": "254137496"
+    }
+  ],
+  "firefox_build_full": {
+    "self_link": "https://api.launchpad.net/1.0/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33997839",
+    "web_link": "https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33997839",
+    "resource_type_link": "https://api.launchpad.net/1.0/#build",
+    "datecreated": "2026-11-20T17:42:58.741729+00:00",
+    "datebuilt": null,
+    "date_first_dispatched": "2026-11-22T16:34:31.319994+00:00",
+    "builder_link": "https://api.launchpad.net/1.0/builders/bos03-riscv64-018",
+    "buildstate": "Currently building",
+    "build_log_url": null,
+    "title": "riscv64 build of firefox 160.0+build1-0ubuntu0.26.04.1~mt1k3.9 in ubuntu resolute RELEASE",
+    "dependencies": null,
+    "can_be_rescored": false,
+    "can_be_retried": false,
+    "can_be_cancelled": true,
+    "archive_link": "https://api.launchpad.net/1.0/~mymathersname-gmail/+archive/ubuntu/ppa",
+    "pocket": "Release",
+    "upload_log_url": null,
+    "distribution_link": "https://api.launchpad.net/1.0/ubuntu",
+    "distro_series_link": "https://api.launchpad.net/1.0/ubuntu/resolute",
+    "current_source_publication_link": "https://api.launchpad.net/1.0/~mymathersname-gmail/+archive/ubuntu/ppa/+sourcepub/18971844",
+    "source_package_name": "firefox",
+    "source_package_version": "160.0+build1-0ubuntu0.26.04.1~mt1k3.9",
+    "arch_tag": "riscv64",
+    "changesfile_url": null,
+    "buildinfo_url": null,
+    "score": 2510,
+    "http_etag": "\"11889cc38a4cdca207af67be9dda110e06dc7861-ccb9b606dc32a75c5e37dea2382e812963cf5483\""
+  }
+}

@@ -1,0 +1,226 @@
+{
+  "analysedAt": "2026-11-24T13:35:33.090841+00:00",
+  "buildId": "33997822",
+  "buildUrl": "https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33997822",
+  "logUrl": "https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33997822/+files/buildlog_ubuntu-resolute-riscv64.ffmpeg_7%3A8.0.1-3ubuntu2bb1k3.2_BUILDING.txt.gz",
+  "logSha256": "fda411c8b7a9328567acfd10ffc5768d9e1684702a48b9e3b0aa105bfd5a0d8d",
+  "logLines": 13018,
+  "start": {
+    "line": 2,
+    "lineLength": 26,
+    "text": "[Mon Nov 23 10:10:41 2026]",
+    "excerpts": []
+  },
+  "finished": {
+    "line": 13014,
+    "lineLength": 32,
+    "text": "Finished at 2026-11-23T16:44:09Z",
+    "excerpts": []
+  },
+  "duration": {
+    "line": 13015,
+    "lineLength": 42,
+    "text": "Build needed 06:13:32, 5704720k disk space",
+    "excerpts": []
+  },
+  "status": {
+    "line": 13011,
+    "lineLength": 18,
+    "text": "Status: successful",
+    "excerpts": []
+  },
+  "buildTimeSeconds": {
+    "line": 13001,
+    "lineLength": 17,
+    "text": "Build-Time: 19789",
+    "excerpts": []
+  },
+  "installTimeSeconds": {
+    "line": 13004,
+    "lineLength": 18,
+    "text": "Install-Time: 2516",
+    "excerpts": []
+  },
+  "dependencyOrAptErrorLines": 0,
+  "facts": [
+    {
+      "fact": "Build chroot sources list includes the real firmware provider with an apt pin",
+      "evidence": [
+        {
+          "line": 15,
+          "lineLength": 613,
+          "text": "RUN: /usr/share/launchpad-buildd/bin/in-target override-sources-list --backend=chroot --series=resolute --abi-tag=riscv64 --isa-tag=riscv64 PACKAGEBUILD-33997822 --pin LP-PPA-spacemit-k3:500 'deb http://ppa.launchpadcontent.net/mymathersname-gmail/ppa/ubuntu resolute main' 'deb http://ppa.launchpadcontent.net/spacemit/k3/ubuntu resolute main' 'deb http://ftpmaster.internal/ubuntu resolute main restricted universe multiverse' 'deb http://ftpmaster.internal/ubuntu resolute-security main restricted universe multiverse' 'deb http://ftpmaster.internal/ubuntu resolute-updates main restricted universe multiverse'",
+          "excerpts": [
+            "a-tag=riscv64 PACKAGEBUILD-33997822 --pin LP-PPA-spacemit-k3:500 'deb http://ppa.launchpadcontent.net/mymathersname-gmail/ppa/ubuntu resolute main' 'deb http://ppa.launchpadcontent.net/spacemit/k3/ubuntu resolute main' 'deb http://ftpmaster.internal/ubuntu resolute main restricted universe multiverse' 'deb http://ftpmaster.internal/ubuntu resolute-security main",
+            "r/share/launchpad-buildd/bin/in-target override-sources-list --backend=chroot --series=resolute --abi-tag=riscv64 --isa-tag=riscv64 PACKAGEBUILD-33997822 --pin LP-PPA-spacemit-k3:500 'deb http://ppa.launchpadcontent.net/mymathersname-gmail/ppa/ubuntu resolute main' 'deb http://ppa.launchpadcontent.net/spacemit/k3/ubuntu resolute main' 'deb "
+          ]
+        }
+      ]
+    },
+    {
+      "fact": "Real firmware fetched from the official SpacemiT PPA",
+      "evidence": [
+        {
+          "line": 790,
+          "lineLength": 132,
+          "text": "Get:3 http://ppa.launchpadcontent.net/spacemit/k3/ubuntu resolute/main riscv64 k3x-vpu-firmware riscv64 4.5.0.20241231-1bb1 [741 kB]",
+          "excerpts": [
+            "Get:3 http://ppa.launchpadcontent.net/spacemit/k3/ubuntu resolute/main riscv64 k3x-vpu-firmware riscv64 4.5.0.20241231-1bb1 [741 kB]"
+          ]
+        }
+      ]
+    },
+    {
+      "fact": "Real firmware unpacked",
+      "evidence": [
+        {
+          "line": 1841,
+          "lineLength": 57,
+          "text": "Selecting previously unselected package k3x-vpu-firmware.",
+          "excerpts": [
+            "Selecting previously unselected package k3x-vpu-firmware."
+          ]
+        },
+        {
+          "line": 1842,
+          "lineLength": 80,
+          "text": "Preparing to unpack .../135-k3x-vpu-firmware_4.5.0.20241231-1bb1_riscv64.deb ...",
+          "excerpts": [
+            "Preparing to unpack .../135-k3x-vpu-firmware_4.5.0.20241231-1bb1_riscv64.deb ..."
+          ]
+        },
+        {
+          "line": 1843,
+          "lineLength": 52,
+          "text": "Unpacking k3x-vpu-firmware (4.5.0.20241231-1bb1) ...",
+          "excerpts": [
+            "Unpacking k3x-vpu-firmware (4.5.0.20241231-1bb1) ..."
+          ]
+        }
+      ]
+    },
+    {
+      "fact": "MPP installed in the chroot was k3.8 (hard firmware Depends), not k3.9",
+      "evidence": [
+        {
+          "line": 3039,
+          "lineLength": 59,
+          "text": "Preparing to unpack .../534-mpp_0.1.15+k3.8_riscv64.deb ...",
+          "excerpts": [
+            "Preparing to unpack .../534-mpp_0.1.15+k3.8_riscv64.deb ..."
+          ]
+        },
+        {
+          "line": 3040,
+          "lineLength": 31,
+          "text": "Unpacking mpp (0.1.15+k3.8) ...",
+          "excerpts": [
+            "Unpacking mpp (0.1.15+k3.8) ..."
+          ]
+        },
+        {
+          "line": 3802,
+          "lineLength": 32,
+          "text": "Setting up mpp (0.1.15+k3.8) ...",
+          "excerpts": [
+            "Setting up mpp (0.1.15+k3.8) ..."
+          ]
+        },
+        {
+          "line": 10514,
+          "lineLength": 21,
+          "text": " mpp (= 0.1.15+k3.8),",
+          "excerpts": [
+            " mpp (= 0.1.15+k3.8),"
+          ]
+        }
+      ]
+    },
+    {
+      "fact": "Source built",
+      "evidence": [
+        {
+          "line": 4009,
+          "lineLength": 63,
+          "text": "dpkg-buildpackage: info: source version 7:8.0.1-3ubuntu2bb1k3.2",
+          "excerpts": [
+            "dpkg-buildpackage: info: source version 7:8.0.1-3ubuntu2bb1k3.2"
+          ]
+        }
+      ]
+    },
+    {
+      "fact": "configure enables stcodec and links libspacemit_mpp",
+      "evidence": [
+        {
+          "line": 4028,
+          "lineLength": 1580,
+          "text": "cd debian/standard && ../../configure --prefix=/usr --extra-version=\"3ubuntu2bb1k3.2\" --toolchain=hardened --libdir=/usr/lib/riscv64-linux-gnu --incdir=/usr/include/riscv64-linux-gnu --arch=riscv64 --enable-gpl --disable-stripping --disable-pocketsphinx --disable-libcaca --disable-libmfx --disable-omx --enable-gnutls --enable-libaom --enable-libass --enable-libbs2b --enable-libcdio --enable-libcodec2 --enable-libdav1d --enable-libflite --enable-libfontconfig --enable-libfreetype --enable-libfribidi --enable-libglslang --enable-libgme --enable-libgsm --enable-libharfbuzz --enable-libmp3lame --enable-libmysofa --enable-libopenjpeg --enable-libopenmpt --enable-libopus --enable-librubberband --enable-libshine --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libtheora --enable-libtwolame --enable-libvidstab --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx265 --enable-libxml2 --enable-libxvid --enable-libzimg --enable-openal --enable-opencl --enable-opengl --enable-sdl2 --disable-sndio --extra-libs=-lspacemit_mpp --enable-stcodec --disable-libvpl --enable-libdc1394 --enable-libdrm --enable-libiec61883 --enable-chromaprint --enable-frei0r --enable-ladspa --enable-libbluray --enable-libdvdnav --enable-libdvdread --enable-libjack --enable-libjxl --enable-libpulse --enable-librabbitmq --enable-librist --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libx264 --enable-libzmq --enable-libzvbi --enable-lv2 --enable-sdl2 --enable-libplacebo --enable-librav1e --enable-librsvg --enable-shared || (cat ffbuild/config.log && exit 1)",
+          "excerpts": [
+            "65 --enable-libxml2 --enable-libxvid --enable-libzimg --enable-openal --enable-opencl --enable-opengl --enable-sdl2 --disable-sndio --extra-libs=-lspacemit_mpp --enable-stcodec --disable-libvpl --enable-libdc1394 --enable-libdrm --enable-libiec61883 --enable-chromaprint --enable-frei0r --enable-ladspa --enable-libbluray --enable-libdv",
+            " --enable-libx265 --enable-libxml2 --enable-libxvid --enable-libzimg --enable-openal --enable-opencl --enable-opengl --enable-sdl2 --disable-sndio --extra-libs=-lspacemit_mpp --enable-stcodec --disable-libvpl --enable-libdc1394 --enable-libdrm --enable-libiec61883 --enable-chromaprint --enable-frei0r --enable-ladspa --enable-libblur"
+          ]
+        }
+      ]
+    },
+    {
+      "fact": "Hardware decoders present in the built library",
+      "evidence": [
+        {
+          "line": 4112,
+          "lineLength": 52,
+          "text": "adpcm_ea_r2             h264_stcodec            qdm2",
+          "excerpts": [
+            "adpcm_ea_r2             h264_stcodec            qdm2"
+          ]
+        },
+        {
+          "line": 4119,
+          "lineLength": 52,
+          "text": "adpcm_ima_alp           hevc_stcodec            r10k",
+          "excerpts": [
+            "adpcm_ima_alp           hevc_stcodec            r10k"
+          ]
+        },
+        {
+          "line": 4223,
+          "lineLength": 59,
+          "text": "dds                     mvha                    vp8_stcodec",
+          "excerpts": [
+            "dds                     mvha                    vp8_stcodec"
+          ]
+        },
+        {
+          "line": 4226,
+          "lineLength": 59,
+          "text": "dfpwm                   nellymoser              vp9_stcodec",
+          "excerpts": [
+            "dfpwm                   nellymoser              vp9_stcodec"
+          ]
+        }
+      ]
+    },
+    {
+      "fact": "Runtime dependency floor of the published libraries",
+      "evidence": [
+        {
+          "line": 11903,
+          "lineLength": 1008,
+          "text": " Depends: libaom3 (>= 3.2.0), libaribb24-0t64 (>= 1.0.3), libavutil60 (= 7:8.0.1-3ubuntu2bb1k3.2), libc6 (>= 2.38), libcairo2 (>= 1.2.4), libcodec2-1.2 (>= 1.2.0), libdav1d7 (>= 1.1.0), libglib2.0-0t64 (>= 2.12.0), libgsm1 (>= 1.0.18), libjxl0.11 (>= 0.8.0), liblzma5 (>= 5.1.1alpha+20120614), libmp3lame0 (>= 3.100), libopencore-amrnb0 (>= 0.1.6), libopencore-amrwb0 (>= 0.1.6), libopenjp2-7 (>= 2.1), libopus0 (>= 1.1), librav1e0.8 (>= 0.5.1), librsvg2-2 (>= 2.52.5), libshine3 (>= 3.1.0), libsnappy1v5 (>= 1.2.2), libspeex1 (>= 1.2~), libstdc++6 (>= 13.1), libsvtav1enc2 (>= 2.2.1), libswresample6 (>= 7:8.0.1), libtheoradec2 (>= 1.2), libtheoraenc2 (>= 1.2), libtwolame0 (>= 0.3.10), libva2 (>= 2.9.0), libvo-amrwbenc0 (>= 0.1.3), libvorbis0a (>= 1.1.2), libvorbisenc2 (>= 1.1.2), libvpx12 (>= 1.16.0), libwebp7 (>= 1.5.0), libwebpmux3 (>= 1.5.0), libx264-165 (>= 2:0.165.3222+gitb35605ac), libx265-215 (>= 4.1), libxvidcore4 (>= 1.2.2), libzvbi0t64 (>= 0.2.35), mpp (>= 0.1.15+k3.8), zlib1g (>= 1:1.2.0)",
+          "excerpts": [
+            "libwebp7 (>= 1.5.0), libwebpmux3 (>= 1.5.0), libx264-165 (>= 2:0.165.3222+gitb35605ac), libx265-215 (>= 4.1), libxvidcore4 (>= 1.2.2), libzvbi0t64 (>= 0.2.35), mpp (>= 0.1.15+k3.8), zlib1g (>= 1:1.2.0)"
+          ]
+        },
+        {
+          "line": 12005,
+          "lineLength": 890,
+          "text": " Depends: libaom3 (>= 3.2.0), libavutil60 (= 7:8.0.1-3ubuntu2bb1k3.2), libc6 (>= 2.38), libcairo2 (>= 1.2.4), libcodec2-1.2 (>= 1.2.0), libdav1d7 (>= 1.1.0), libglib2.0-0t64 (>= 2.12.0), libgsm1 (>= 1.0.18), libjxl0.11 (>= 0.8.0), liblzma5 (>= 5.1.1alpha+20120614), libmp3lame0 (>= 3.100), libopenjp2-7 (>= 2.1), libopus0 (>= 1.1), librav1e0.8 (>= 0.5.1), librsvg2-2 (>= 2.52.5), libshine3 (>= 3.1.0), libsnappy1v5 (>= 1.2.2), libspeex1 (>= 1.2~), libstdc++6 (>= 13.1), libsvtav1enc2 (>= 2.2.1), libswresample6 (>= 7:8.0.1), libtheoradec2 (>= 1.2), libtheoraenc2 (>= 1.2), libtwolame0 (>= 0.3.10), libva2 (>= 2.9.0), libvorbis0a (>= 1.1.2), libvorbisenc2 (>= 1.1.2), libvpx12 (>= 1.16.0), libwebp7 (>= 1.5.0), libwebpmux3 (>= 1.5.0), libx264-165 (>= 2:0.165.3222+gitb35605ac), libx265-215 (>= 4.1), libxvidcore4 (>= 1.2.2), libzvbi0t64 (>= 0.2.35), mpp (>= 0.1.15+k3.8), zlib1g (>= 1:1.2.0)",
+          "excerpts": [
+            "libwebp7 (>= 1.5.0), libwebpmux3 (>= 1.5.0), libx264-165 (>= 2:0.165.3222+gitb35605ac), libx265-215 (>= 4.1), libxvidcore4 (>= 1.2.2), libzvbi0t64 (>= 0.2.35), mpp (>= 0.1.15+k3.8), zlib1g (>= 1:1.2.0)"
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": "The retried k3.2 build succeeded because the build chroot could install the real k3x-vpu-firmware through the archive dependency on ppa:spacemit/k3, which satisfies MPP k3.8's hard firmware Depends. It did not use MPP k3.9. MPP k3.9 (firmware moved to Recommends) was published afterwards at 2026-11-23T13:11:02Z and independently removes the hard build-time firmware requirement."
+}

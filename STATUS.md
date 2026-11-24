@@ -1,4 +1,4 @@
-# K3 Firefox / Thunderbird status — 2026-11-23
+# K3 Firefox / Thunderbird status — 2026-11-24
 
 ## Validated local candidate
 
@@ -85,9 +85,10 @@ Accordingly, a zero-error full source-lintian result is **not** claimed.
 
 ## PPA dependency remediation — MPP k3.9
 
-Launchpad's FFmpeg k3.2 build `33997822` failed during `install-deps`, before
-compilation. The official log reports that MPP's hard dependency
-`k1x-vpu-firmware | k3x-vpu-firmware` was not installable in the build chroot.
+The first attempt of Launchpad's FFmpeg k3.2 build `33997822` failed during
+`install-deps`, before compilation. Its failure log reported that MPP's hard
+dependency `k1x-vpu-firmware | k3x-vpu-firmware` was not installable in the
+build chroot, which at that time had no firmware provider.
 The real `k3x-vpu-firmware` package used on K3 comes from the official
 `ppa:spacemit/k3` archive; no dummy firmware package was created.
 
@@ -120,6 +121,30 @@ The reproducible packaging patch is
 The GitHub k3.8 binary remains the validated release asset; it is not relabeled
 as the PPA-only k3.9 packaging revision.
 
+### What made the retried FFmpeg k3.2 build succeed
+
+The official log of the successful retry of build `33997822` shows two facts
+that an earlier revision of this page recorded incorrectly:
+
+- The retry ran from `2026-11-23T10:10:41Z` to `2026-11-23T16:44:09Z`
+  (`Status: successful`, 6 h 13 min 32 s). Its chroot used an archive
+  dependency on `ppa:spacemit/k3` (apt pin `LP-PPA-spacemit-k3:500`); the
+  Launchpad API now reports one archive dependency.
+- The chroot installed MPP `0.1.15+k3.8` together with the real
+  `k3x-vpu-firmware 4.5.0.20241231-1bb1`. The build passed `install-deps`
+  through the real firmware provider, not through MPP k3.9, whose binary was
+  published only at `13:11:02Z`.
+
+Correction: the state recorded at `2026-11-23T12:24Z` said that the build had
+not been retried and that archive dependencies were empty. The official build
+log contradicts both statements; they are withdrawn. No dummy firmware was
+involved in either path.
+
+Line-referenced excerpts are in
+`artifacts/validation/ffmpeg-k32-launchpad-build-analysis.json`. MPP k3.9
+remains published and independently removes the hard build-time firmware
+requirement, so later builds resolve even without the external archive.
+
 ## Remote publication
 
 ### GitHub — independently verified
@@ -136,7 +161,7 @@ as the PPA-only k3.9 packaging revision.
   SHA-256 are unchanged. The build-host/source-tag manifest retains the
   original Debian filename.
 
-### Launchpad — MPP published; FFmpeg/Firefox publication not complete
+### Launchpad — MPP and FFmpeg published; Firefox still building
 
 Source uploads were signed with the newly registered key
 `C4C81FA09FBEFA879F6E21A3444C383074940157`; Launchpad's API lists that
@@ -144,14 +169,14 @@ fingerprint for `~mymathersname-gmail`. Every new MPP `.dsc`, `.buildinfo`, and
 `.changes` signature was verified locally before `dput`. FTP success is not
 treated as publication.
 
-Latest independently fetched state at `2026-11-23T13:28Z`:
+Latest independently fetched state at `2026-11-24T13:15Z`:
 
 | Source | Source/build evidence | Current state |
 |---|---|---|
-| MPP k3.8 | sourcepub `18971839`; build `33997821` | superseded by k3.9; previous build/publication evidence retained |
-| MPP k3.9 | sourcepub `18975916`; build `34004509`; binarypub `254124874` | source and riscv64 binary Published; Successfully built |
-| FFmpeg k3.2 | sourcepub `18971840`; build `33997822` | source Published; riscv64 Currently building after retry; no matching binary publication |
-| Firefox k3.9 | sourcepub `18971844`; build `33997839` | source Published; riscv64 Currently building; no matching binary publication |
+| MPP k3.8 | sourcepub `18971839`; build `33997821` | superseded by k3.9; no longer in the live riscv64 index |
+| MPP k3.9 | sourcepub `18975916`; build `34004509`; binarypub `254124874` | source and riscv64 binary Published (binary at `2026-11-23T13:11:02Z`) |
+| FFmpeg k3.2 | sourcepub `18971840`; build `33997822` | source Published; riscv64 build Successfully built; all 22 riscv64 binaries Published (`2026-11-23T17:19:54Z`) and listed in the live index |
+| Firefox k3.9 | sourcepub `18971844`; build `33997839` | source Published; riscv64 Currently building on `bos03-riscv64-018` since `2026-11-22T16:34:31Z`; no binary publication |
 
 Build links:
 <https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33997821>,
@@ -160,12 +185,44 @@ Build links:
 and
 <https://launchpad.net/~mymathersname-gmail/+archive/ubuntu/ppa/+build/33997839>.
 
-MPP k3.9 binary publication `254124874` became Published at
-`2026-11-23T13:11:02Z`. A direct read of the live riscv64 `Packages.gz` at
-`2026-11-23T13:28Z` listed only MPP k3.9, with firmware in `Recommends` and no
-hard firmware dependency in `Depends`. No FFmpeg or Firefox PPA binary is
-claimed to be Published. Firefox build `33997839` remains an active build
-record; obsolete Firefox build records are not evidence for this release.
+A direct read of the live riscv64 `Packages.gz` at `2026-11-24T13:15Z` lists
+MPP k3.9 with firmware in `Recommends` and no hard firmware dependency in
+`Depends`, plus all 22 FFmpeg k3.2 riscv64 packages. `ffmpeg-doc`
+(architecture `all`) is also published for the archive's other architectures;
+no non-riscv64 FFmpeg library is claimed. No Firefox PPA binary is published.
+Firefox build `33997839` remains an active build record; obsolete Firefox
+build records are not evidence for this release.
+
+### PPA-published FFmpeg binaries pass the hardware regression
+
+On `2026-11-24` the published riscv64 `.deb` files were downloaded from the
+PPA pool, each verified against the SHA-256 in the live `Packages.gz`,
+unpacked without installing, and run directly on the K3. `/usr/bin/ffmpeg`
+came from the published package and all eight project libraries resolved to
+the unpacked files. The installed MPP payload was compared with the published
+MPP k3.9 package: 20 of 20 `/usr/lib` entries (17 files and symlinks,
+including `libv4l2_linlonv5v7_codec.so`) are byte-identical.
+
+| Codec | Frames | PTS | Unique hashes per epoch | Epoch hashes | VPU IRQ delta | MPP errors |
+|---|---:|---|---|---|---:|---:|
+| H.264 | 1350 | `0..1349` | 450 / 450 / 450 | identical | 18750 | 0 |
+| HEVC | 1350 | `0..1349` | 450 / 450 / 450 | identical | 19107 | 0 |
+| VP8 | 1350 | `0..1349` | 450 / 450 / 450 | identical | 18398 | 0 |
+| VP9 | 1350 | `0..1349` | 450 / 450 / 450 | identical | 20505 | 0 |
+
+Every decoded frame hash equals the earlier locally built validation, so the
+published library decodes the same frames as the validated candidate. The
+Launchpad-built packages are not all byte-identical to the local build (15 of
+22 match; the runtime libraries `libavcodec62`, `libavutil60`, `libswscale9`,
+and `libavfilter11` differ), which is why the published files were tested
+separately. Evidence: `ffmpeg-k32-ppa-published-hardware-validation.json`,
+`ffmpeg-k32-ppa-deb-identity.json`, `mpp-k39-ppa-payload-identity.json`, and
+`ffmpeg-k32-ppa-publication-state.json` in `artifacts/validation/`.
+
+FFmpeg k3.3 (only the MPP floor raised to k3.9) was built and validated
+locally but deliberately not uploaded: it would supersede a Published,
+validated k3.2 with no functional change. Its record is
+`ffmpeg-k33-local-only-validation.json`.
 
 ## Security and scope
 

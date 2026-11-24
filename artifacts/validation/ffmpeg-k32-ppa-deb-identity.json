@@ -1,0 +1,221 @@
+{
+  "checkedAt": "2026-11-24T13:30:50.608888+00:00",
+  "indexSnapshot": "launchpad-remote-state-20261124T1315Z.json",
+  "ffmpeg": [
+    {
+      "package": "ffmpeg",
+      "file": "ffmpeg_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "62e54aa3178a70982a232a807b1277d2bc91312ae494d7b706a97722f5b2a3ac",
+      "downloadedSha256": "62e54aa3178a70982a232a807b1277d2bc91312ae494d7b706a97722f5b2a3ac",
+      "downloadedMatchesIndex": true,
+      "localBuildSha256": "62e54aa3178a70982a232a807b1277d2bc91312ae494d7b706a97722f5b2a3ac",
+      "localBuildMatchesIndex": true,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/ffmpeg_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    },
+    {
+      "package": "ffmpeg-doc",
+      "file": "ffmpeg-doc_8.0.1-3ubuntu2bb1k3.2_all.deb",
+      "indexSha256": "52163ece046b58b0719233774441731304826d81210fe3e628ffc512b659c248",
+      "localBuildSha256": "d38a4f5d81a391b0c1019a6c40a1b7c2b95a7562e2426e5d3351bb5ae7cf2bf7",
+      "localBuildMatchesIndex": false,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/ffmpeg-doc_8.0.1-3ubuntu2bb1k3.2_all.deb"
+    },
+    {
+      "package": "libavcodec-dev",
+      "file": "libavcodec-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "0725b1d9822831f58c7c8450570d807be7c17a146d1ca6dc7f95cd15cf15eec7",
+      "downloadedSha256": "0725b1d9822831f58c7c8450570d807be7c17a146d1ca6dc7f95cd15cf15eec7",
+      "downloadedMatchesIndex": true,
+      "localBuildSha256": "0725b1d9822831f58c7c8450570d807be7c17a146d1ca6dc7f95cd15cf15eec7",
+      "localBuildMatchesIndex": true,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/libavcodec-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    },
+    {
+      "package": "libavcodec-extra",
+      "file": "libavcodec-extra_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "649f2037795a0b7ff228e518de888bec4c3297351e502f27acac4b60314c118c",
+      "localBuildSha256": "649f2037795a0b7ff228e518de888bec4c3297351e502f27acac4b60314c118c",
+      "localBuildMatchesIndex": true,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/libavcodec-extra_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    },
+    {
+      "package": "libavcodec-extra62",
+      "file": "libavcodec-extra62_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "4491a8e8ec830009df6c67200e1ffd752609f371af31c1d10cf3774ce58eb158",
+      "localBuildSha256": "a965809b11a48dc8e3749fa2f3bd9c21989409b07a04c3c73933d9fab00580ee",
+      "localBuildMatchesIndex": false,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/libavcodec-extra62_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    },
+    {
+      "package": "libavcodec62",
+      "file": "libavcodec62_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "cd4cbb48c5201677a4cb895398c8d5da3580fbe6e001016b74e3a132b0c4f22e",
+      "downloadedSha256": "cd4cbb48c5201677a4cb895398c8d5da3580fbe6e001016b74e3a132b0c4f22e",
+      "downloadedMatchesIndex": true,
+      "localBuildSha256": "64bbb5dfaa0ce9ebc5bcce44ba0b6f3ac6b4a1266133504bd34473f256494471",
+      "localBuildMatchesIndex": false,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/libavcodec62_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    },
+    {
+      "package": "libavdevice-dev",
+      "file": "libavdevice-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "872d57d08e4d7c7438f11485d6ae3b7cb18065305b1bb328192f1c42b4ee1078",
+      "downloadedSha256": "872d57d08e4d7c7438f11485d6ae3b7cb18065305b1bb328192f1c42b4ee1078",
+      "downloadedMatchesIndex": true,
+      "localBuildSha256": "872d57d08e4d7c7438f11485d6ae3b7cb18065305b1bb328192f1c42b4ee1078",
+      "localBuildMatchesIndex": true,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/libavdevice-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    },
+    {
+      "package": "libavdevice62",
+      "file": "libavdevice62_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "9da41281e268b282dd887e80db89af05846e9b9c74b178bcc17246b4cdebecaa",
+      "downloadedSha256": "9da41281e268b282dd887e80db89af05846e9b9c74b178bcc17246b4cdebecaa",
+      "downloadedMatchesIndex": true,
+      "localBuildSha256": "9da41281e268b282dd887e80db89af05846e9b9c74b178bcc17246b4cdebecaa",
+      "localBuildMatchesIndex": true,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/libavdevice62_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    },
+    {
+      "package": "libavfilter-dev",
+      "file": "libavfilter-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "c9ad07153f3457966f587ebfc33b8574c9fe610c151da4d7bc67487f441e4713",
+      "downloadedSha256": "c9ad07153f3457966f587ebfc33b8574c9fe610c151da4d7bc67487f441e4713",
+      "downloadedMatchesIndex": true,
+      "localBuildSha256": "c9ad07153f3457966f587ebfc33b8574c9fe610c151da4d7bc67487f441e4713",
+      "localBuildMatchesIndex": true,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/libavfilter-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    },
+    {
+      "package": "libavfilter-extra",
+      "file": "libavfilter-extra_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "3931ab908fb1f54f14298441e5439cbcd8e0e44f2a5ba3eece522ac8629a67c3",
+      "localBuildSha256": "3931ab908fb1f54f14298441e5439cbcd8e0e44f2a5ba3eece522ac8629a67c3",
+      "localBuildMatchesIndex": true,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/libavfilter-extra_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    },
+    {
+      "package": "libavfilter-extra11",
+      "file": "libavfilter-extra11_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "de88f3f56f3ecf13c4132eaca8ef739f6e52a8adf82818b8da6e6ff6e47c9cc0",
+      "localBuildSha256": "8f5e539a44e97d6408814fb32ee414840e38a25220a5e092ed1cdcd184b8cfac",
+      "localBuildMatchesIndex": false,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/libavfilter-extra11_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    },
+    {
+      "package": "libavfilter11",
+      "file": "libavfilter11_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "3f59cebe2e8ab26f8b9b158b542e2c06b15f41f499ae6cc3d0668099fab2ac24",
+      "downloadedSha256": "3f59cebe2e8ab26f8b9b158b542e2c06b15f41f499ae6cc3d0668099fab2ac24",
+      "downloadedMatchesIndex": true,
+      "localBuildSha256": "876116594b044bfd35c11eea0488dfee838b311cf242bb5c6535d523310a60c9",
+      "localBuildMatchesIndex": false,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/libavfilter11_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    },
+    {
+      "package": "libavformat-dev",
+      "file": "libavformat-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "db86a5d0fea43793b37369d1cf5b604febe7c616d9d7cf8fb1d17b999e22e985",
+      "downloadedSha256": "db86a5d0fea43793b37369d1cf5b604febe7c616d9d7cf8fb1d17b999e22e985",
+      "downloadedMatchesIndex": true,
+      "localBuildSha256": "db86a5d0fea43793b37369d1cf5b604febe7c616d9d7cf8fb1d17b999e22e985",
+      "localBuildMatchesIndex": true,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/libavformat-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    },
+    {
+      "package": "libavformat-extra",
+      "file": "libavformat-extra_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "bd42e5d6f2a24198034761f8e18edc8ec3a117acff5589af33b22e748f35fd95",
+      "localBuildSha256": "bd42e5d6f2a24198034761f8e18edc8ec3a117acff5589af33b22e748f35fd95",
+      "localBuildMatchesIndex": true,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/libavformat-extra_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    },
+    {
+      "package": "libavformat-extra62",
+      "file": "libavformat-extra62_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "838314c1af37b2696a6de4fbb59d0bed23af453f6c9eda655fe027b7125c1def",
+      "localBuildSha256": "838314c1af37b2696a6de4fbb59d0bed23af453f6c9eda655fe027b7125c1def",
+      "localBuildMatchesIndex": true,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/libavformat-extra62_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    },
+    {
+      "package": "libavformat62",
+      "file": "libavformat62_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "dfa27ac61aff40327916e164edbdcfd38193f5bd6414b614c4ac830991f13f59",
+      "downloadedSha256": "dfa27ac61aff40327916e164edbdcfd38193f5bd6414b614c4ac830991f13f59",
+      "downloadedMatchesIndex": true,
+      "localBuildSha256": "dfa27ac61aff40327916e164edbdcfd38193f5bd6414b614c4ac830991f13f59",
+      "localBuildMatchesIndex": true,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/libavformat62_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    },
+    {
+      "package": "libavutil-dev",
+      "file": "libavutil-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "907e25158a3af341dde17dcfe4b50f1a00589a9e5b07d7a563eb3afd342effe7",
+      "downloadedSha256": "907e25158a3af341dde17dcfe4b50f1a00589a9e5b07d7a563eb3afd342effe7",
+      "downloadedMatchesIndex": true,
+      "localBuildSha256": "907e25158a3af341dde17dcfe4b50f1a00589a9e5b07d7a563eb3afd342effe7",
+      "localBuildMatchesIndex": true,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/libavutil-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    },
+    {
+      "package": "libavutil60",
+      "file": "libavutil60_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "39bf4cff660599c8cc47156145463855ce54be9178ab189ce83cac8ac7389c9d",
+      "downloadedSha256": "39bf4cff660599c8cc47156145463855ce54be9178ab189ce83cac8ac7389c9d",
+      "downloadedMatchesIndex": true,
+      "localBuildSha256": "1842d109e18fd13d80e78d24d11f983b0de21214c0235b9b36e450bc5028156e",
+      "localBuildMatchesIndex": false,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/libavutil60_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    },
+    {
+      "package": "libswresample-dev",
+      "file": "libswresample-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "2ff8e0c8bd22cdd2f2b3f3546aa49c476228bf47c3a3ebf32b7d7f3c747299d8",
+      "downloadedSha256": "2ff8e0c8bd22cdd2f2b3f3546aa49c476228bf47c3a3ebf32b7d7f3c747299d8",
+      "downloadedMatchesIndex": true,
+      "localBuildSha256": "2ff8e0c8bd22cdd2f2b3f3546aa49c476228bf47c3a3ebf32b7d7f3c747299d8",
+      "localBuildMatchesIndex": true,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/libswresample-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    },
+    {
+      "package": "libswresample6",
+      "file": "libswresample6_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "ef17bd6feca7ecafe388b22f0779bf7231621b0b9f03a37d415cf443e20a2eb9",
+      "downloadedSha256": "ef17bd6feca7ecafe388b22f0779bf7231621b0b9f03a37d415cf443e20a2eb9",
+      "downloadedMatchesIndex": true,
+      "localBuildSha256": "ef17bd6feca7ecafe388b22f0779bf7231621b0b9f03a37d415cf443e20a2eb9",
+      "localBuildMatchesIndex": true,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/libswresample6_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    },
+    {
+      "package": "libswscale-dev",
+      "file": "libswscale-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "16d7eba607e4b0fb6aae3972a53d429350cbdee103644d6377eb3634d436ebe9",
+      "downloadedSha256": "16d7eba607e4b0fb6aae3972a53d429350cbdee103644d6377eb3634d436ebe9",
+      "downloadedMatchesIndex": true,
+      "localBuildSha256": "16d7eba607e4b0fb6aae3972a53d429350cbdee103644d6377eb3634d436ebe9",
+      "localBuildMatchesIndex": true,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/libswscale-dev_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    },
+    {
+      "package": "libswscale9",
+      "file": "libswscale9_8.0.1-3ubuntu2bb1k3.2_riscv64.deb",
+      "indexSha256": "afbc6b3f8f50607f6dc8014b57ea4af8138af3847db324b624e3948a55ca91e7",
+      "downloadedSha256": "afbc6b3f8f50607f6dc8014b57ea4af8138af3847db324b624e3948a55ca91e7",
+      "downloadedMatchesIndex": true,
+      "localBuildSha256": "80b07fe57856427d50c240902c8316f1508b1823cc025d740e2cabdd704bcae1",
+      "localBuildMatchesIndex": false,
+      "localBuildPath": "/mnt/k3work/ffmpeg-stcodec-source/libswscale9_8.0.1-3ubuntu2bb1k3.2_riscv64.deb"
+    }
+  ],
+  "mpp": {
+    "file": "mpp_0.1.15+k3.9_riscv64.deb",
+    "indexSha256": "8562cd4a5f95a6e7b51cba3d53050d8a73c5fee260570acc89546132a7bb59c8",
+    "downloadedSha256": "8562cd4a5f95a6e7b51cba3d53050d8a73c5fee260570acc89546132a7bb59c8",
+    "localBuildPath": "/mnt/k3work/mpp_0.1.15+k3.9_riscv64.deb",
+    "localBuildSha256": "59edcd1f1fbb90e34b5d035bbd50dbd5ab36916645f6b24fc31f71a55e7055bb",
+    "downloadedMatchesIndex": true,
+    "localBuildMatchesIndex": false
+  }
+}
